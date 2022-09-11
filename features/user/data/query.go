@@ -17,7 +17,14 @@ func New(db *gorm.DB) user.DataInterface {
 	}
 }
 
-// func (repo *userData) InsertData(data user.Core) (int, error)
+func (repo *userData) InsertData(data user.Core) (int, error) {
+	dataModel := fromCore(data)
+	tx := repo.db.Create(&dataModel)
+	// if tx.Error != nil {
+	// 	return 0, tx.Error
+	// }
+	return int(tx.RowsAffected), tx.Error
+}
 
 func (repo *userData) SelectByToken(token int) (user.Core, error) {
 
@@ -32,10 +39,10 @@ func (repo *userData) SelectByToken(token int) (user.Core, error) {
 
 }
 
-func (repo *userData) UpdateData(id int, newData user.Core) (int, error) {
+func (repo *userData) UpdateData(newData user.Core) (int, error) {
 	dataModel := fromCore(newData)
 
-	tx := repo.db.Model(&User{}).Where("id = ?", id).Updates(dataModel)
+	tx := repo.db.Model(&User{}).Where("id = ?", newData.ID).Updates(dataModel)
 	if tx.Error != nil {
 		return 0, tx.Error
 	}
