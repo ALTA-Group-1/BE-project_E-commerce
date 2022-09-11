@@ -14,7 +14,7 @@ func New(data user.DataInterface) user.UsecaseInterface {
 	}
 }
 
-func (usecase *userUsecase) PostData(data user.Core) (int, error)
+// func (usecase *userUsecase) PostData(data user.Core) (int, error)
 
 func (service *userUsecase) GetByToken(token int) (user.Core, error) {
 
@@ -25,4 +25,12 @@ func (service *userUsecase) GetByToken(token int) (user.Core, error) {
 
 	return dataId, nil
 
+}
+
+func (usecase *userUsecase) PutData(id int, newData user.Core) (int, error) {
+	row, err := usecase.userData.UpdateData(id, newData)
+	if err != nil {
+		return 0, err
+	}
+	return row, nil
 }
