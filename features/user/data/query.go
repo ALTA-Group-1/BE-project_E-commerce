@@ -52,3 +52,9 @@ func (repo *userData) UpdateData(newData user.Core) (int, error) {
 
 	return 1, nil
 }
+
+func (repo *userData) DeleteByToken(token int) (int, error) {
+	var deleteData User
+	tx := repo.db.Delete(&deleteData, token)
+	return int(tx.RowsAffected), tx.Error
+}

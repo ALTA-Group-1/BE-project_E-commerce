@@ -38,17 +38,17 @@ func (delivery *UserDelivery) PostData(c echo.Context) error {
 	return c.JSON(201, helper.SuccessResponseHelper("success insert data"))
 }
 
-func (users *UserDelivery) GetByTokenJWT(e echo.Context) error {
-	idToken := middlewares.ExtractToken(e)
+func (delivery *UserDelivery) GetByTokenJWT(c echo.Context) error {
+	idToken := middlewares.ExtractToken(c)
 
-	res, err := users.userUsecase.GetByToken(idToken)
+	res, err := delivery.userUsecase.GetByToken(idToken)
 	if err != nil {
-		return e.JSON(400, helper.FailedResponseHelper("error token"))
+		return c.JSON(400, helper.FailedResponseHelper("error token"))
 	}
 
 	respon := fromCore(res)
 
-	return e.JSON(200, helper.SuccessDataResponseHelper("succes get data by id", respon))
+	return c.JSON(200, helper.SuccessDataResponseHelper("succes get data by id", respon))
 }
 
 func (delivery *UserDelivery) PutData(c echo.Context) error {
@@ -84,4 +84,13 @@ func (delivery *UserDelivery) PutData(c echo.Context) error {
 	}
 
 	return c.JSON(200, helper.SuccessResponseHelper("Successful Operation"))
+}
+
+func (delivery *UserDelivery) DeleteUser(c echo.Context) error {
+	idToken := middlewares.ExtractToken(c)
+	row, err := delivery.userUsecase.DeleteData(idToken)
+	if err != nil || row != 1 {
+		return c.JSON(500, helper.FailedResponseHelper("wrong token"))
+	}
+	return c.JSON(200, helper.SuccessResponseHelper("succes delete"))
 }
