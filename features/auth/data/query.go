@@ -17,7 +17,7 @@ func New(db *gorm.DB) auth.DataInterface {
 	}
 }
 
-func (repo *authData) LoginUser(email, password string) (auth.Core, error) {
+func (repo *authData) LoginUser(email string) (auth.Core, error) {
 
 	var data User
 	txEmail := repo.db.Where("email = ?", email).First(&data)

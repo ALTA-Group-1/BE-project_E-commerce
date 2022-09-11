@@ -11,5 +11,5 @@ type UsecaseInterface interface {
 }
 
 type DataInterface interface {
-	LoginUser(email, password string) (Core, error)
+	LoginUser(email string) (Core, error)
 }

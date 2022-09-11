@@ -23,7 +23,7 @@ func (usecase *authUsecase) LoginAuthorized(email, password string) string {
 		return "please input email and password"
 	}
 
-	results, errEmail := usecase.authData.LoginUser(email, password)
+	results, errEmail := usecase.authData.LoginUser(email)
 	if errEmail != nil {
 		return "email not found"
 	}
