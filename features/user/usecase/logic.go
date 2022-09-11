@@ -40,3 +40,8 @@ func (usecase *userUsecase) PutData(newData user.Core) (int, error) {
 	row, err := usecase.userData.UpdateData(newData)
 	return row, err
 }
+
+func (usecase *userUsecase) DeleteData(token int) (int, error) {
+	row, err := usecase.userData.DeleteByToken(token)
+	return row, err
+}

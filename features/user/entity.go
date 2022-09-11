@@ -19,6 +19,7 @@ type UsecaseInterface interface {
 	PostData(data Core) (int, error)
 	GetByToken(token int) (data Core, err error)
 	PutData(newData Core) (row int, err error)
+	DeleteData(token int) (int, error)
 }
 
 type DataInterface interface {
@@ -29,4 +30,5 @@ type DataInterface interface {
 	// put user
 	UpdateData(newData Core) (row int, err error)
 	// delete user
+	DeleteByToken(token int) (int, error)
 }
