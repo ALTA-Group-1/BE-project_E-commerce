@@ -1,0 +1,1115 @@
+openapi: '3.0.2'
+info:
+  title: E-Commerce
+  description: Alterra Academy Project by Kelompok 1
+  contact:
+    name: API Support
+    url: http://www.example.com/support
+    email: support@example.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: '1.0.0'
+servers:
+  # Added by API Auto Mocking Plugin
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/DIANND1507/E-Commerce/1.0.0
+    variables:
+      environment: 
+        default: dev
+        enum:
+          - "prod"
+          - "dev"
+tags:
+  - name: Auth
+    description: Authentication
+  - name: User
+    description: User data management
+  - name: Product
+    description: Product data management
+  - name: Cart
+    description: Cart data management
+  - name: Order
+    description: Order data management
+paths:
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: login user
+      description: User melakukan login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestLogin'
+            examples:
+              userData1:
+                description: "Example data user"
+                value: {
+                  email: "john@gmail.com",
+                  password: "john123",
+                }
+              userData2:
+                description: "Example data user"
+                value: {
+                  email: "michele@gmail.com",
+                  password: "michele123"
+                }
+      responses:
+        '200':
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/loginSuccess'
+              examples:
+                responseData1:
+                  description: response success 1
+                  value: {
+                    code: 200,
+                    status: "success",
+                    message: "Login Success",
+                    data: {
+                      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co"
+                    }
+                  }
+                responseData2:
+                  description: response success 2
+                  value: {
+                    code: 200,
+                    status: "success",
+                    message: "Login Success",
+                    data: {
+                      token: "AyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co"
+                    }
+                  }
+        '400':
+          description: Failed Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/loginFailed'
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value: {
+                    code: 400,
+                    status: "failed",
+                    message: "Login Failed. Email and Password incorrect."
+                  }
+                responseData2:
+                  description: response failed 2
+                  value: {
+                    code: 400,
+                    status: "failed",
+                    message: "Login Failed. Your email doesn't match any entry"
+                  }
+  #######  USER   #######
+  /users:
+    post:
+      tags:
+        - User
+      summary: User register
+      description: Register user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestUserData'
+            examples:
+              userData1:
+                description: "Example data user"
+                value: {
+                  full name: "John",
+                  phone number: "0812345",
+                  address: "Jl. Simatupang",
+                  email: "john@gmail.com",
+                  password: "john123"
+                }
+              userData2:
+                description: "Example data user"
+                value: {
+                  name: "Michele",
+                  phone number: "08123455",
+                  address: "Jl. Situbondo",
+                  email: "michele@gmail.com",
+                  password: "michele123"
+                }
+      responses:
+        '200':
+          $ref: '#/components/responses/responseSuccess'
+        '400':
+          $ref: '#/components/responses/responseFailed'
+    get:
+      tags:
+        - User
+      summary: Get my profile
+      description: Get my profile
+      security:
+        - JWTAuth: []           
+      responses:
+        '200':
+          $ref: '#/components/responses/getUserProfileSuccess'
+        '400':
+          $ref: '#/components/responses/getUserProfileFailed'
+  /users/{id}:  
+    put:
+      tags:
+        - User
+      summary: Edit user profile
+      description: Edit user profile
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: id user
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full name:
+                  type: string
+                  example: "John"
+                phone number:
+                  type: string
+                  example: '0812345'
+                address:
+                  type: string
+                  example: "jl. Kebon Jeruk"
+                email:
+                  type: string
+                  example: "john@gmail.com"
+                password:
+                  type: string
+                  example: "john123"
+      responses:
+        '200':
+          $ref: '#/components/responses/responseSuccess'
+        '400':
+          $ref: '#/components/responses/responseFailed'
+    delete:
+      tags:
+        - User
+      summary: Delete account
+      description: Delete account
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: id user
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/responseSuccess'
+        '400':
+          $ref: '#/components/responses/responseFailed'
+  
+  #######  PRODUCT   #######
+  /products:
+    post:
+      tags:
+        - Product
+      summary: Insert new product
+      description: Insert new product
+      security:
+        - JWTAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/requestProductData'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestProductData'
+            examples:
+              productData1:
+                description: "Example data product"
+                value: {
+                  images: "images.jpg",
+                  product name: "smartwatch",
+                  price: 500000,
+                  stock: 100,
+                  description: "Smartband ultra-thin design"
+                }
+              productData2:
+                description: "Example data product"
+                value: {
+                  images: "images.jpg",
+                  productname: "sneakers",
+                  price: 500000,
+                  stock: 100,
+                  description: "sneakers nike air white"
+                }
+      responses:
+        '200':
+          $ref: '#/components/responses/createProductSuccess'
+        '400':
+          $ref: '#/components/responses/createProductFailed'
+    get:
+      tags:
+        - Product
+      summary: Get all product
+      description: Get all product
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/getAllProductSuccess'
+        '400':
+          $ref: '#/components/responses/getAllProductFailed'
+  /products/{id}:
+    get:
+      tags:
+        - Product
+      summary: Get product by id
+      description: Get detail product
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: id user
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/getDetailProductSuccess'
+        '400':
+          $ref: '#/components/responses/getDetailProductFailed'
+    put:
+      tags:
+        - Product
+      summary: Edit product data
+      description: Edit product data
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: id 
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/requestProductData'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestProductData'
+            examples:
+              productData1:
+                description: "Example data product"
+                value: {
+                  images: "images.jpg",
+                  productname: "smartwatch",
+                  price: 500000,
+                  stock: 100,
+                  description: "Smartband ultra-thin design"
+                }
+              productData2:
+                description: "Example data product"
+                value: {
+                  images: "images.jpg",
+                  productname: "sneakers",
+                  price: 500000,
+                  stock: 100,
+                  description: "sneakers nike air white"
+                }
+      responses:
+        '200':
+          $ref: '#/components/responses/responseSuccess'
+        '400':
+          $ref: '#/components/responses/responseFailed'
+    delete:
+      tags:
+        - Product
+      summary: Delete product
+      description: Delete product
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: id_product
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/responseSuccess'
+        '400':
+          $ref: '#/components/responses/responseFailed'
+
+  #######  CART   #######
+  /carts:
+    post:
+      tags:
+        - Cart
+      summary: Insert cart
+      description: User puts product into the cart
+      security:
+        - JWTAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/requestCartData'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestCartData'
+            examples:
+              productData1:
+                description: "Example cart data"
+                value: {
+                  images: "images.jpg",
+                  product name: "smartwatch",
+                  price: 500000,
+                  qty: 1
+                }
+              productData2:
+                description: "Example data product"
+                value: {
+                  images: "images.jpg",
+                  productname: "sneakers",
+                  price: 500000,
+                  qty: 1
+                }
+      responses:
+        '200':
+          $ref: '#/components/responses/createCartSuccess'
+        '400':
+          $ref: '#/components/responses/createCartFailed'  
+    get:
+      tags:
+        - Cart
+      summary: Get product at cart
+      description: User get product at cart
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/getCartSuccess'
+        '400':
+          $ref: '#/components/responses/getCartFailed'
+  /carts/{id}:
+    put:
+      tags:
+        - Cart
+      summary: Edit cart data
+      description: change quantity product
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: id_product 
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/requestCartData'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestCartData'
+            examples:
+              productData1:
+                description: "Example data product"
+                value: {
+                  images: "images.jpg",
+                  product name: "smartwatch",
+                  price: 500000,
+                  qty: 3
+                }
+              productData2:
+                description: "Example data product"
+                value: {
+                  images: "images.jpg",
+                  product name: "smartwatch",
+                  price: 500000,
+                  qty: 2
+                }
+      responses:
+        '200':
+          $ref: '#/components/responses/responseSuccess'
+        '400':
+          $ref: '#/components/responses/responseFailed'
+    delete:
+      tags:
+        - Cart
+      summary: Delete cart
+      description: Delete product at cart
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: id_product
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/responseSuccess'
+        '400':
+          $ref: '#/components/responses/responseFailed'
+
+  #######  ORDER   #######
+  /orders:
+    post:
+      tags:
+        - Order
+      summary: Checkout
+      description: User checkout product
+      security:
+        - JWTAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestOrderData'
+            examples:
+              productData1:
+                description: "Example data order"
+                value: {
+                  address: "jl. simatupang",
+                  total item: "1",
+                  total price: 200000
+                }
+              productData2:
+                description: "Example data order"
+                value: {
+                  address: "jl. parayangan",
+                  total item: 1",
+                  total price: 200000,
+                }
+      responses:
+        '200':
+          $ref: '#/components/responses/checkoutSuccess'
+        '400':
+          $ref: '#/components/responses/checkoutFailed' 
+  /orders/{id}:
+    delete:
+      tags:
+        - Order
+      summary: Cancel checkout 
+      description: User cancel checkout item
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: id_cart
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/responseSuccess'
+        '400':
+          $ref: '#/components/responses/responseFailed'
+
+
+#==================================#
+#    COMPONENT
+#==================================#
+components:
+
+  #==================================#    
+  #    JWT
+  #==================================#
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "use Token"
+  #==================================#
+  #    SCHEMAS
+  #==================================#
+  schemas:
+    requestLogin:
+      type: object
+      properties:
+        "email":
+          type: string
+          minLength: 1
+        "password":
+          type: string
+          minLength: 1
+    requestUserData:
+      type: object
+      properties:
+        "full name":
+          type: string
+          minLength: 1
+        "phone number":
+          type: string
+          minLength: 1
+        "address":
+          type: string
+          minLength: 1
+        "email":
+          type: string
+          minLength: 1
+        "password":
+          type: string
+          minLength: 1
+    
+    requestProductData:
+      type: object
+      properties:
+        "images":
+          type: string
+          minLength: 1
+        "product name":
+          type: string
+          minLength: 1
+        "price":
+          type: integer
+          minLength: 1
+        "stock":
+          type: integer
+          minLength: 1
+        "description":
+          type: string
+          minLength: 1
+    
+    requestCartData:
+      type: object
+      properties:
+        "images":
+          type: string
+          minLength: 1
+        "product name":
+          type: string
+          minLength: 1
+        "price":
+          type: integer
+          minLength: 1
+        "qty":
+          type: integer
+          minLength: 1
+
+    requestOrderData:
+      type: object
+      properties:
+        "address":
+          type: string
+          minLength: 1
+        "total item":
+          type: integer
+          minLength: 1
+        "price":
+          type: integer
+          minLength: 1
+
+  #==================================#    
+  #    PARAMETERS
+  #==================================#
+  requestBodies:
+    userData:
+      content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestUserData'
+              type: object
+              properties:
+                full name:
+                  type: string
+                  example: "John"
+                phone number:
+                  type: string
+                  example: '0812345'
+                address:
+                  type: string
+                  example: "Jl. Kebon Jeruk"
+                email:
+                  type: string
+                  example: "john@mail.com"
+                password:
+                  type: string
+                  example: "john123"
+
+  responses:
+    #==================================#
+    #    RESPONSE FOR GENERAL REQUEST
+    #==================================#
+    responseSuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 200
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: Successful Operation
+    responseFailed:
+      description: register failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 400
+              status:
+                type: string
+                example: failed
+              message:
+                type: string
+                example: Bad Request
+    #==================================#
+    #    RESPONSE REGISTER USER
+    #==================================#
+    registerSuccess:
+      description: register success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: Register Success
+    registerFailed:
+      description: register failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: fail
+              message:
+                type: string
+                example: Register Failed
+    #==================================#
+    #    RESPONSE LOGIN USER
+    #==================================#
+    loginSuccess:
+      description: login success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 200
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: Login Success
+              data:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJ1c2VySWQiOjExfQ.YQ47sxFkIfbDVyQ5o6ix38w4BYxnNOPG3F5isqkyyv8
+    loginFailed:
+      description: login failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 400
+              status:
+                type: string
+                example: fail
+              message:
+                type: string
+                example: Login Failed
+    #==================================#
+    #    RESPONSE GET USER
+    #==================================#
+    getUserProfileSuccess:
+      description: success get user profile
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 200
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: Success Get User Profile
+              data:
+                type: object
+                properties:
+                  full name:
+                    type: string
+                    example: John
+                  phone number:
+                    type: string
+                    example: '0812345'
+                  address:
+                    type: string
+                    example: jl. Simatupang
+                  email:
+                    type: string
+                    example: john@gmail.com
+    getUserProfileFailed:
+      description: fail to get user profile
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 400
+              status:
+                type: string
+                example: failed
+              message:
+                type: string
+                example: Fail to Get User Profile
+    #==================================#
+    #    RESPONSE UPDATE USER
+    #==================================#
+    editUserProfileSuccess:
+      description: success change user profile
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: Success update profile
+    editUserProfileFailed:
+      description: fail to change user profile
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: fail
+              message:
+                type: string
+                example: Fail update profile
+   
+
+   #==================================#
+    #    RESPONSE CREATE PRODUCT
+    #==================================#
+    createProductSuccess:
+      description: success create book
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: Success create product
+    createProductFailed:
+      description: fail to create book
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: fail
+              message:
+                type: string
+                example: Fail create product
+
+    #==================================#
+    #    RESPONSE GET ALL PRODUCT
+    #==================================#
+    getAllProductSuccess:
+      description: success get all product
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 200
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: Success get all product
+              data:
+                type: object
+                properties:
+                  images:
+                    type: string
+                    example: "images.jpg"
+                  product name:
+                    type: string
+                    example: "sneakers"
+                  price:
+                    type: integer
+                    example: 500000
+    getAllProductFailed:
+      description: failed get all product
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: fail
+              message:
+                type: string
+                example: Failed get all product
+
+    #==================================#
+    #    RESPONSE GET DETAIL PRODUCT
+    #==================================#
+    getDetailProductSuccess:
+      description: success get detail product
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 200
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: Success get detail product
+              data:
+                type: object
+                properties:
+                  images:
+                    type: string
+                    example: "images.jpg"
+                  product name:
+                    type: string
+                    example: "sneakers"
+                  price:
+                    type: integer
+                    example: 500000
+                  stock:
+                    type: integer
+                    example: 50
+                  description:
+                    type: string
+                    example: "sneakers nike"
+    getDetailProductFailed:
+      description: failed get detail product
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: fail
+              message:
+                type: string
+                example: Failed get detail product
+
+    #==================================#
+    #    RESPONSE CREATE CART
+    #==================================#
+    createCartSuccess:
+      description: success puts product into cart
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: Success puts product into cart
+    createCartFailed:
+      description: fail puts product into cart
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: fail
+              message:
+                type: string
+                example: Fail puts product into cart
+   
+
+    #==================================#
+    #    RESPONSE POST ORDER
+    #==================================#
+    checkoutSuccess:
+      description: success checkout item
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: Success checkout item
+    checkoutFailed:
+      description: failed checkout item
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: fail
+              message:
+                type: string
+                example: Failed checkout item
+
+    #==================================#
+    #    RESPONSE GET CART
+    #==================================#
+    getCartSuccess:
+      description: success get product at cart
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 200
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: Success get detail product
+              data: 
+                type: object
+                properties:
+                  images:
+                    type: string
+                    example: "images.jpg"
+                  product name:
+                    type: string
+                    example: "sneakers"
+                  price:
+                    type: integer
+                    example: 500000
+                  qty:
+                    type: integer
+                    example: 1
+                  Total items:
+                    type: integer
+                    example: 2
+                  Total price:
+                    type: integer
+                    example: 800000
+    getCartFailed:
+      description: failed get product at cart
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: fail
+              message:
+                type: string
+                example: Failed get product at cart
+
+    #==================================#
+    #    DEFAULT RESPONSE
+    #==================================#
+    operationSuccess:
+      description: operation success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: Operation Success
+    operationFailed:
+      description: operation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: fail
+              message:
+                type: string
+                example: Operation Failed
