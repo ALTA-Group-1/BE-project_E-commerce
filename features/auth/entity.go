@@ -1,12 +1,15 @@
 package auth
 
 type Core struct {
-	Email    string `json:"email" form:"email"`
-	Password string `json:"password" form:"password"`
+	ID       uint
+	Email    string
+	Password string
 }
 
 type UsecaseInterface interface {
+	LoginAuthorized(email, password string) string
 }
 
 type DataInterface interface {
+	LoginUser(email, password string) (Core, error)
 }

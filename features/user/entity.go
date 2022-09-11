@@ -20,6 +20,7 @@ type UsecaseInterface interface {
 	PostData(data Core) (int, error)
 	// read user
 	// read user by id
+	GetByToken(token int) (data Core, err error)
 	// put user
 	// delete user
 }
@@ -27,8 +28,8 @@ type UsecaseInterface interface {
 type DataInterface interface {
 	// create user
 	InsertData(data Core) (int, error)
-	// read user
 	// read user by id
+	SelectByToken(token int) (data Core, err error)
 	// put user
 	// delete user
 }
