@@ -1,7 +1,6 @@
 package delivery
 
 import (
-	"net/http"
 	"project/e-commerce/features/user"
 	"project/e-commerce/middlewares"
 	"project/e-commerce/utils/helper"
@@ -18,15 +17,28 @@ func New(e *echo.Echo, usecase user.UsecaseInterface) {
 		userUsecase: usecase,
 	}
 
-	// e.POST("/users", handler.PostData)
+	e.POST("/users", handler.PostData)
 	e.GET("/users", handler.GetByTokenJWT, middlewares.JWTMiddleware())
 	e.PUT("/users", handler.PutData, middlewares.JWTMiddleware())
 }
 
-// func (delivery *UserDelivery) PostData(c echo.Context) error
+func (delivery *UserDelivery) PostData(c echo.Context) error {
+	var dataRegister UserRequest
+	errBind := c.Bind(&dataRegister)
+	if errBind != nil {
+		return c.JSON(400, helper.FailedResponseHelper("error bind"))
+	}
+	row, err := delivery.userUsecase.PostData(toCore(dataRegister))
+	if err != nil {
+		return c.JSON(500, helper.FailedResponseHelper("error insert data"))
+	}
+	if row != 1 {
+		return c.JSON(500, helper.FailedResponseHelper("error insert data"))
+	}
+	return c.JSON(201, helper.SuccessResponseHelper("success insert data"))
+}
 
 func (users *UserDelivery) GetByTokenJWT(e echo.Context) error {
-
 	idToken := middlewares.ExtractToken(e)
 
 	res, err := users.userUsecase.GetByToken(idToken)
@@ -37,22 +49,39 @@ func (users *UserDelivery) GetByTokenJWT(e echo.Context) error {
 	respon := fromCore(res)
 
 	return e.JSON(200, helper.SuccessDataResponseHelper("succes get data by id", respon))
-
 }
 
 func (delivery *UserDelivery) PutData(c echo.Context) error {
 	var dataUpdate UserRequest
 	errBind := c.Bind(&dataUpdate)
 	if errBind != nil {
-		return c.JSON(http.StatusInternalServerError, helper.FailedResponseHelper("error bind data"))
+		return c.JSON(400, helper.FailedResponseHelper("error bind data"))
+	}
+
+	var add user.Core
+	if dataUpdate.Email != "" {
+		add.Email = dataUpdate.Email
+	}
+	if dataUpdate.Name != "" {
+		add.Name = dataUpdate.Name
+	}
+	if dataUpdate.Password != "" {
+		add.Password = dataUpdate.Password
+	}
+	if dataUpdate.Phone != "" {
+		add.Phone = dataUpdate.Phone
+	}
+	if dataUpdate.Address != "" {
+		add.Address = dataUpdate.Address
 	}
 
 	idToken := middlewares.ExtractToken(c)
+	add.ID = uint(idToken)
 
-	row, err := delivery.userUsecase.PutData(idToken, toCore(dataUpdate))
+	row, err := delivery.userUsecase.PutData(add)
 	if err != nil || row < 1 {
-		return c.JSON(http.StatusInternalServerError, helper.FailedResponseHelper("Bad Request"))
+		return c.JSON(400, helper.FailedResponseHelper("Bad Request"))
 	}
 
-	return c.JSON(http.StatusOK, helper.SuccessResponseHelper("Successful Operation"))
+	return c.JSON(200, helper.SuccessResponseHelper("Successful Operation"))
 }
