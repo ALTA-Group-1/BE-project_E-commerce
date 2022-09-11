@@ -5,6 +5,8 @@ import (
 	"os"
 	"strconv"
 	"sync"
+
+	"github.com/joho/godotenv"
 )
 
 type AppConfig struct {
@@ -37,6 +39,9 @@ func initConfig() *AppConfig {
 
 	var defaultConfig AppConfig
 
+	if err := godotenv.Load(".env"); err != nil {
+		log.Fatal(err)
+	}
 	serverPortConv, errConv1 := strconv.Atoi(os.Getenv("SERVER_PORT"))
 	if errConv1 != nil {
 		log.Fatal("error parse DB PORT")
