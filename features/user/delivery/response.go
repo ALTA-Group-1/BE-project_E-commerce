@@ -17,11 +17,3 @@ func fromCore(data user.Core) UserResponse {
 		Address: data.Address,
 	}
 }
-
-func fromCoreList(data []user.Core) []UserResponse {
-	var dataResponse []UserResponse
-	for _, v := range data {
-		dataResponse = append(dataResponse, fromCore(v))
-	}
-	return dataResponse
-}

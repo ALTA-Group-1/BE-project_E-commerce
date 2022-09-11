@@ -15,3 +15,14 @@ func New(data user.DataInterface) user.UsecaseInterface {
 }
 
 func (usecase *userUsecase) PostData(data user.Core) (int, error)
+
+func (service *userUsecase) GetByToken(token int) (user.Core, error) {
+
+	dataId, err := service.userData.SelectByToken(token)
+	if err != nil {
+		return user.Core{}, err
+	}
+
+	return dataId, nil
+
+}
