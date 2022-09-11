@@ -17,19 +17,21 @@ type Core struct {
 
 type UsecaseInterface interface {
 	// create user
-	PostData(data Core) (int, error)
+	// PostData(data Core) (int, error)
 	// read user
 	// read user by id
 	GetByToken(token int) (data Core, err error)
 	// put user
+	PutData(id int, newData Core) (row int, err error)
 	// delete user
 }
 
 type DataInterface interface {
 	// create user
-	InsertData(data Core) (int, error)
+	// InsertData(data Core) (int, error)
 	// read user by id
 	SelectByToken(token int) (data Core, err error)
 	// put user
+	UpdateData(id int, newData Core) (row int, err error)
 	// delete user
 }

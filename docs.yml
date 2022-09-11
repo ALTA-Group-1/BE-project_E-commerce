@@ -14,7 +14,7 @@ servers:
   # Added by API Auto Mocking Plugin
   # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/DIANND1507/E-Commerce/1.0.0
+    url: https://virtserver.swaggerhub.com/DianNurdiana-alt/E-Commerce/1.0.0
     variables:
       environment: 
         default: dev
@@ -149,13 +149,12 @@ paths:
       summary: Get my profile
       description: Get my profile
       security:
-        - JWTAuth: []           
+        - JWTAuth: []     
       responses:
         '200':
           $ref: '#/components/responses/getUserProfileSuccess'
         '400':
-          $ref: '#/components/responses/getUserProfileFailed'
-  /users/{id}:  
+          $ref: '#/components/responses/getUserProfileFailed'  
     put:
       tags:
         - User
@@ -163,14 +162,6 @@ paths:
       description: Edit user profile
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: id user
-          in: path
-          schema:
-            type: integer
-            example: 1
-          required: true
       requestBody:
         content:
           application/json:
@@ -204,14 +195,6 @@ paths:
       description: Delete account
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: id user
-          in: path
-          schema:
-            type: integer
-            example: 1
-          required: true
       responses:
         '200':
           $ref: '#/components/responses/responseSuccess'
@@ -266,32 +249,24 @@ paths:
       description: Get all product
       security:
         - JWTAuth: []
+      parameters:
+      - in: query
+        name: title
+        schema:
+          type: string
+          example: page 
+        required: false 
+      - in: query
+        name: page
+        schema:
+          type: number
+          example: 1
+        required: false
       responses:
         '200':
           $ref: '#/components/responses/getAllProductSuccess'
         '400':
           $ref: '#/components/responses/getAllProductFailed'
-  /products/{id}:
-    get:
-      tags:
-        - Product
-      summary: Get product by id
-      description: Get detail product
-      security:
-        - JWTAuth: []
-      parameters:
-        - name: id
-          description: id user
-          in: path
-          schema:
-            type: integer
-            example: 1
-          required: true
-      responses:
-        '200':
-          $ref: '#/components/responses/getDetailProductSuccess'
-        '400':
-          $ref: '#/components/responses/getDetailProductFailed'
     put:
       tags:
         - Product
@@ -299,14 +274,6 @@ paths:
       description: Edit product data
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: id 
-          in: path
-          schema:
-            type: integer
-            example: 1
-          required: true
       requestBody:
         content:
           multipart/form-data:
@@ -346,6 +313,19 @@ paths:
       description: Delete product
       security:
         - JWTAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/responseSuccess'
+        '400':
+          $ref: '#/components/responses/responseFailed'
+  /products/{id}:
+    get:
+      tags:
+        - Product
+      summary: Get product by id
+      description: Get detail product
+      security:
+        - JWTAuth: []
       parameters:
         - name: id
           description: id_product
@@ -356,9 +336,9 @@ paths:
           required: true
       responses:
         '200':
-          $ref: '#/components/responses/responseSuccess'
+          $ref: '#/components/responses/getDetailProductSuccess'
         '400':
-          $ref: '#/components/responses/responseFailed'
+          $ref: '#/components/responses/getDetailProductFailed' 
 
   #######  CART   #######
   /carts:
@@ -411,45 +391,27 @@ paths:
           $ref: '#/components/responses/getCartSuccess'
         '400':
           $ref: '#/components/responses/getCartFailed'
-  /carts/{id}:
     put:
       tags:
         - Cart
-      summary: Edit cart data
+      summary: Change quantity product
       description: change quantity product
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: id_product 
-          in: path
-          schema:
-            type: integer
-            example: 1
-          required: true
       requestBody:
         content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/requestCartData'
           application/json:
             schema:
-              $ref: '#/components/schemas/requestCartData'
+              $ref: '#/components/schemas/requestChangeQty'
             examples:
               productData1:
                 description: "Example data product"
                 value: {
-                  images: "images.jpg",
-                  product name: "smartwatch",
-                  price: 500000,
                   qty: 3
                 }
               productData2:
                 description: "Example data product"
                 value: {
-                  images: "images.jpg",
-                  product name: "smartwatch",
-                  price: 500000,
                   qty: 2
                 }
       responses:
@@ -464,14 +426,6 @@ paths:
       description: Delete product at cart
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: id_product
-          in: path
-          schema:
-            type: integer
-            example: 1
-          required: true
       responses:
         '200':
           $ref: '#/components/responses/responseSuccess'
@@ -496,23 +450,30 @@ paths:
               productData1:
                 description: "Example data order"
                 value: {
-                  address: "jl. simatupang",
-                  total item: "1",
-                  total price: 200000
+                  address: "jl. simatupang"
                 }
               productData2:
                 description: "Example data order"
                 value: {
-                  address: "jl. parayangan",
-                  total item: 1",
-                  total price: 200000,
+                  address: "jl. parayangan"
                 }
       responses:
         '200':
           $ref: '#/components/responses/checkoutSuccess'
         '400':
           $ref: '#/components/responses/checkoutFailed' 
-  /orders/{id}:
+    get:
+      tags:
+        - Order
+      summary: Get item product to be checkout
+      description: Get item product to be checkout
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/getCartSuccess'
+        '400':
+          $ref: '#/components/responses/getCartFailed'
     delete:
       tags:
         - Order
@@ -520,14 +481,6 @@ paths:
       description: User cancel checkout item
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: id_cart
-          in: path
-          schema:
-            type: integer
-            example: 1
-          required: true
       responses:
         '200':
           $ref: '#/components/responses/responseSuccess'
@@ -616,6 +569,13 @@ components:
         "qty":
           type: integer
           minLength: 1
+    
+    requestChangeQty:
+      type: object
+      properties:
+        "qty":
+          type: integer
+          minLength: 1
 
     requestOrderData:
       type: object
@@ -623,12 +583,20 @@ components:
         "address":
           type: string
           minLength: 1
+    
+    requestGetOrder:
+      type: object
+      properties:
+        "address":
+          type: string
+          minLength: 1
         "total item":
           type: integer
-          minLength: 1
-        "price":
+          minLength: 2
+        "total price":
           type: integer
-          minLength: 1
+          minLength: 500000
+
 
   #==================================#    
   #    PARAMETERS

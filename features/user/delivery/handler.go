@@ -1,6 +1,7 @@
 package delivery
 
 import (
+	"net/http"
 	"project/e-commerce/features/user"
 	"project/e-commerce/middlewares"
 	"project/e-commerce/utils/helper"
@@ -17,11 +18,12 @@ func New(e *echo.Echo, usecase user.UsecaseInterface) {
 		userUsecase: usecase,
 	}
 
-	e.POST("/users", handler.PostData)
-
+	// e.POST("/users", handler.PostData)
+	e.GET("/users", handler.GetByTokenJWT, middlewares.JWTMiddleware())
+	e.PUT("/users", handler.PutData, middlewares.JWTMiddleware())
 }
 
-func (delivery *UserDelivery) PostData(c echo.Context) error
+// func (delivery *UserDelivery) PostData(c echo.Context) error
 
 func (users *UserDelivery) GetByTokenJWT(e echo.Context) error {
 
@@ -36,4 +38,21 @@ func (users *UserDelivery) GetByTokenJWT(e echo.Context) error {
 
 	return e.JSON(200, helper.SuccessDataResponseHelper("succes get data by id", respon))
 
+}
+
+func (delivery *UserDelivery) PutData(c echo.Context) error {
+	var dataUpdate UserRequest
+	errBind := c.Bind(&dataUpdate)
+	if errBind != nil {
+		return c.JSON(http.StatusInternalServerError, helper.FailedResponseHelper("error bind data"))
+	}
+
+	idToken := middlewares.ExtractToken(c)
+
+	row, err := delivery.userUsecase.PutData(idToken, toCore(dataUpdate))
+	if err != nil || row < 1 {
+		return c.JSON(http.StatusInternalServerError, helper.FailedResponseHelper("Bad Request"))
+	}
+
+	return c.JSON(http.StatusOK, helper.SuccessResponseHelper("Successful Operation"))
 }
