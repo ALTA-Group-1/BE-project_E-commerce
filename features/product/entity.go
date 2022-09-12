@@ -22,9 +22,6 @@ type User struct {
 	UserName string
 }
 
-type CategoriesCore struct {
-	Name string
-}
 
 type UsecaseInterface interface {
 	// create product
