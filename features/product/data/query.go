@@ -34,7 +34,7 @@ func (repo *productData) DeleteByToken(token int) (int, error) {
 func (repo *productData) SelectAllProduct(page int) ([]product.Core, error) {
 
 	var maksOffset int
-	tx := repo.db.Raw("SELECT COUNT * FROM products WHERE deleted_at = NULL").Scan(&maksOffset)
+	tx := repo.db.Raw("SELECT COUNT (name) FROM products WHERE deleted_at = NULL").Scan(&maksOffset)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
