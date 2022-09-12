@@ -23,6 +23,6 @@ jobs:
             git pull origin main
             docker stop ecommerce
             docker rm ecommerce
-            docker rmi BE-project_E-commerce
-            docker build -t BE-project_E-commerce:latest .
-            docker run -d -p 80:8000 -e SERVER_PORT=${{ secrets.SERVER_PORT }} -e DB_USERNAME=${{ secrets.DB_USERNAME }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_HOST=${{ secrets.DB_HOST }} -e DB_PORT=${{ secrets.DB_PORT }} -e DB_NAME=${{ secrets.DB_NAME }} --name ecommerce BE-project_E-commerce:latest
+            docker rmi be11-project-deploy
+            docker build -t be11-project-deploy:latest .
+            docker run -d -p 80:8000 -e SERVER_PORT=${{ secrets.SERVER_PORT }} -e DB_USERNAME=${{ secrets.DB_USERNAME }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_HOST=${{ secrets.DB_HOST }} -e DB_PORT=${{ secrets.DB_PORT }} -e DB_NAME=${{ secrets.DB_NAME }} --name ecommerce be11-project-deploy:latest
