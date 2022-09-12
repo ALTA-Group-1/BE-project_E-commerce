@@ -1,7 +1,6 @@
 package product
 
 import (
-	"project/e-commerce/features/user"
 	"time"
 )
 
@@ -14,8 +13,8 @@ type Core struct {
 	Desc         string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
-	User         user.Core
-	CategoriesID CategoriesCore
+	UserID       int
+	CategoriesID int
 }
 
 type User struct {
