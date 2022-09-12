@@ -13,18 +13,6 @@ type Core struct {
 	Address   string
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	Products  []ProductCore
-}
-
-type ProductCore struct {
-	ID        uint
-	Name      string
-	Images    string
-	Price     string
-	Stock     int
-	Desc      string
-	CreatedAt time.Time
-	UpdatedAt time.Time
 }
 
 type UsecaseInterface interface {
