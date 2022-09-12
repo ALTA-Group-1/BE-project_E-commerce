@@ -2,26 +2,35 @@ package data
 
 import (
 	"project/e-commerce/features/product"
-	userModel "project/e-commerce/features/user/data"
 
 	"gorm.io/gorm"
 )
 
 type Product struct {
 	gorm.Model
-	Name       string
-	Images     string
-	Price      int
-	Stock      int
-	Desc       string
-	User       userModel.User
-	Categories []Categories
+	Name         string
+	Images       string
+	Price        int
+	Stock        int
+	Desc         string
+	UserID       uint
+	CategoriesID uint
 }
 
 type Categories struct {
 	gorm.Model
 	Name    string
-	Product Product
+	Product []Product
+}
+
+type User struct {
+	gorm.Model
+	Name     string
+	Email    string
+	Password string
+	Phone    string
+	Address  string
+	Product  []Product
 }
 
 func fromCore(dataCore product.Core) Product {
