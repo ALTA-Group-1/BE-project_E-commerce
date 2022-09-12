@@ -7,3 +7,11 @@ type Core struct {
 	Name    string
 	Product product.Core
 }
+
+type UsecaseInterface interface {
+	// get categories
+}
+
+type DataInterface interface {
+	// get categories
+}
