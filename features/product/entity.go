@@ -6,22 +6,27 @@ import (
 )
 
 type Core struct {
-	ID        uint
-	Name      string
-	Images    string
-	Price     int
-	Stock     int
-	Desc      string
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	User      user.Core
+	ID         uint
+	Name       string
+	Images     string
+	Price      int
+	Stock      int
+	Desc       string
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
+	User       user.Core
+	Categories CategoriesCore
 }
+
+type User struct {
+	UserName string
+}
+
 
 type UsecaseInterface interface {
 	// create product
 	// get all product
 	// get detail product
-	// get category
 	// update product
 	// delete product
 }
