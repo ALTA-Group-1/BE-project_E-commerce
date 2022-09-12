@@ -17,6 +17,7 @@ func New(e *echo.Echo, usecase product.UsecaseInterface) {
 		productUsecase: usecase,
 	}
 
+	e.POST("/products", handler.PostData, middlewares.JWTMiddleware())
 	e.DELETE("/users", handler.DeleteProduct, middlewares.JWTMiddleware())
 }
 
@@ -27,4 +28,27 @@ func (delivery *ProductDelivery) DeleteProduct(c echo.Context) error {
 		return c.JSON(500, helper.FailedResponseHelper("wrong token"))
 	}
 	return c.JSON(200, helper.SuccessResponseHelper("succes delete"))
+
+}
+
+func (delivery *ProductDelivery) PostData(c echo.Context) error {
+	idToken := middlewares.ExtractToken(c)
+	if idToken == 0 {
+		return c.JSON(400, helper.FailedResponseHelper("Unauthorized"))
+	}
+
+	var dataProduct ProductRequest
+	errBind := c.Bind(&dataProduct)
+	if errBind != nil {
+		return c.JSON(400, helper.FailedResponseHelper("error bind"))
+	}
+
+	row, err := delivery.productUsecase.PostData(toCore(dataProduct))
+	if err != nil {
+		return c.JSON(500, helper.FailedResponseHelper("error insert data"))
+	}
+	if row != 1 {
+		return c.JSON(500, helper.FailedResponseHelper("error insert data"))
+	}
+	return c.JSON(201, helper.SuccessResponseHelper("success insert data"))
 }
