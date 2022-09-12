@@ -18,7 +18,7 @@ func New(e *echo.Echo, usecase product.UsecaseInterface) {
 	}
 
 	e.POST("/products", handler.PostData, middlewares.JWTMiddleware())
-	e.DELETE("/users", handler.DeleteProduct, middlewares.JWTMiddleware())
+	e.DELETE("/products", handler.DeleteProduct, middlewares.JWTMiddleware())
 }
 
 func (delivery *ProductDelivery) DeleteProduct(c echo.Context) error {
