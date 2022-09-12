@@ -41,13 +41,10 @@ func (repo *productData) SelectAllProduct(page int) ([]product.Core, error) {
 	perPage := 8
 	offset := ((page - 1) * perPage)
 
-	// if offset > maksOffset {
-	// 	return nil, errors.New("maks page")
-	// }
+	queryBuider := repo.db.Limit(perPage).Offset(offset)
 
 	var dataProduct []Product
-	txData := repo.db.Raw("SELECT * FROM products WHERE deleted_at = NULL ORDER BY name ASC LIMIT = ? OFFSET = ?", perPage, offset).Scan(&dataProduct)
-
+	txData := queryBuider.First(&dataProduct)
 	return toCoreList(dataProduct), txData.Error
 
 }
