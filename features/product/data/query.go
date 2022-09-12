@@ -1,7 +1,6 @@
 package data
 
 import (
-	"errors"
 	"project/e-commerce/features/product"
 
 	"gorm.io/gorm"
@@ -33,18 +32,18 @@ func (repo *productData) DeleteByToken(token int) (int, error) {
 
 func (repo *productData) SelectAllProduct(page int) ([]product.Core, error) {
 
-	var maksOffset int
-	tx := repo.db.Raw("SELECT COUNT (name) FROM products WHERE deleted_at = NULL").Scan(&maksOffset)
-	if tx.Error != nil {
-		return nil, tx.Error
-	}
+	// var maksOffset int
+	// tx := repo.db.Raw("SELECT COUNT (name) FROM products WHERE deleted_at = NULL").Scan(&maksOffset)
+	// if tx.Error != nil {
+	// 	return nil, tx.Error
+	// }
 
 	perPage := 8
 	offset := ((page - 1) * perPage)
 
-	if offset > maksOffset {
-		return nil, errors.New("maks page")
-	}
+	// if offset > maksOffset {
+	// 	return nil, errors.New("maks page")
+	// }
 
 	var dataProduct []Product
 	txData := repo.db.Raw("SELECT * FROM products WHERE deleted_at = NULL ORDER BY name ASC LIMIT = ? OFFSET = ?", perPage, offset).Scan(&dataProduct)
