@@ -2,7 +2,7 @@ package data
 
 import (
 	"project/e-commerce/features/categories"
-	productModel "project/e-commerce/features/product/data"
+
 	"gorm.io/gorm"
 )
 

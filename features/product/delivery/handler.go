@@ -18,6 +18,16 @@ func New(e *echo.Echo, usecase product.UsecaseInterface) {
 	}
 
 	e.POST("/products", handler.PostData, middlewares.JWTMiddleware())
+	e.DELETE("/users", handler.DeleteProduct, middlewares.JWTMiddleware())
+}
+
+func (delivery *ProductDelivery) DeleteProduct(c echo.Context) error {
+	idToken := middlewares.ExtractToken(c)
+	row, err := delivery.productUsecase.DeleteData(idToken)
+	if err != nil || row != 1 {
+		return c.JSON(500, helper.FailedResponseHelper("wrong token"))
+	}
+	return c.JSON(200, helper.SuccessResponseHelper("succes delete"))
 
 }
 

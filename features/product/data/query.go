@@ -22,3 +22,10 @@ func (repo *productData) InsertData(data product.Core) (int, error) {
 
 	return int(tx.RowsAffected), tx.Error
 }
+
+func (repo *productData) DeleteByToken(token int) (int, error) {
+	var deleteData User
+	tx := repo.db.Delete(&deleteData, token)
+
+	return int(tx.RowsAffected), tx.Error
+}
