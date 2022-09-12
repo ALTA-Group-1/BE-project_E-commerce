@@ -1,6 +1,8 @@
 package data
 
 import (
+	"project/e-commerce/features/categories"
+	productModel "project/e-commerce/features/product/data"
 	"gorm.io/gorm"
 )
 
@@ -29,4 +31,11 @@ type User struct {
 	Phone    string
 	Address  string
 	Product  []Product
+}
+
+func fromCore(dataCore categories.Core) Categories {
+	dataModel := Categories{
+		Name: dataCore.Name,
+	}
+	return dataModel
 }

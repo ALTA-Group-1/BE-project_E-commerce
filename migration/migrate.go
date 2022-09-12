@@ -12,5 +12,4 @@ func InitMigrate(db *gorm.DB) {
 	db.AutoMigrate(&userModel.User{})
 	db.AutoMigrate(&productModel.Product{})
 	db.AutoMigrate(&categoryModel.Categories{})
-
 }
