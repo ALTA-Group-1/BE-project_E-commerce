@@ -20,6 +20,7 @@ func New(e *echo.Echo, usecase user.UsecaseInterface) {
 	e.POST("/users", handler.PostData)
 	e.GET("/users", handler.GetByTokenJWT, middlewares.JWTMiddleware())
 	e.PUT("/users", handler.PutData, middlewares.JWTMiddleware())
+	e.DELETE("/users", handler.DeleteUser, middlewares.JWTMiddleware())
 }
 
 func (delivery *UserDelivery) PostData(c echo.Context) error {

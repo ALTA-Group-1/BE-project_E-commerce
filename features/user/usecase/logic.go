@@ -37,6 +37,11 @@ func (service *userUsecase) GetByToken(token int) (user.Core, error) {
 }
 
 func (usecase *userUsecase) PutData(newData user.Core) (int, error) {
+	hashPass, err := bcrypt.GenerateFromPassword([]byte(newData.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return -1, err
+	}
+	newData.Password = string(hashPass)
 	row, err := usecase.userData.UpdateData(newData)
 	return row, err
 }
