@@ -23,3 +23,14 @@ func fromCore(data product.Core) ProductResponse {
 		Desc:   data.Desc,
 	}
 }
+
+func fromCoreList(data []product.Core) []ProductResponse {
+
+	var dataRes []ProductResponse
+	for _, v := range data {
+		dataRes = append(dataRes, fromCore(v))
+	}
+
+	return dataRes
+
+}
