@@ -18,7 +18,7 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            cd /home/ubuntu/CRUD-deploy
+            cd /home/ubuntu/BE-project_E-commerce
             sudo chmod 777 /var/run/docker.sock
             git pull origin main
             docker stop project
