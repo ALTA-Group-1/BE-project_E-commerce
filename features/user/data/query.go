@@ -30,12 +30,7 @@ func (repo *userData) SelectByToken(token int) (user.Core, error) {
 
 	var data User
 	tx := repo.db.First(&data, token)
-	if tx.Error != nil {
-		return user.Core{}, tx.Error
-	}
-
-	userId := data.toCore()
-	return userId, nil
+	return data.toCore(), tx.Error
 
 }
 
