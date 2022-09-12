@@ -13,6 +13,18 @@ type User struct {
 	Password string
 	Phone    string
 	Address  string
+	Product  []Product `gorm:"foreignKey:UserID"`
+}
+
+type Product struct {
+	gorm.Model
+	Name         string
+	Images       string
+	Price        int
+	Stock        int
+	Desc         string
+	UserID       uint
+	CategoriesID uint
 }
 
 func fromCore(dataCore user.Core) User {
