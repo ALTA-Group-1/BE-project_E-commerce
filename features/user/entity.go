@@ -13,7 +13,6 @@ type Core struct {
 	Address   string
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	Products  []ProductCore
 }
 
 type ProductCore struct {
