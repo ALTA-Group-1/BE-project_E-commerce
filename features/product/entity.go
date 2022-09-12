@@ -32,7 +32,7 @@ type UsecaseInterface interface {
 	// get all product
 	// get detail product
 	// update product
-	// delete product
+	DeleteData(token int) (int, error)
 }
 
 type DataInterface interface {
@@ -40,5 +40,5 @@ type DataInterface interface {
 	// get all product
 	// get detail product
 	// update product
-	// delete product
+	DeleteByToken(token int) (int, error)
 }

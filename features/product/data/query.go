@@ -15,3 +15,9 @@ func New(db *gorm.DB) product.DataInterface {
 		db: db,
 	}
 }
+
+func (repo *productData) DeleteByToken(token int) (int, error) {
+	var deleteData User
+	tx := repo.db.Delete(&deleteData, token)
+	return int(tx.RowsAffected), tx.Error
+}
