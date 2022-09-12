@@ -5,11 +5,12 @@ import (
 )
 
 type ProductRequest struct {
-	Name   string `json:"name" form:"name"`
-	Images string `json:"images" form:"images"`
-	Price  int    `json:"price" form:"price"`
-	Stock  int    `json:"stock" form:"stock"`
-	Desc   string `json:"desc" form:"desc"`
+	Name       string `json:"name" form:"name"`
+	Images     string `json:"images" form:"images"`
+	Price      int    `json:"price" form:"price"`
+	Stock      int    `json:"stock" form:"stock"`
+	Desc       string `json:"desc" form:"desc"`
+	Categories int    `json:"categories,omitempty"`
 }
 
 func toCore(data ProductRequest) product.Core {
@@ -19,5 +20,8 @@ func toCore(data ProductRequest) product.Core {
 		Price:  data.Price,
 		Stock:  data.Stock,
 		Desc:   data.Desc,
+		CategoriesID: product.CategoriesCore{
+			ID: uint(data.Categories),
+		},
 	}
 }
