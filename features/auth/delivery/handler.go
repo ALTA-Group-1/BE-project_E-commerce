@@ -31,7 +31,7 @@ func (h *AuthDelivery) Auth(c echo.Context) error {
 
 	str := h.authUsecase.LoginAuthorized(req.Email, req.Password)
 	if str == "please input email and password" || str == "email not found" || str == "wrong password" {
-		return c.JSON(400, helper.FailedResponseHelper("str"))
+		return c.JSON(400, helper.FailedResponseHelper(str))
 	} else if str == "failed to created token" {
 		return c.JSON(500, helper.FailedResponseHelper(str))
 	} else {
