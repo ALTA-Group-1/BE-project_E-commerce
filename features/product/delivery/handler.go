@@ -59,7 +59,8 @@ func (delivery *ProductDelivery) PostData(c echo.Context) error {
 
 func (delivery *ProductDelivery) GetAllPagination(c echo.Context) error {
 
-	page, err := strconv.Atoi(c.QueryParam("page"))
+	query := c.QueryParam("page")
+	page, err := strconv.Atoi(query)
 	if err != nil {
 		return c.JSON(400, helper.FailedResponseHelper("query param must be number"))
 	}
