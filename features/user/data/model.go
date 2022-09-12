@@ -13,6 +13,17 @@ type User struct {
 	Password string
 	Phone    string
 	Address  string
+	Products []Product
+}
+
+type Product struct {
+	gorm.Model
+	Name   string
+	Images string
+	Price  string
+	Stock  int
+	Desc   string
+	User   User
 }
 
 func fromCore(dataCore user.Core) User {
