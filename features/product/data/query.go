@@ -15,3 +15,10 @@ func New(db *gorm.DB) product.DataInterface {
 		db: db,
 	}
 }
+
+func (repo *productData) InsertData(data product.Core) (int, error) {
+	dataModel := fromCore(data)
+	tx := repo.db.Create(&dataModel)
+
+	return int(tx.RowsAffected), tx.Error
+}

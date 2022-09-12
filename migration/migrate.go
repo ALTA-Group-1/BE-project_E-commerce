@@ -1,7 +1,7 @@
 package migration
 
 import (
-	productModel "project/e-commerce/features/product/data"
+	categoriesModel "project/e-commerce/features/categories/data"
 	userModel "project/e-commerce/features/user/data"
 
 	"gorm.io/gorm"
@@ -9,6 +9,6 @@ import (
 
 func InitMigrate(db *gorm.DB) {
 	db.AutoMigrate(&userModel.User{})
-	db.AutoMigrate(&productModel.Product{})
+	db.AutoMigrate(&categoriesModel.Categories{})
 
 }

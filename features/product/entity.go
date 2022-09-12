@@ -1,7 +1,6 @@
 package product
 
 import (
-	"project/e-commerce/features/user"
 	"time"
 )
 
@@ -14,8 +13,8 @@ type Core struct {
 	Desc         string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
-	User         user.Core
-	CategoriesID CategoriesCore
+	UserID       int
+	CategoriesID int
 }
 
 type User struct {
@@ -29,7 +28,7 @@ type CategoriesCore struct {
 }
 
 type UsecaseInterface interface {
-	// create product
+	PostData(data Core) (row int, err error)
 	// get all product
 	// get detail product
 	// update product
@@ -37,7 +36,7 @@ type UsecaseInterface interface {
 }
 
 type DataInterface interface {
-	// create product
+	InsertData(data Core) (row int, err error)
 	// get all product
 	// get detail product
 	// update product

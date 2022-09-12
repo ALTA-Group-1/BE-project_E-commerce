@@ -15,13 +15,11 @@ type ProductRequest struct {
 
 func toCore(data ProductRequest) product.Core {
 	return product.Core{
-		Name:   data.Name,
-		Images: data.Images,
-		Price:  data.Price,
-		Stock:  data.Stock,
-		Desc:   data.Desc,
-		CategoriesID: product.CategoriesCore{
-			ID: uint(data.Categories),
-		},
+		Name:         data.Name,
+		Images:       data.Images,
+		Price:        data.Price,
+		Stock:        data.Stock,
+		Desc:         data.Desc,
+		CategoriesID: data.Categories,
 	}
 }
