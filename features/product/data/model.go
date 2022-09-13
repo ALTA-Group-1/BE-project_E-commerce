@@ -43,24 +43,27 @@ type User struct {
 
 func fromCore(dataCore product.Core) Product {
 	productModel := Product{
-		Name:   dataCore.Name,
-		Images: dataCore.Images,
-		Price:  dataCore.Price,
-		Stock:  dataCore.Stock,
-		Desc:   dataCore.Desc,
-		UserID: uint(dataCore.UserID),
+		Name:         dataCore.Name,
+		Images:       dataCore.Images,
+		Price:        dataCore.Price,
+		Stock:        dataCore.Stock,
+		Desc:         dataCore.Desc,
+		UserID:       uint(dataCore.UserID),
+		CategoriesID: uint(dataCore.CategoriesID),
 	}
 	return productModel
 }
 
 func (data *Product) toCore() product.Core {
 	return product.Core{
-		ID:     data.ID,
-		Name:   data.Name,
-		Images: data.Images,
-		Price:  data.Price,
-		Stock:  data.Stock,
-		Desc:   data.Desc,
+		ID:           data.ID,
+		Name:         data.Name,
+		Images:       data.Images,
+		Price:        data.Price,
+		Stock:        data.Stock,
+		Desc:         data.Desc,
+		UserID:       int(data.UserID),
+		CategoriesID: int(data.CategoriesID),
 	}
 }
 

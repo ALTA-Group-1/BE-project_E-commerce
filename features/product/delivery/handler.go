@@ -23,7 +23,7 @@ func New(e *echo.Echo, usecase product.UsecaseInterface) {
 	e.GET("/products/:id", handler.GetProductById)
 	e.PUT("/products", handler.PutData, middlewares.JWTMiddleware())
 	e.DELETE("/products", handler.DeleteProduct, middlewares.JWTMiddleware())
-	e.GET("/products/myproducts", handler.GetAllMyProduct, middlewares.JWTMiddleware())
+	e.GET("/myproducts", handler.GetAllMyProduct, middlewares.JWTMiddleware())
 
 }
 
