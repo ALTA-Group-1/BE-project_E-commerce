@@ -55,6 +55,7 @@ func (repo *productData) SelectById(id int) (product.Core, error) {
 }
 
 func (repo *productData) UpdateData(newData product.Core) (int, error) {
+
 	dataModel := fromCore(newData)
 
 	tx := repo.db.Model(&Product{}).Where("id = ?", newData.ID).Updates(dataModel)
@@ -66,9 +67,11 @@ func (repo *productData) UpdateData(newData product.Core) (int, error) {
 	}
 
 	return 1, nil
+
 }
 
 func (repo *productData) DeleteByToken(token int) (int, error) {
+
 	var deleteData User
 	tx := repo.db.Delete(&deleteData, token)
 
