@@ -19,7 +19,7 @@ func New(db *gorm.DB) categories.DataInterface {
 
 func (repo *categoriesData) GetAllData(id int) ([]categories.Core, error) {
 	var dataCart []Results
-	tx := repo.db.Model(&Categories{}).Select("p.id, p.images, p.name, p.price").Joins("left join products p on products.categories_id = categories.id").Where("products.categories_id = ?", id).Scan(&dataCart)
+	tx := repo.db.Model(&Categories{}).Select("products.id, products.images, products.name, products.price").Joins("inner join products on products.categories_id = categories.id").Where("products.categories_id = ?", id).Scan(&dataCart)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
