@@ -31,7 +31,7 @@ func (repo *productData) SelectAllProduct(page int) ([]product.Core, error) {
 		perPage := 8
 		offset := ((page - 1) * perPage)
 
-		queryBuider := repo.db.Limit(perPage).Offset(offset).Order("name asc")
+		queryBuider := repo.db.Limit(perPage).Offset(offset)
 
 		txData := queryBuider.First(&dataProduct)
 		return toCoreList(dataProduct), txData.Error
@@ -78,7 +78,7 @@ func (repo *productData) DeleteByToken(token int) (int, error) {
 func (repo *productData) SelectMyProduct(token int) ([]product.Core, error) {
 
 	var data []Product
-	tx := repo.db.Order("name asc").Find(&data, "user_id = ?", token)
+	tx := repo.db.Find(&data, "user_id = ?", token)
 	return toCoreList(data), tx.Error
 
 }
