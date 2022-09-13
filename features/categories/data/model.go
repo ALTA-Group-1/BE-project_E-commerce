@@ -33,15 +33,6 @@ type User struct {
 	Product  []Product
 }
 
-type Pagination struct {
-	Limit int `json:"limit"`
-	Page  int `json:"page"`
-}
-
-func (b *Product) TableName() string {
-	return "product"
-}
-
 func fromCore(dataCore categories.Core) Categories {
 	dataModel := Categories{
 		Name: dataCore.Name,

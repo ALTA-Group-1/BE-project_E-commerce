@@ -15,6 +15,14 @@ type Product struct {
 	Desc         string
 	UserID       uint
 	CategoriesID uint
+	CartID       []Cart `gorm:"foreignKey:ProductID"`
+}
+
+type Cart struct {
+	gorm.Model
+	Quantity  int
+	ProductID uint
+	UserID    uint
 }
 
 type Categories struct {
