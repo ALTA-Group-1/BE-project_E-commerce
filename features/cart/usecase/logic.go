@@ -14,8 +14,8 @@ func New(data cart.DataInterface) cart.UsecaseInterface {
 	}
 }
 
-func (usecase *cartUsecase) DeleteCart(userID, productID int) (int, error) {
-	row, err := usecase.cartData.DeleteData(userID, productID)
+func (usecase *cartUsecase) DeleteCart(userID, cartID int) (int, error) {
+	row, err := usecase.cartData.DeleteData(userID, cartID)
 	return row, err
 }
 

@@ -25,11 +25,15 @@ func (delivery *CartDelivery) DeleteCart(c echo.Context) error {
 	idToken := middlewares.ExtractToken(c)
 	userID := idToken
 
-	id := c.Param("productID")
-	idCnv, _ := strconv.Atoi(id)
-	productID := idCnv
+	id := c.Param("id")
+	idCnv, errId := strconv.Atoi(id)
+	if errId != nil {
+		return c.JSON(400, helper.FailedResponseHelper("param must be number"))
+	}
 
-	row, err := delivery.cartUsecase.DeleteCart(userID, productID)
+	cartID := idCnv
+
+	row, err := delivery.cartUsecase.DeleteCart(userID, cartID)
 	if err != nil || row != 1 {
 		return c.JSON(400, helper.FailedResponseHelper("wrong token"))
 	}
