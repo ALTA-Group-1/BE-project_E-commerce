@@ -13,7 +13,6 @@ type Categories struct {
 }
 
 type Results struct {
-	ID        uint
 	ProductID uint
 	Images    string
 	Name      string
@@ -50,7 +49,6 @@ func fromCore(dataCore categories.Core) Categories {
 
 func (res *Results) toCore() categories.Core {
 	return categories.Core{
-		ID:            res.ID,
 		ProductID:     res.ProductID,
 		ProductImages: res.Images,
 		ProductName:   res.Name,
