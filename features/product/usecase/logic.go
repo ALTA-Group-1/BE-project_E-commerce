@@ -45,8 +45,8 @@ func (usecase *productUsecase) PutData(newData product.Core) (int, error) {
 	return row, err
 }
 
-func (usecase *productUsecase) DeleteData(token int) (int, error) {
-	row, err := usecase.productData.DeleteByToken(token)
+func (usecase *productUsecase) DeleteData(param, token int) (int, error) {
+	row, err := usecase.productData.DeleteByToken(param, token)
 
 	return row, err
 }
