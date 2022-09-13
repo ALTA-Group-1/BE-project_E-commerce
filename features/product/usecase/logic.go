@@ -15,11 +15,6 @@ func New(data product.DataInterface) product.UsecaseInterface {
 	}
 }
 
-func (usecase *productUsecase) DeleteData(token int) (int, error) {
-	row, err := usecase.productData.DeleteByToken(token)
-
-	return row, err
-}
 func (usecase *productUsecase) PostData(data product.Core) (int, error) {
 	if data.Name == "" || data.Images == "" || data.Price == 0 || data.Stock == 0 || data.Desc == "" || data.CategoriesID == 0 {
 		return -1, errors.New("data tidak boleh kosong")
@@ -42,4 +37,10 @@ func (usecase *productUsecase) GetById(id int) (product.Core, error) {
 	data, err := usecase.productData.SelectById(id)
 	return data, err
 
+}
+
+func (usecase *productUsecase) DeleteData(token int) (int, error) {
+	row, err := usecase.productData.DeleteByToken(token)
+
+	return row, err
 }

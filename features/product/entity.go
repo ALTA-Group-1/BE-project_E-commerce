@@ -32,6 +32,7 @@ type UsecaseInterface interface {
 	// get all product
 	GetAllProduct(page int) ([]Core, error)
 	// get detail product
+	// update prdocut
 	GetById(param int) (Core, error)
 	// update product
 	DeleteData(token int) (int, error)
