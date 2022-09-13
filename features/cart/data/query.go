@@ -21,3 +21,21 @@ func (repo *cartData) DeleteData(userID, productID int) (int, error) {
 	tx := repo.db.Where("userID = ? AND productID = ?", userID, productID).Delete(&deleteData)
 	return int(tx.RowsAffected), tx.Error
 }
+
+func (repo *cartData) SelectByToken(token int) ([]cart.Core, error) {
+
+	var dataCart []Cart
+	tx := repo.db.Model(&Cart{}).Where("user_id = ?", token).Find(&dataCart)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	var dataProduct []Product
+	txProduct := repo.db.Find(&dataProduct)
+	if txProduct.Error != nil {
+		return nil, txProduct.Error
+	}
+
+	return toCoreList(dataCart, dataProduct), nil
+
+}

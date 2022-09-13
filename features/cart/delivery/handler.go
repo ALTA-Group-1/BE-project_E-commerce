@@ -18,6 +18,7 @@ func New(e *echo.Echo, usecase cart.UsecaseInterface) {
 		cartUsecase: usecase,
 	}
 	e.DELETE("/cart/:id", handler.DeleteCart, middlewares.JWTMiddleware())
+	e.GET("/carts", handler.GetAllCart, middlewares.JWTMiddleware())
 }
 
 func (delivery *CartDelivery) DeleteCart(c echo.Context) error {
@@ -33,4 +34,18 @@ func (delivery *CartDelivery) DeleteCart(c echo.Context) error {
 		return c.JSON(400, helper.FailedResponseHelper("wrong token"))
 	}
 	return c.JSON(200, helper.SuccessResponseHelper("succes delete"))
+}
+
+func (delivery *CartDelivery) GetAllCart(c echo.Context) error {
+
+	idToken := middlewares.ExtractToken(c)
+	data, err := delivery.cartUsecase.GetByToken(idToken)
+	if err != nil {
+		return c.JSON(400, helper.FailedResponseHelper("error get cart"))
+	} else if len(data) == 0 {
+		return c.JSON(200, helper.SuccessResponseHelper("you dont have product in cart"))
+	}
+
+	return c.JSON(200, helper.SuccessDataResponseHelper("succes get cart", data))
+
 }

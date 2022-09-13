@@ -37,23 +37,39 @@ type User struct {
 }
 
 func fromCore(dataCore cart.Core) Cart {
+
 	productModel := Cart{
-		Quantity: dataCore.Quantity,
+		Quantity:  dataCore.Quantity,
+		ProductID: dataCore.ProductID,
+		UserID:    uint(dataCore.UserID),
 	}
+
 	return productModel
+
 }
 
-func (data *Cart) toCore() cart.Core {
+func toCore(dataCart Cart, dataProduct Product) cart.Core {
+
 	return cart.Core{
-		ID:       data.ID,
-		Quantity: data.Quantity,
+		ID:            dataCart.ID,
+		ProductID:     dataCart.ProductID,
+		ProductImages: dataProduct.Images,
+		ProductName:   dataProduct.Name,
+		ProductPrice:  dataProduct.Price,
 	}
+
 }
 
-func toCoreList(data []Cart) []cart.Core {
+func toCoreList(dataCart []Cart, dataProduct []Product) []cart.Core {
 	var dataCore []cart.Core
-	for key := range data {
-		dataCore = append(dataCore, data[key].toCore())
+	for _, v := range dataCart {
+		for _, v1 := range dataProduct {
+			if v.ProductID == v1.ID {
+				dataCore = append(dataCore, toCore(v, v1))
+			}
+		}
 	}
+
 	return dataCore
+
 }

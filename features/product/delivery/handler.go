@@ -93,6 +93,7 @@ func (delivery *ProductDelivery) GetProductById(c echo.Context) error {
 }
 
 func (delivery *ProductDelivery) PutData(c echo.Context) error {
+
 	var dataUpdate ProductRequest
 	errBind := c.Bind(&dataUpdate)
 	if errBind != nil {
