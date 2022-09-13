@@ -22,7 +22,7 @@ type UsecaseInterface interface {
 	// get cart
 	GetByToken(token int) ([]Core, error)
 	// update cart
-	// delete cart
+	DeleteCart(userID, cartID int) (int, error)
 }
 
 type DataInterface interface {
@@ -30,5 +30,5 @@ type DataInterface interface {
 	// get cart
 	SelectByToken(token int) ([]Core, error)
 	// update cart
-	// delete cart
+	DeleteData(userID, cartID int) (int, error)
 }

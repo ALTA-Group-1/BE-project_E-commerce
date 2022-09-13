@@ -14,6 +14,11 @@ func New(data cart.DataInterface) cart.UsecaseInterface {
 	}
 }
 
+func (usecase *cartUsecase) DeleteCart(userID, cartID int) (int, error) {
+	row, err := usecase.cartData.DeleteData(userID, cartID)
+	return row, err
+}
+
 func (usecase *cartUsecase) GetByToken(token int) ([]cart.Core, error) {
 
 	res, err := usecase.cartData.SelectByToken(token)
