@@ -23,6 +23,7 @@ func New(e *echo.Echo, usecase product.UsecaseInterface) {
 	e.GET("/products/:id", handler.GetProductById)
 	e.PUT("/products", handler.PutData, middlewares.JWTMiddleware())
 	e.DELETE("/products", handler.DeleteProduct, middlewares.JWTMiddleware())
+	e.GET("/products", handler.GetAllMyProduct, middlewares.JWTMiddleware())
 
 }
 
@@ -127,4 +128,18 @@ func (delivery *ProductDelivery) DeleteProduct(c echo.Context) error {
 		return c.JSON(500, helper.FailedResponseHelper("wrong token"))
 	}
 	return c.JSON(200, helper.SuccessResponseHelper("succes delete"))
+}
+
+func (delivery *ProductDelivery) GetAllMyProduct(c echo.Context) error {
+
+	idToken := middlewares.ExtractToken(c)
+	data, err := delivery.productUsecase.GetMyProduct(idToken)
+	if err != nil {
+		return c.JSON(500, helper.FailedResponseHelper("error get my product"))
+	} else if len(data) == 0 {
+		return c.JSON(200, helper.SuccessResponseHelper("you don't have product data"))
+	}
+
+	return c.JSON(200, helper.SuccessDataResponseHelper("success get your product", fromCoreListMyProduct(data)))
+
 }
