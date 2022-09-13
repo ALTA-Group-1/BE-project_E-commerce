@@ -31,7 +31,7 @@ type UsecaseInterface interface {
 	PostData(data Core) (row int, err error)
 	GetAllProduct(page int) ([]Core, error)
 	GetById(param int) (Core, error)
-	// update product
+	PutData(newData Core) (row int, err error)
 	DeleteData(token int) (int, error)
 }
 
@@ -39,6 +39,6 @@ type DataInterface interface {
 	InsertData(data Core) (row int, err error)
 	SelectAllProduct(page int) ([]Core, error)
 	SelectById(param int) (Core, error)
-	// update data
+	UpdateData(newData Core) (row int, err error)
 	DeleteByToken(token int) (int, error)
 }
