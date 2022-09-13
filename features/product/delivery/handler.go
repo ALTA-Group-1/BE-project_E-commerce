@@ -23,7 +23,7 @@ func New(e *echo.Echo, usecase product.UsecaseInterface) {
 	e.GET("/products/:id", handler.GetProductById)
 	e.PUT("/products", handler.PutData, middlewares.JWTMiddleware())
 	e.DELETE("/products", handler.DeleteProduct, middlewares.JWTMiddleware())
-	e.GET("/products", handler.GetAllMyProduct, middlewares.JWTMiddleware())
+	e.GET("/products/myproducts", handler.GetAllMyProduct, middlewares.JWTMiddleware())
 
 }
 
@@ -52,6 +52,9 @@ func (delivery *ProductDelivery) PostData(c echo.Context) error {
 func (delivery *ProductDelivery) GetAllPagination(c echo.Context) error {
 
 	query := c.QueryParam("page")
+	if query == "" {
+		query = "0"
+	}
 	page, err := strconv.Atoi(query)
 	if err != nil {
 		return c.JSON(400, helper.FailedResponseHelper("query param must be number"))
