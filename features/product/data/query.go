@@ -78,7 +78,7 @@ func (repo *productData) DeleteByToken(token int) (int, error) {
 func (repo *productData) SelectMyProduct(token int) ([]product.Core, error) {
 
 	var data []Product
-	tx := repo.db.Where("user_id = ?", token).Find(&data)
+	tx := repo.db.Model(&Product{}).Where("user_id = ?", token).Find(&data)
 	return toCoreList(data), tx.Error
 
 }
