@@ -1,6 +1,7 @@
 package data
 
 import (
+	"errors"
 	"project/e-commerce/features/product"
 
 	"gorm.io/gorm"
@@ -49,6 +50,20 @@ func (repo *productData) SelectById(id int) (product.Core, error) {
 
 	return data.toCore(), tx.Error
 
+}
+
+func (repo *productData) UpdateData(newData product.Core) (int, error) {
+	dataModel := fromCore(newData)
+
+	tx := repo.db.Model(&Product{}).Where("id = ?", newData.ID).Updates(dataModel)
+	if tx.Error != nil {
+		return 0, tx.Error
+	}
+	if tx.RowsAffected == 0 {
+		return 0, errors.New("failed to update data")
+	}
+
+	return 1, nil
 }
 
 func (repo *productData) DeleteByToken(token int) (int, error) {
