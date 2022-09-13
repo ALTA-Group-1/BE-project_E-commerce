@@ -14,6 +14,7 @@ func New(db *gorm.DB) categories.DataInterface {
 	return &categoriesData{
 		db: db,
 	}
+
 }
 
 func (repo *categoriesData) GetAllData(id int) ([]categories.Core, error) {
@@ -24,11 +25,11 @@ func (repo *categoriesData) GetAllData(id int) ([]categories.Core, error) {
 
 	var dataCategories []Categories
 	tx := queryBuider.Model(&Product{}).Where("categories_id = ?", id).Find(&dataCategories)
-	// tx := queryBuider.Where("id = ?", id).Preload("Product").Find(&dataCategories)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
 
 	dataCore := toCoreList(dataCategories)
 	return dataCore, nil
+
 }

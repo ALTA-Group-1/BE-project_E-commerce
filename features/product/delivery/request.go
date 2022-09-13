@@ -23,5 +23,6 @@ func toCore(data ProductRequest) product.Core {
 		Desc:         data.Desc,
 		UserID:       data.UserID,
 		CategoriesID: data.Categories,
+		UserID:       data.UserID,
 	}
 }

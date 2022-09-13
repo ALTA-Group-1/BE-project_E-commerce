@@ -36,7 +36,7 @@ func (usecase *authUsecase) LoginAuthorized(email, password string) string {
 	token, errToken := middlewares.CreateToken(int(results.ID))
 
 	if errToken != nil {
-		return "failed to created token"
+		return "error to created token"
 	}
 
 	return token

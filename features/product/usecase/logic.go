@@ -50,3 +50,10 @@ func (usecase *productUsecase) DeleteData(token int) (int, error) {
 
 	return row, err
 }
+
+func (usecase *productUsecase) GetMyProduct(token int) ([]product.Core, error) {
+
+	data, err := usecase.productData.SelectMyProduct(token)
+	return data, err
+
+}
