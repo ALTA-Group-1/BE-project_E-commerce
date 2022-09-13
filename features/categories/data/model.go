@@ -14,13 +14,13 @@ type Categories struct {
 
 type Product struct {
 	gorm.Model
-	Name   string
-	Images string
-	Price  int
-	Stock  int
-	Desc   string
-	// UserID       uint
-	// CategoriesID uint
+	Name         string
+	Images       string
+	Price        int
+	Stock        int
+	Desc         string
+	UserID       uint
+	CategoriesID uint
 }
 
 type User struct {

@@ -38,6 +38,8 @@ func (delivery *ProductDelivery) PostData(c echo.Context) error {
 		return c.JSON(400, helper.FailedResponseHelper("error bind"))
 	}
 
+	dataProduct.UserID = idToken
+
 	row, err := delivery.productUsecase.PostData(toCore(dataProduct))
 	if err != nil {
 		return c.JSON(400, helper.FailedResponseHelper("error insert data"))

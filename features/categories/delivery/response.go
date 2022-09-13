@@ -5,26 +5,20 @@ import (
 )
 
 type CategoriesResponse struct {
-	ID            uint   `json:"id"`
-	Name          string `json:"name"`
-	ProductID     uint   `json:"productid,omitempty"`
-	ProductName   string `json:"productname,omitempty"`
-	ProductImages string `json:"productimages,omitempty"`
-	ProductPrice  int    `json:"productprice,omitempty"`
-	ProductStock  int    `json:"productstock,omitempty"`
-	ProductDesc   string `json:"productdesc,omitempty"`
+	ID        uint `json:"id"`
+	ProductID uint
+	Images    string
+	Name      string
+	Price     int
 }
 
 func fromCore(data categories.Core) CategoriesResponse {
 	return CategoriesResponse{
-		ID:            data.ID,
-		Name:          data.Name,
-		ProductID:     data.ProductID,
-		ProductName:   data.ProductName,
-		ProductImages: data.ProductImages,
-		ProductPrice:  data.ProductPrice,
-		ProductStock:  data.ProductStock,
-		ProductDesc:   data.ProductDesc,
+		ID:        data.ID,
+		ProductID: data.ProductID,
+		Images:    data.ProductImages,
+		Name:      data.ProductName,
+		Price:     data.ProductPrice,
 	}
 }
 
