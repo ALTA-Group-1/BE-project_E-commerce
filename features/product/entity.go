@@ -31,7 +31,7 @@ type UsecaseInterface interface {
 	PostData(data Core) (row int, err error)
 	// get all product
 	// get detail product
-	// update product
+	// update prdocut
 	DeleteData(token int) (int, error)
 }
 
