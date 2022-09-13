@@ -27,13 +27,18 @@ func (usecase *userUsecase) PostData(data user.Core) (int, error) {
 	}
 	data.Password = string(hashPass)
 	row, err := usecase.userData.InsertData(data)
-	return row, err
+	if err != nil {
+		return -1, err
+	}
+	return row, nil
 }
 
 func (service *userUsecase) GetByToken(token int) (user.Core, error) {
 	dataId, err := service.userData.SelectByToken(token)
-	return dataId, err
-
+	if err != nil {
+		return user.Core{}, err
+	}
+	return dataId, nil
 }
 
 func (usecase *userUsecase) PutData(newData user.Core) (int, error) {
@@ -43,10 +48,16 @@ func (usecase *userUsecase) PutData(newData user.Core) (int, error) {
 	}
 	newData.Password = string(hashPass)
 	row, err := usecase.userData.UpdateData(newData)
-	return row, err
+	if err != nil {
+		return -1, err
+	}
+	return row, nil
 }
 
 func (usecase *userUsecase) DeleteData(token int) (int, error) {
 	row, err := usecase.userData.DeleteByToken(token)
-	return row, err
+	if err != nil {
+		return -1, err
+	}
+	return row, nil
 }

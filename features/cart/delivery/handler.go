@@ -17,8 +17,34 @@ func New(e *echo.Echo, usecase cart.UsecaseInterface) {
 	handler := &CartDelivery{
 		cartUsecase: usecase,
 	}
-	e.DELETE("/cart/:id", handler.DeleteCart, middlewares.JWTMiddleware())
+	e.POST("/carts", handler.PostData, middlewares.JWTMiddleware())
 	e.GET("/carts", handler.GetAllCart, middlewares.JWTMiddleware())
+	e.DELETE("/carts/:id", handler.DeleteCart, middlewares.JWTMiddleware())
+}
+
+func (delivery *CartDelivery) PostData(c echo.Context) error {
+	idToken := middlewares.ExtractToken(c)
+	if idToken == 0 {
+		return c.JSON(400, helper.FailedResponseHelper("Unauthorized"))
+	}
+
+	var dataCart CartRequest
+	errBind := c.Bind(&dataCart)
+	if errBind != nil {
+		return c.JSON(400, helper.FailedResponseHelper("error bind"))
+	}
+
+	dataCart.Quantity = 1
+	dataCart.UserID = idToken
+
+	row, err := delivery.cartUsecase.PostData(toCore(dataCart))
+	if err != nil {
+		return c.JSON(400, helper.FailedResponseHelper("error insert data"))
+	}
+	if row != 1 {
+		return c.JSON(400, helper.FailedResponseHelper("error insert data"))
+	}
+	return c.JSON(201, helper.SuccessResponseHelper("success insert data"))
 }
 
 func (delivery *CartDelivery) DeleteCart(c echo.Context) error {

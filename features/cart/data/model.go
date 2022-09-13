@@ -74,7 +74,7 @@ func (res *Results) toCore() cart.Core {
 
 func toCoreList(dataCart []Results) []cart.Core {
 	var dataCore []cart.Core
-	for key, _ := range dataCart {
+	for key := range dataCart {
 		dataCore = append(dataCore, dataCart[key].toCore())
 	}
 

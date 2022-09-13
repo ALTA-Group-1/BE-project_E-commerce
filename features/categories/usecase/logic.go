@@ -16,5 +16,8 @@ func New(data categories.DataInterface) categories.UsecaseInterface {
 
 func (usecase *categoriesUsecase) GetAll(id int) ([]categories.Core, error) {
 	results, err := usecase.categoriesData.GetAllData(id)
-	return results, err
+	if err != nil {
+		return nil, err
+	}
+	return results, nil
 }

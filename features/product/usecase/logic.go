@@ -21,39 +21,48 @@ func (usecase *productUsecase) PostData(data product.Core) (int, error) {
 	}
 
 	row, err := usecase.productData.InsertData(data)
-	return row, err
-
+	if err != nil {
+		return -1, err
+	}
+	return row, nil
 }
 
 func (usecase *productUsecase) GetAllProduct(page int) ([]product.Core, error) {
-
 	data, err := usecase.productData.SelectAllProduct(page)
-	return data, err
-
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
 }
 
 func (usecase *productUsecase) GetById(id int) (product.Core, error) {
-
 	data, err := usecase.productData.SelectById(id)
-	return data, err
-
+	if err != nil {
+		return product.Core{}, err
+	}
+	return data, nil
 }
 
 func (usecase *productUsecase) PutData(token int, newData product.Core) (int, error) {
 	row, err := usecase.productData.UpdateData(token, newData)
-
-	return row, err
+	if err != nil {
+		return -1, err
+	}
+	return row, nil
 }
 
 func (usecase *productUsecase) DeleteData(param, token int) (int, error) {
 	row, err := usecase.productData.DeleteByToken(param, token)
-
-	return row, err
+	if err != nil {
+		return -1, err
+	}
+	return row, nil
 }
 
 func (usecase *productUsecase) GetMyProduct(token int) ([]product.Core, error) {
-
 	data, err := usecase.productData.SelectMyProduct(token)
-	return data, err
-
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
 }

@@ -49,7 +49,7 @@ func (delivery *ProductDelivery) PostData(c echo.Context) error {
 	if row != 1 {
 		return c.JSON(400, helper.FailedResponseHelper("error insert data"))
 	}
-	return c.JSON(200, helper.SuccessResponseHelper("success insert data"))
+	return c.JSON(201, helper.SuccessResponseHelper("success insert data"))
 
 }
 

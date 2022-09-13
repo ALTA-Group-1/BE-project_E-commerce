@@ -20,8 +20,10 @@ func New(db *gorm.DB) product.DataInterface {
 func (repo *productData) InsertData(data product.Core) (int, error) {
 	dataModel := fromCore(data)
 	tx := repo.db.Create(&dataModel)
-
-	return int(tx.RowsAffected), tx.Error
+	if tx.Error != nil {
+		return -1, tx.Error
+	}
+	return int(tx.RowsAffected), nil
 }
 
 func (repo *productData) SelectAllProduct(page int) ([]product.Core, error) {
@@ -34,24 +36,29 @@ func (repo *productData) SelectAllProduct(page int) ([]product.Core, error) {
 		queryBuider := repo.db.Limit(perPage).Offset(offset)
 
 		txData := queryBuider.First(&dataProduct)
-		return toCoreList(dataProduct), txData.Error
+		if txData.Error != nil {
+			return nil, txData.Error
+		}
+		return toCoreList(dataProduct), nil
 
 	} else {
 
 		txDataAll := repo.db.Find(&dataProduct)
-		return toCoreList(dataProduct), txDataAll.Error
-
+		if txDataAll.Error != nil {
+			return nil, txDataAll.Error
+		}
+		return toCoreList(dataProduct), nil
 	}
 
 }
 
 func (repo *productData) SelectById(id int) (product.Core, error) {
-
 	var data Product
 	tx := repo.db.First(&data, id)
-
-	return data.toCore(), tx.Error
-
+	if tx.Error != nil {
+		return product.Core{}, tx.Error
+	}
+	return data.toCore(), nil
 }
 
 func (repo *productData) UpdateData(token int, newData product.Core) (int, error) {
@@ -59,18 +66,16 @@ func (repo *productData) UpdateData(token int, newData product.Core) (int, error
 
 	tx := repo.db.Model(&Product{}).Where("id = ? AND user_id = ?", newData.ID, token).Updates(dataModel)
 	if tx.Error != nil {
-		return 0, tx.Error
+		return -1, tx.Error
 	}
 	if tx.RowsAffected == 0 {
-		return 0, errors.New("failed to update data")
+		return -1, errors.New("failed to update data")
 	}
 
 	return 1, nil
-
 }
 
 func (repo *productData) DeleteByToken(param, token int) (int, error) {
-
 	var deleteData Product
 	tx := repo.db.First(&deleteData, param)
 	if tx.Error != nil {
@@ -85,12 +90,10 @@ func (repo *productData) DeleteByToken(param, token int) (int, error) {
 		if txDelId.Error != nil {
 			return -1, txDelId.Error
 		}
-
 		var err error
-
 		return int(txDelId.RowsAffected), err
 	} else {
-		return -1, errors.New("not access")
+		return -1, errors.New("no access")
 	}
 	// tx := repo.db.Delete(&deleteData, token)
 
@@ -98,9 +101,10 @@ func (repo *productData) DeleteByToken(param, token int) (int, error) {
 }
 
 func (repo *productData) SelectMyProduct(token int) ([]product.Core, error) {
-
 	var data []Product
 	tx := repo.db.Model(&Product{}).Where("user_id = ?", token).Find(&data)
-	return toCoreList(data), tx.Error
-
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	return toCoreList(data), nil
 }

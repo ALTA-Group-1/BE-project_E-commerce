@@ -25,7 +25,7 @@ func (repo *categoriesData) GetAllData(id int) ([]categories.Core, error) {
 	}
 
 	res := toCoreList(dataCart)
-	for key, _ := range res {
+	for key := range res {
 		res[key].ID = uint(id)
 	}
 
