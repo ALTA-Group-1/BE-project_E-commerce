@@ -57,7 +57,7 @@ func (data *Product) toCore() product.Core {
 
 func toCoreList(data []Product) []product.Core {
 	var dataCore []product.Core
-	for key, _ := range data {
+	for key := range data {
 		dataCore = append(dataCore, data[key].toCore())
 	}
 	return dataCore
