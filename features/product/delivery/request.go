@@ -21,7 +21,6 @@ func toCore(data ProductRequest) product.Core {
 		Price:        data.Price,
 		Stock:        data.Stock,
 		Desc:         data.Desc,
-		UserID:       data.UserID,
 		CategoriesID: data.Categories,
 		UserID:       data.UserID,
 	}
