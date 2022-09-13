@@ -13,6 +13,16 @@ type Cart struct {
 	UserID    uint
 }
 
+type Results struct {
+	ID        uint   `json:"id"`
+	Quantity  int    `json:"quantity"`
+	Name      string `json:"name"`
+	Images    string `json:"images,omitempty"`
+	Price     int    `json:"price,omitempty"`
+	UserID    int
+	ProductID int `json:"product_id,omitempty"`
+}
+
 type Product struct {
 	gorm.Model
 	Name         string
@@ -48,26 +58,24 @@ func fromCore(dataCore cart.Core) Cart {
 
 }
 
-func toCore(dataCart Cart, dataProduct Product) cart.Core {
+func (res *Results) toCore() cart.Core {
 
 	return cart.Core{
-		ID:            dataCart.ID,
-		ProductID:     dataCart.ProductID,
-		ProductImages: dataProduct.Images,
-		ProductName:   dataProduct.Name,
-		ProductPrice:  dataProduct.Price,
+		ID:            res.ID,
+		Quantity:      res.Quantity,
+		ProductID:     uint(res.ProductID),
+		ProductImages: res.Images,
+		ProductName:   res.Name,
+		ProductPrice:  res.Price,
+		UserID:        res.UserID,
 	}
 
 }
 
-func toCoreList(dataCart []Cart, dataProduct []Product) []cart.Core {
+func toCoreList(dataCart []Results) []cart.Core {
 	var dataCore []cart.Core
-	for _, v := range dataCart {
-		for _, v1 := range dataProduct {
-			if v.ProductID == v1.ID {
-				dataCore = append(dataCore, toCore(v, v1))
-			}
-		}
+	for key, _ := range dataCart {
+		dataCore = append(dataCore, dataCart[key].toCore())
 	}
 
 	return dataCore
