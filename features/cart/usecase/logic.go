@@ -13,3 +13,14 @@ func New(data cart.DataInterface) cart.UsecaseInterface {
 		cartData: data,
 	}
 }
+
+func (usecase *cartUsecase) GetByToken(token int) ([]cart.Core, error) {
+
+	res, err := usecase.cartData.SelectByToken(token)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+
+}
