@@ -19,9 +19,9 @@ func New(e *echo.Echo, usecase product.UsecaseInterface) {
 	}
 
 	e.POST("/products", handler.PostData, middlewares.JWTMiddleware())
-	e.DELETE("/products", handler.DeleteProduct, middlewares.JWTMiddleware())
 	e.GET("/products", handler.GetAllPagination)
 	e.GET("/products/:id", handler.GetProductById)
+	e.DELETE("/products", handler.DeleteProduct, middlewares.JWTMiddleware())
 
 }
 
@@ -45,15 +45,6 @@ func (delivery *ProductDelivery) PostData(c echo.Context) error {
 		return c.JSON(400, helper.FailedResponseHelper("error insert data"))
 	}
 	return c.JSON(200, helper.SuccessResponseHelper("success insert data"))
-}
-
-func (delivery *ProductDelivery) DeleteProduct(c echo.Context) error {
-	idToken := middlewares.ExtractToken(c)
-	row, err := delivery.productUsecase.DeleteData(idToken)
-	if err != nil || row != 1 {
-		return c.JSON(500, helper.FailedResponseHelper("wrong token"))
-	}
-	return c.JSON(200, helper.SuccessResponseHelper("succes delete"))
 }
 
 func (delivery *ProductDelivery) GetAllPagination(c echo.Context) error {
@@ -88,4 +79,13 @@ func (delivery *ProductDelivery) GetProductById(c echo.Context) error {
 	}
 
 	return c.JSON(200, helper.SuccessDataResponseHelper("succes get by id", fromCore(data)))
+}
+
+func (delivery *ProductDelivery) DeleteProduct(c echo.Context) error {
+	idToken := middlewares.ExtractToken(c)
+	row, err := delivery.productUsecase.DeleteData(idToken)
+	if err != nil || row != 1 {
+		return c.JSON(500, helper.FailedResponseHelper("wrong token"))
+	}
+	return c.JSON(200, helper.SuccessResponseHelper("succes delete"))
 }
