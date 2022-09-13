@@ -13,3 +13,8 @@ func New(data categories.DataInterface) categories.UsecaseInterface {
 		categoriesData: data,
 	}
 }
+
+func (usecase *categoriesUsecase) GetAll(id int) ([]categories.Core, error) {
+	results, err := usecase.categoriesData.GetAllData(id)
+	return results, err
+}
