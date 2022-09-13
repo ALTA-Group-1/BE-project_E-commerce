@@ -1,15 +1,16 @@
 package data
 
 import (
-	"project/e-commerce/features/categories"
+	"project/e-commerce/features/cart"
 
 	"gorm.io/gorm"
 )
 
-type Categories struct {
+type Cart struct {
 	gorm.Model
-	Name    string
-	Product []Product `gorm:"foreignKey:CategoriesID"`
+	Quantity  int
+	ProductID uint
+	UserID    uint
 }
 
 type Product struct {
@@ -21,6 +22,7 @@ type Product struct {
 	Desc         string
 	UserID       uint
 	CategoriesID uint
+	CartID       []Cart
 }
 
 type User struct {
@@ -31,24 +33,25 @@ type User struct {
 	Phone    string
 	Address  string
 	Product  []Product
+	Cart     []Cart
 }
 
-func fromCore(dataCore categories.Core) Categories {
-	dataModel := Categories{
-		Name: dataCore.Name,
+func fromCore(dataCore cart.Core) Cart {
+	productModel := Cart{
+		Quantity: dataCore.Quantity,
 	}
-	return dataModel
+	return productModel
 }
 
-func (data *Categories) toCore() categories.Core {
-	return categories.Core{
-		ID:   data.ID,
-		Name: data.Name,
+func (data *Cart) toCore() cart.Core {
+	return cart.Core{
+		ID:       data.ID,
+		Quantity: data.Quantity,
 	}
 }
 
-func toCoreList(data []Categories) []categories.Core {
-	var dataCore []categories.Core
+func toCoreList(data []Cart) []cart.Core {
+	var dataCore []cart.Core
 	for key := range data {
 		dataCore = append(dataCore, data[key].toCore())
 	}

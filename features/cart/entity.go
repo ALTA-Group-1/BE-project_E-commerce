@@ -1,14 +1,13 @@
-package categories
+package cart
 
 type Core struct {
 	ID            uint
-	Name          string
+	Quantity      int
 	ProductID     uint
 	ProductName   string
 	ProductImages string
 	ProductPrice  int
-	ProductStock  int
-	ProductDesc   string
+	UserID        int
 }
 
 type Product struct {
@@ -16,14 +15,18 @@ type Product struct {
 	Name   string
 	Images string
 	Price  int
-	Stock  int
-	Desc   string
 }
 
 type UsecaseInterface interface {
-	GetAll(id int) (data []Core, err error)
+	// post cart
+	// get cart
+	// update cart
+	// delete cart
 }
 
 type DataInterface interface {
-	GetAllData(id int) (data []Core, err error)
+	// post cart
+	// get cart
+	// update cart
+	// delete cart
 }

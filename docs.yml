@@ -26,6 +26,8 @@ tags:
     description: Authentication
   - name: User
     description: User data management
+  - name: Categories
+    description: Categories data management
   - name: Product
     description: Product data management
   - name: Cart
@@ -201,6 +203,9 @@ paths:
         '400':
           $ref: '#/components/responses/responseFailed'
   
+  #######  CATEGORIES   #######
+
+
   #######  PRODUCT   #######
   /products:
     post:
@@ -247,8 +252,6 @@ paths:
         - Product
       summary: Get all product
       description: Get all product
-      security:
-        - JWTAuth: []
       parameters:
       - in: query
         name: title
