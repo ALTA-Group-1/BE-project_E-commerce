@@ -14,13 +14,13 @@ type Categories struct {
 
 type Product struct {
 	gorm.Model
-	Name         string
-	Images       string
-	Price        int
-	Stock        int
-	Desc         string
-	UserID       uint
-	CategoriesID uint
+	Name   string
+	Images string
+	Price  int
+	Stock  int
+	Desc   string
+	// UserID       uint
+	// CategoriesID uint
 }
 
 type User struct {
@@ -33,9 +33,33 @@ type User struct {
 	Product  []Product
 }
 
+type Pagination struct {
+	Limit int `json:"limit"`
+	Page  int `json:"page"`
+}
+
+func (b *Product) TableName() string {
+	return "product"
+}
+
 func fromCore(dataCore categories.Core) Categories {
 	dataModel := Categories{
 		Name: dataCore.Name,
 	}
 	return dataModel
+}
+
+func (data *Categories) toCore() categories.Core {
+	return categories.Core{
+		ID:   data.ID,
+		Name: data.Name,
+	}
+}
+
+func toCoreList(data []Categories) []categories.Core {
+	var dataCore []categories.Core
+	for key := range data {
+		dataCore = append(dataCore, data[key].toCore())
+	}
+	return dataCore
 }
