@@ -15,3 +15,9 @@ func New(db *gorm.DB) cart.DataInterface {
 		db: db,
 	}
 }
+
+func (repo *cartData) DeleteData(userID, productID int) (int, error) {
+	var deleteData Cart
+	tx := repo.db.Where("userID = ? AND productID = ?", userID, productID).Delete(&deleteData)
+	return int(tx.RowsAffected), tx.Error
+}

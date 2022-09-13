@@ -21,12 +21,12 @@ type UsecaseInterface interface {
 	// post cart
 	// get cart
 	// update cart
-	// delete cart
+	DeleteCart(userID, productID int) (int, error)
 }
 
 type DataInterface interface {
 	// post cart
 	// get cart
 	// update cart
-	// delete cart
+	DeleteData(userID, productID int) (int, error)
 }

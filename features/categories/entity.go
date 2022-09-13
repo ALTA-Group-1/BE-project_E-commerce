@@ -11,7 +11,7 @@ type Core struct {
 	ProductDesc   string
 }
 
-type Product struct {
+type ProductCore struct {
 	ID     uint
 	Name   string
 	Images string

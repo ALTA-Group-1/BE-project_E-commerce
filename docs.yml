@@ -204,7 +204,25 @@ paths:
           $ref: '#/components/responses/responseFailed'
   
   #######  CATEGORIES   #######
-
+  /categories/{id}:
+    get:
+      tags:
+        - Categories
+      summary: Get product by id categories
+      description: Get product by id categories
+      parameters:
+        - name: id
+          description: id_categories
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/getDetailProductSuccess'
+        '400':
+          $ref: '#/components/responses/getDetailProductFailed' 
 
   #######  PRODUCT   #######
   /products:
@@ -342,6 +360,17 @@ paths:
           $ref: '#/components/responses/getDetailProductSuccess'
         '400':
           $ref: '#/components/responses/getDetailProductFailed' 
+  /myproducts:
+    get:
+      tags:
+        - Product
+      summary: Get my product
+      description: Get my product
+      responses:
+        '200':
+          $ref: '#/components/responses/getMyProductSuccess'
+        '400':
+          $ref: '#/components/responses/getMyProductFailed'
 
   #######  CART   #######
   /carts:
@@ -422,6 +451,7 @@ paths:
           $ref: '#/components/responses/responseSuccess'
         '400':
           $ref: '#/components/responses/responseFailed'
+  /carts/{id}:
     delete:
       tags:
         - Cart
@@ -429,6 +459,14 @@ paths:
       description: Delete product at cart
       security:
         - JWTAuth: []
+      parameters:
+        - name: id
+          description: id_product
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
       responses:
         '200':
           $ref: '#/components/responses/responseSuccess'
@@ -889,6 +927,58 @@ components:
               message:
                 type: string
                 example: Failed get all product
+
+    #==================================#
+    #    RESPONSE GET MY PRODUCT
+    #==================================#
+    getMyProductSuccess:
+      description: success get my product
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              code:
+                type: number
+                example: 200
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: Success get my product
+              data:
+                type: object
+                properties:
+                  images:
+                    type: string
+                    example: "images.jpg"
+                  product name:
+                    type: string
+                    example: "sneakers"
+                  price:
+                    type: integer
+                    example: 500000
+                  stock:
+                    type: integer
+                    example: 100
+                  desc:
+                    type: string
+                    example: original black
+    getMyProductFailed:
+      description: failed get my product
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: fail
+              message:
+                type: string
+                example: Failed get all product
+
 
     #==================================#
     #    RESPONSE GET DETAIL PRODUCT
