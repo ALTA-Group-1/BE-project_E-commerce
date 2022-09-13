@@ -26,20 +26,22 @@ func (repo *productData) InsertData(data product.Core) (int, error) {
 
 func (repo *productData) SelectAllProduct(page int) ([]product.Core, error) {
 
-	// var maksOffset int
-	// tx := repo.db.Raw("SELECT COUNT (name) FROM products WHERE deleted_at = NULL").Scan(&maksOffset)
-	// if tx.Error != nil {
-	// 	return nil, tx.Error
-	// }
-
-	perPage := 8
-	offset := ((page - 1) * perPage)
-
-	queryBuider := repo.db.Limit(perPage).Offset(offset)
-
 	var dataProduct []Product
-	txData := queryBuider.First(&dataProduct)
-	return toCoreList(dataProduct), txData.Error
+	if page != 0 {
+		perPage := 8
+		offset := ((page - 1) * perPage)
+
+		queryBuider := repo.db.Limit(perPage).Offset(offset).Order("name asc")
+
+		txData := queryBuider.First(&dataProduct)
+		return toCoreList(dataProduct), txData.Error
+
+	} else {
+
+		txDataAll := repo.db.Find(&dataProduct)
+		return toCoreList(dataProduct), txDataAll.Error
+
+	}
 
 }
 
@@ -71,4 +73,12 @@ func (repo *productData) DeleteByToken(token int) (int, error) {
 	tx := repo.db.Delete(&deleteData, token)
 
 	return int(tx.RowsAffected), tx.Error
+}
+
+func (repo *productData) SelectMyProduct(token int) ([]product.Core, error) {
+
+	var data []Product
+	tx := repo.db.Order("name asc").Find(&data, "user_id = ?", token)
+	return toCoreList(data), tx.Error
+
 }

@@ -30,6 +30,7 @@ type CategoriesCore struct {
 type UsecaseInterface interface {
 	PostData(data Core) (row int, err error)
 	GetAllProduct(page int) ([]Core, error)
+	GetMyProduct(token int) ([]Core, error)
 	GetById(param int) (Core, error)
 	PutData(newData Core) (row int, err error)
 	DeleteData(token int) (int, error)
@@ -38,6 +39,7 @@ type UsecaseInterface interface {
 type DataInterface interface {
 	InsertData(data Core) (row int, err error)
 	SelectAllProduct(page int) ([]Core, error)
+	SelectMyProduct(token int) ([]Core, error)
 	SelectById(param int) (Core, error)
 	UpdateData(newData Core) (row int, err error)
 	DeleteByToken(token int) (int, error)
