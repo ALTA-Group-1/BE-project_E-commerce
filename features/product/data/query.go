@@ -29,3 +29,31 @@ func (repo *productData) DeleteByToken(token int) (int, error) {
 
 	return int(tx.RowsAffected), tx.Error
 }
+
+func (repo *productData) SelectAllProduct(page int) ([]product.Core, error) {
+
+	// var maksOffset int
+	// tx := repo.db.Raw("SELECT COUNT (name) FROM products WHERE deleted_at = NULL").Scan(&maksOffset)
+	// if tx.Error != nil {
+	// 	return nil, tx.Error
+	// }
+
+	perPage := 8
+	offset := ((page - 1) * perPage)
+
+	queryBuider := repo.db.Limit(perPage).Offset(offset)
+
+	var dataProduct []Product
+	txData := queryBuider.First(&dataProduct)
+	return toCoreList(dataProduct), txData.Error
+
+}
+
+func (repo *productData) SelectById(id int) (product.Core, error) {
+
+	var data Product
+	tx := repo.db.First(&data, id)
+
+	return data.toCore(), tx.Error
+
+}
