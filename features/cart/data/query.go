@@ -38,7 +38,7 @@ func (repo *cartData) DeleteData(userID, cartID int) (int, error) {
 func (repo *cartData) SelectByToken(token int) ([]cart.Core, error) {
 	var dataCart []Results
 	// tx := repo.db.Model(&Cart{}).Where("user_id = ?", token).Find(&dataCart)
-	tx := repo.db.Model(&Product{}).Select(" carts.id, carts.quantity, products.images, products.name, products.price, users.id, products.id").Joins("inner join carts on carts.products_id = products.id").Where("products.user_id = ?", token).Scan(&dataCart)
+	tx := repo.db.Model(&Product{}).Select(" carts.id, carts.quantity, products.images, products.name, products.price, users.id, products.id").Joins("inner join carts on carts.products_id = products.id").Where("carts.user_id = ?", token).Scan(&dataCart)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
