@@ -24,7 +24,7 @@ func (repo *categoriesData) GetAllData(id int) ([]categories.Core, error) {
 	queryBuider := repo.db.Limit(limit).Offset(offset)
 
 	var dataCategories []Categories
-	tx := queryBuider.Model(&Product{}).Where("id = ?", id).Find(&dataCategories)
+	tx := queryBuider.Model(&Product{}).Where("categoriesID = ?", id).Find(&dataCategories)
 	// tx := queryBuider.Where("id = ?", id).Preload("Product").Find(&dataCategories)
 	if tx.Error != nil {
 		return nil, tx.Error
