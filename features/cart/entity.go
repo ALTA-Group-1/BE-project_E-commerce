@@ -18,7 +18,7 @@ type Product struct {
 }
 
 type UsecaseInterface interface {
-	// post cart
+	PostData(data Core) (int, error)
 	// get cart
 	GetByToken(token int) ([]Core, error)
 	// update cart
@@ -26,7 +26,7 @@ type UsecaseInterface interface {
 }
 
 type DataInterface interface {
-	// post cart
+	InsertData(data Core) (int, error)
 	// get cart
 	SelectByToken(token int) ([]Core, error)
 	// update cart
