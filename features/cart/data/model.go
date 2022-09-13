@@ -14,13 +14,13 @@ type Cart struct {
 }
 
 type Results struct {
-	ID        uint   `json:"id"`
-	Quantity  int    `json:"quantity"`
-	Name      string `json:"name"`
-	Images    string `json:"images,omitempty"`
-	Price     int    `json:"price,omitempty"`
-	UserID    int
-	ProductID int `json:"product_id,omitempty"`
+	ID        uint
+	Quantity  int
+	Name      string
+	Images    string
+	Price     int
+	UserID    uint
+	ProductID uint
 }
 
 type Product struct {
@@ -67,7 +67,7 @@ func (res *Results) toCore() cart.Core {
 		ProductImages: res.Images,
 		ProductName:   res.Name,
 		ProductPrice:  res.Price,
-		UserID:        res.UserID,
+		UserID:        int(res.UserID),
 	}
 
 }
