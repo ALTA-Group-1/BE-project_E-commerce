@@ -28,6 +28,7 @@ func New(e *echo.Echo, usecase product.UsecaseInterface) {
 }
 
 func (delivery *ProductDelivery) PostData(c echo.Context) error {
+
 	idToken := middlewares.ExtractToken(c)
 	if idToken == 0 {
 		return c.JSON(400, helper.FailedResponseHelper("Unauthorized"))
@@ -39,6 +40,8 @@ func (delivery *ProductDelivery) PostData(c echo.Context) error {
 		return c.JSON(400, helper.FailedResponseHelper("error bind"))
 	}
 
+	dataProduct.UserID = idToken
+
 	row, err := delivery.productUsecase.PostData(toCore(dataProduct))
 	if err != nil {
 		return c.JSON(400, helper.FailedResponseHelper("error insert data"))
@@ -47,6 +50,7 @@ func (delivery *ProductDelivery) PostData(c echo.Context) error {
 		return c.JSON(400, helper.FailedResponseHelper("error insert data"))
 	}
 	return c.JSON(200, helper.SuccessResponseHelper("success insert data"))
+
 }
 
 func (delivery *ProductDelivery) GetAllPagination(c echo.Context) error {
