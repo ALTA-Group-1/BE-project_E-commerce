@@ -54,11 +54,10 @@ func (repo *productData) SelectById(id int) (product.Core, error) {
 
 }
 
-func (repo *productData) UpdateData(newData product.Core) (int, error) {
-
+func (repo *productData) UpdateData(token int, newData product.Core) (int, error) {
 	dataModel := fromCore(newData)
 
-	tx := repo.db.Model(&Product{}).Where("id = ?", newData.ID).Updates(dataModel)
+	tx := repo.db.Model(&Product{}).Where("id = ? AND user_id = ?", newData.ID, token).Updates(dataModel)
 	if tx.Error != nil {
 		return 0, tx.Error
 	}

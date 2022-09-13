@@ -21,7 +21,7 @@ func New(e *echo.Echo, usecase product.UsecaseInterface) {
 	e.POST("/products", handler.PostData, middlewares.JWTMiddleware())
 	e.GET("/products", handler.GetAllPagination)
 	e.GET("/products/:id", handler.GetProductById)
-	e.PUT("/products", handler.PutData, middlewares.JWTMiddleware())
+	e.PUT("/products/:id", handler.PutData, middlewares.JWTMiddleware())
 	e.DELETE("/products/:id", handler.DeleteProduct, middlewares.JWTMiddleware())
 	e.GET("/myproducts", handler.GetAllMyProduct, middlewares.JWTMiddleware())
 
@@ -93,6 +93,10 @@ func (delivery *ProductDelivery) GetProductById(c echo.Context) error {
 }
 
 func (delivery *ProductDelivery) PutData(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(400, helper.FailedResponseHelper("param must be number"))
+	}
 
 	var dataUpdate ProductRequest
 	errBind := c.Bind(&dataUpdate)
@@ -121,9 +125,9 @@ func (delivery *ProductDelivery) PutData(c echo.Context) error {
 	}
 
 	idToken := middlewares.ExtractToken(c)
-	add.ID = uint(idToken)
+	add.ID = uint(id)
 
-	row, err := delivery.productUsecase.PutData(add)
+	row, err := delivery.productUsecase.PutData(idToken, add)
 	if err != nil || row < 1 {
 		return c.JSON(400, helper.FailedResponseHelper("Bad Request"))
 	}
