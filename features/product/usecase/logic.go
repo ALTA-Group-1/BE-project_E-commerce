@@ -39,8 +39,8 @@ func (usecase *productUsecase) GetById(id int) (product.Core, error) {
 
 }
 
-func (usecase *productUsecase) PutData(newData product.Core) (int, error) {
-	row, err := usecase.productData.UpdateData(newData)
+func (usecase *productUsecase) PutData(token int, newData product.Core) (int, error) {
+	row, err := usecase.productData.UpdateData(token, newData)
 
 	return row, err
 }
