@@ -12,6 +12,14 @@ type Categories struct {
 	Product []Product `gorm:"foreignKey:CategoriesID"`
 }
 
+type Results struct {
+	ID        uint
+	ProductID uint
+	Images    string
+	Name      string
+	Price     int
+}
+
 type Product struct {
 	gorm.Model
 	Name         string
@@ -40,14 +48,17 @@ func fromCore(dataCore categories.Core) Categories {
 	return dataModel
 }
 
-func (data *Categories) toCore() categories.Core {
+func (res *Results) toCore() categories.Core {
 	return categories.Core{
-		ID:   data.ID,
-		Name: data.Name,
+		ID:            res.ID,
+		ProductID:     res.ProductID,
+		ProductImages: res.Images,
+		ProductName:   res.Name,
+		ProductPrice:  res.Price,
 	}
 }
 
-func toCoreList(data []Categories) []categories.Core {
+func toCoreList(data []Results) []categories.Core {
 	var dataCore []categories.Core
 	for key := range data {
 		dataCore = append(dataCore, data[key].toCore())

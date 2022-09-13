@@ -18,18 +18,11 @@ func New(db *gorm.DB) categories.DataInterface {
 }
 
 func (repo *categoriesData) GetAllData(id int) ([]categories.Core, error) {
-	limit := 8
-	offset := ((id - 1) * limit)
-
-	queryBuider := repo.db.Limit(limit).Offset(offset)
-
-	var dataCategories []Categories
-	tx := queryBuider.Model(&Product{}).Where("categories_id = ?", id).Find(&dataCategories)
+	var dataCart []Results
+	tx := repo.db.Model(&Categories{}).Select("categories.id, products.id, products.images, products.name, products.price").Joins("left join products on products.categories_id = categories.id").Scan(&dataCart)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
 
-	dataCore := toCoreList(dataCategories)
-	return dataCore, nil
-
+	return toCoreList(dataCart), nil
 }
