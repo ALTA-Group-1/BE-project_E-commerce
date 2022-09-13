@@ -53,7 +53,7 @@ func (usecase *productUsecase) DeleteData(token int) (int, error) {
 
 func (usecase *productUsecase) GetMyProduct(token int) ([]product.Core, error) {
 
-	data, err := usecase.GetMyProduct(token)
+	data, err := usecase.productData.SelectMyProduct(token)
 	return data, err
 
 }
