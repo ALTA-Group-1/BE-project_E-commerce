@@ -35,7 +35,7 @@ tags:
   - name: Order
     description: Order data management
 paths:
-  /login:
+  /auth:
     post:
       tags:
         - Auth
