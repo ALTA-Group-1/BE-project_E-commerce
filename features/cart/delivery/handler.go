@@ -76,6 +76,7 @@ func (delivery *CartDelivery) GetAllCart(c echo.Context) error {
 		return c.JSON(200, helper.SuccessResponseHelper("you dont have product in cart"))
 	}
 
-	return c.JSON(200, helper.SuccessDataResponseHelper("succes get cart", data))
+	dataCart, totalRes := fromCoreList(data)
+	return c.JSON(200, helper.SuccessDataResponseHelper(totalRes, dataCart))
 
 }

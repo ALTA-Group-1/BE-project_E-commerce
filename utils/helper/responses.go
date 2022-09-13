@@ -1,20 +1,20 @@
 package helper
 
-func FailedResponseHelper(msg string) map[string]interface{} {
+func FailedResponseHelper(msg interface{}) map[string]interface{} {
 	return map[string]interface{}{
 		"status":  "failed",
 		"message": msg,
 	}
 }
 
-func SuccessResponseHelper(msg string) map[string]interface{} {
+func SuccessResponseHelper(msg interface{}) map[string]interface{} {
 	return map[string]interface{}{
 		"status":  "success",
 		"message": msg,
 	}
 }
 
-func SuccessDataResponseHelper(msg string, data interface{}) map[string]interface{} {
+func SuccessDataResponseHelper(msg, data interface{}) map[string]interface{} {
 	return map[string]interface{}{
 		"status":  "success",
 		"message": msg,
