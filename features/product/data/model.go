@@ -40,6 +40,7 @@ func fromCore(dataCore product.Core) Product {
 		Price:  dataCore.Price,
 		Stock:  dataCore.Stock,
 		Desc:   dataCore.Desc,
+		UserID: uint(dataCore.UserID),
 	}
 	return productModel
 }

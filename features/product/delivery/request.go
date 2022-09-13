@@ -11,6 +11,7 @@ type ProductRequest struct {
 	Stock      int    `json:"stock" form:"stock"`
 	Desc       string `json:"desc" form:"desc"`
 	Categories int    `json:"categories,omitempty"`
+	UserID     int
 }
 
 func toCore(data ProductRequest) product.Core {
@@ -21,5 +22,6 @@ func toCore(data ProductRequest) product.Core {
 		Stock:        data.Stock,
 		Desc:         data.Desc,
 		CategoriesID: data.Categories,
+		UserID:       data.UserID,
 	}
 }
