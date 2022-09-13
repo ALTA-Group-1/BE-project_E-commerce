@@ -70,12 +70,32 @@ func (repo *productData) UpdateData(newData product.Core) (int, error) {
 
 }
 
-func (repo *productData) DeleteByToken(token int) (int, error) {
+func (repo *productData) DeleteByToken(param, token int) (int, error) {
 
-	var deleteData User
-	tx := repo.db.Delete(&deleteData, token)
+	var deleteData Product
+	tx := repo.db.First(&deleteData, param)
+	if tx.Error != nil {
+		return -1, tx.Error
+	}
 
-	return int(tx.RowsAffected), tx.Error
+	productId := deleteData.toCore()
+
+	if productId.UserID == token {
+		var data Product
+		txDelId := repo.db.Delete(&data, param)
+		if txDelId.Error != nil {
+			return -1, txDelId.Error
+		}
+
+		var err error
+
+		return int(txDelId.RowsAffected), err
+	} else {
+		return -1, errors.New("not access")
+	}
+	// tx := repo.db.Delete(&deleteData, token)
+
+	// return int(tx.RowsAffected), tx.Error
 }
 
 func (repo *productData) SelectMyProduct(token int) ([]product.Core, error) {

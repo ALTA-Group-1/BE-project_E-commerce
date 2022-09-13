@@ -33,7 +33,7 @@ type UsecaseInterface interface {
 	GetMyProduct(token int) ([]Core, error)
 	GetById(param int) (Core, error)
 	PutData(newData Core) (row int, err error)
-	DeleteData(token int) (int, error)
+	DeleteData(param, token int) (int, error)
 }
 
 type DataInterface interface {
@@ -42,5 +42,5 @@ type DataInterface interface {
 	SelectMyProduct(token int) ([]Core, error)
 	SelectById(param int) (Core, error)
 	UpdateData(newData Core) (row int, err error)
-	DeleteByToken(token int) (int, error)
+	DeleteByToken(param, token int) (int, error)
 }

@@ -22,7 +22,7 @@ func New(e *echo.Echo, usecase product.UsecaseInterface) {
 	e.GET("/products", handler.GetAllPagination)
 	e.GET("/products/:id", handler.GetProductById)
 	e.PUT("/products", handler.PutData, middlewares.JWTMiddleware())
-	e.DELETE("/products", handler.DeleteProduct, middlewares.JWTMiddleware())
+	e.DELETE("/products/:id", handler.DeleteProduct, middlewares.JWTMiddleware())
 	e.GET("/myproducts", handler.GetAllMyProduct, middlewares.JWTMiddleware())
 
 }
@@ -133,11 +133,16 @@ func (delivery *ProductDelivery) PutData(c echo.Context) error {
 
 func (delivery *ProductDelivery) DeleteProduct(c echo.Context) error {
 	idToken := middlewares.ExtractToken(c)
-	row, err := delivery.productUsecase.DeleteData(idToken)
+	id, _ := strconv.Atoi(c.Param("id"))
+	if id == -1 {
+		return c.JSON(400, helper.FailedResponseHelper("param must be number"))
+	}
+
+	row, err := delivery.productUsecase.DeleteData(id, idToken)
 	if err != nil || row != 1 {
 		return c.JSON(500, helper.FailedResponseHelper("wrong token"))
 	}
-	return c.JSON(200, helper.SuccessResponseHelper("succes delete"))
+	return c.JSON(200, helper.SuccessResponseHelper("success delete"))
 }
 
 func (delivery *ProductDelivery) GetAllMyProduct(c echo.Context) error {
