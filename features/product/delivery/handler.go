@@ -65,8 +65,10 @@ func (delivery *ProductDelivery) GetAllPagination(c echo.Context) error {
 	}
 
 	data, errGet := delivery.productUsecase.GetAllProduct(page)
-	if errGet != nil || len(data) == 0 {
+	if errGet != nil {
 		return c.JSON(400, helper.FailedResponseHelper("error get all data"))
+	} else if len(data) == 0 {
+		return c.JSON(200, helper.SuccessResponseHelper("product data is still empty"))
 	}
 
 	return c.JSON(200, helper.SuccessDataResponseHelper("success get all data", fromCoreList(data)))
