@@ -14,6 +14,7 @@ func New(db *gorm.DB) categories.DataInterface {
 	return &categoriesData{
 		db: db,
 	}
+
 }
 
 func (repo *categoriesData) GetAllData(id int) ([]categories.Core, error) {
