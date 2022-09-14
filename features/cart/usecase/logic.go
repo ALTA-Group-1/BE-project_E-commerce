@@ -16,7 +16,10 @@ func New(data cart.DataInterface) cart.UsecaseInterface {
 
 func (usecase *cartUsecase) DeleteCart(userID, cartID int) (int, error) {
 	row, err := usecase.cartData.DeleteData(userID, cartID)
-	return row, err
+	if err != nil {
+		return 0, err
+	}
+	return row, nil
 }
 
 func (usecase *cartUsecase) GetByToken(token int) ([]cart.Core, error) {
@@ -28,4 +31,20 @@ func (usecase *cartUsecase) GetByToken(token int) ([]cart.Core, error) {
 
 	return res, nil
 
+}
+
+func (usecase *cartUsecase) UpdatePlus(cartID int, increment string) (int, error) {
+	row, err := usecase.cartData.UpdatePlusData(cartID, increment)
+	if err != nil {
+		return 0, err
+	}
+	return row, nil
+}
+
+func (usecase *cartUsecase) UpdateMinus(cartID int, decrement string) (int, error) {
+	row, err := usecase.cartData.UpdateMinusData(cartID, decrement)
+	if err != nil {
+		return 0, err
+	}
+	return row, nil
 }
