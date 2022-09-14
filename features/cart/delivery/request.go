@@ -7,7 +7,7 @@ import (
 type CartRequest struct {
 	Quantity  int `json:"quantity" form:"quantity"`
 	ProductID int `json:"productID" form:"productID"`
-	UserID    int `json:"userID" form:"userID"`
+	UserID    int
 }
 
 func toCore(data CartRequest) cart.Core {

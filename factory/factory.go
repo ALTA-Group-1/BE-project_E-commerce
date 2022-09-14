@@ -1,12 +1,12 @@
 package factory
 
 import (
+	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
+
 	userData "project/e-commerce/features/user/data"
 	userDelivery "project/e-commerce/features/user/delivery"
 	userUsecase "project/e-commerce/features/user/usecase"
-
-	"github.com/labstack/echo/v4"
-	"gorm.io/gorm"
 
 	authData "project/e-commerce/features/auth/data"
 	authDelivery "project/e-commerce/features/auth/delivery"
@@ -19,9 +19,10 @@ import (
 	categoriesData "project/e-commerce/features/categories/data"
 	categoriesDelivery "project/e-commerce/features/categories/delivery"
 	categoriesUsecase "project/e-commerce/features/categories/usecase"
-	// cartData "project/e-commerce/features/cart/data"
-	// cartDelivery "project/e-commerce/features/cart/delivery"
-	// cartUsecase "project/e-commerce/features/cart/usecase"
+
+	cartData "project/e-commerce/features/cart/data"
+	cartDelivery "project/e-commerce/features/cart/delivery"
+	cartUsecase "project/e-commerce/features/cart/usecase"
 )
 
 func InitFactory(e *echo.Echo, db *gorm.DB) {
@@ -41,7 +42,7 @@ func InitFactory(e *echo.Echo, db *gorm.DB) {
 	categoriesUsecaseFactory := categoriesUsecase.New(categoriesDataFactory)
 	categoriesDelivery.New(e, categoriesUsecaseFactory)
 
-	// cartDataFactory := cartData.New(db)
-	// cartUsecaseFactory := cartUsecase.New(cartDataFactory)
-	// cartDelivery.New(e, cartUsecaseFactory)
+	cartDataFactory := cartData.New(db)
+	cartUsecaseFactory := cartUsecase.New(cartDataFactory)
+	cartDelivery.New(e, cartUsecaseFactory)
 }
