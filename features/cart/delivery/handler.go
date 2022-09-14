@@ -19,8 +19,8 @@ func New(e *echo.Echo, usecase cart.UsecaseInterface) {
 	}
 	e.POST("/carts", handler.PostData, middlewares.JWTMiddleware())
 	e.GET("/carts", handler.GetAllCart, middlewares.JWTMiddleware())
-	e.PUT("/cart/:id", handler.UpdatePlus, middlewares.JWTMiddleware())
-	e.PUT("/cart/:id", handler.UpdateMinus, middlewares.JWTMiddleware())
+	e.PUT("/carts/:id", handler.UpdatePlus, middlewares.JWTMiddleware())
+	e.PUT("/carts/:id", handler.UpdateMinus, middlewares.JWTMiddleware())
 	e.DELETE("/carts/:id", handler.DeleteCart, middlewares.JWTMiddleware())
 }
 
