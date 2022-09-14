@@ -26,7 +26,8 @@ func (repo *addressData) InsertData(token int, data address.Core) (int, error) {
 
 	for _, v := range id {
 		data.TransactionID = uint(v)
-		txCreate := repo.db.Create(&data)
+		dataCreate := toDb(data)
+		txCreate := repo.db.Create(&dataCreate)
 		if txCreate.Error != nil {
 			return -1, txCreate.Error
 		}
