@@ -33,10 +33,33 @@ type Cart struct {
 	UserID    uint
 }
 
+type Results struct {
+	ID        uint
+	Quantity  int
+	Name      string
+	Images    string
+	Price     int
+	UserID    uint
+	ProductID uint
+}
+
 type result struct {
 	CartID     uint
 	Quantity   int
 	TotalPrice int
+}
+
+func insertJoin(data []Results) []result {
+	var dataRes []result
+	for _, v := range data {
+		dataRes = append(dataRes, result{
+			Quantity:   v.Quantity,
+			TotalPrice: v.Price,
+			CartID:     v.ID,
+		})
+	}
+
+	return dataRes
 }
 
 func insert(res []result) []Transaction {
