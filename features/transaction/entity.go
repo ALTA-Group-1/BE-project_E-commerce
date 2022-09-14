@@ -6,8 +6,8 @@ import (
 
 type Core struct {
 	ID          uint
-	Quantity    uint
-	TotalPrice  uint
+	Quantity    int
+	TotalPrice  int
 	OrderStatus string
 	CartID      uint
 	CreatedAt   time.Time

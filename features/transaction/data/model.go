@@ -8,8 +8,8 @@ import (
 
 type Transaction struct {
 	gorm.Model
-	Quantity    uint
-	TotalPrice  uint
+	Quantity    int
+	TotalPrice  int
 	OrderStatus string
 	CartID      uint
 }
@@ -34,8 +34,8 @@ type Cart struct {
 }
 
 type result struct {
-	Quantity   uint
-	TotalPrice uint
+	Quantity   int
+	TotalPrice int
 	CartID     uint
 }
 
