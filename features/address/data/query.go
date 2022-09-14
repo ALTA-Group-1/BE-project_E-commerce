@@ -19,7 +19,8 @@ func New(db *gorm.DB) address.DataInterface {
 func (repo *addressData) InsertData(token int, data address.Core) (int, error) {
 
 	var id []int
-	tx := repo.db.Model(&Cart{}).Select("transactions.id").Joins("inner join transactions on transactions.cart_id = carts.id").Where("carts.user_id = ? AND transactions.order_status = waiting", token).Scan(&id)
+	str := "waiting"
+	tx := repo.db.Model(&Cart{}).Select("transactions.id").Joins("inner join transactions on transactions.cart_id = carts.id").Where("carts.user_id = ? AND transactions.order_status = ?", token, str).Scan(&id)
 	if tx.Error != nil {
 		return -1, tx.Error
 	}
