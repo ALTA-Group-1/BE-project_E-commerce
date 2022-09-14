@@ -34,7 +34,7 @@ func (delivery *addressDelivery) PostDataAddress(c echo.Context) error {
 	if errAdd != nil {
 		return c.JSON(400, helper.FailedResponseHelper("error orders"))
 	} else {
-		return c.JSON(200, helper.FailedResponseHelper("succes orders"))
+		return c.JSON(200, helper.SuccessResponseHelper("succes orders"))
 	}
 
 }
