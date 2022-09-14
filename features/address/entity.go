@@ -7,3 +7,11 @@ type Core struct {
 	Province      string
 	PostCode      uint
 }
+
+type UsecaseInterface interface {
+	PostData(token int, data Core) (int, error)
+}
+
+type DataInterface interface {
+	InsertData(token int, data Core) (int, error)
+}
