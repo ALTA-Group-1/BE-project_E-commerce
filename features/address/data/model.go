@@ -10,10 +10,28 @@ type Core struct {
 	PostCode      uint
 }
 
-type Transaction struct {
+type Cart struct {
 	gorm.Model
-	Quantity    uint
-	TotalPrice  uint
-	OrderStatus string
-	CartID      uint
+	Quantity  int
+	ProductID uint
+	UserID    uint
+}
+
+type Product struct {
+	gorm.Model
+	Name         string
+	Images       string
+	Price        int
+	Stock        int
+	Desc         string
+	UserID       uint
+	CategoriesID uint
+	CartID       []Cart
+}
+
+type DBTransaction struct {
+	Cart_id  uint
+	Quantity int
+	Stock    int
+	ID       uint
 }
