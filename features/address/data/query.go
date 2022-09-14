@@ -24,26 +24,31 @@ func (repo *addressData) InsertData(token int, data address.Core) (int, error) {
 		return -1, txTransactions.Error
 	}
 
-	var id []ID
+	var id []int
 	str := "waiting"
-	tx := repo.db.Model(&Cart{}).Select("transactions.id, transactions.cart_id").Joins("inner join transactions on transactions.cart_id = carts.id").Where("carts.user_id = ? AND transactions.order_status = ?", token, str).Scan(&id)
+	tx := repo.db.Model(&Cart{}).Select("transactions.id").Joins("inner join transactions on transactions.cart_id = carts.id").Where("carts.user_id = ? AND transactions.order_status = ?", token, str).Scan(&id)
 	if tx.Error != nil {
 		return -1, tx.Error
 	}
 
+	var idCart []int
 	for _, v := range id {
-		data.TransactionID = uint(v.IdTransaction)
+		data.TransactionID = uint(v)
 		dataCreate := toDb(data)
 		txCreate := repo.db.Create(&dataCreate)
 		if txCreate.Error != nil {
 			return -1, txCreate.Error
+		}
+		txIdCart := repo.db.Model(&Transaction{}).Select("cart_id").Where("id = ? AND transactions.order_status = ?", v, str).Scan(&idCart)
+		if txIdCart.Error != nil {
+			return -1, txIdCart.Error
 		}
 	}
 
 	for _, value := range dbTransaction {
 		if value.Stock < value.Quantity {
 			for _, v := range id {
-				txCreate := repo.db.Where("id = ?", v.IdTransaction).Delete(&Address{})
+				txCreate := repo.db.Where("id = ?", v).Delete(&Address{})
 				if txCreate.Error != nil {
 					return -1, txCreate.Error
 				}
@@ -56,17 +61,17 @@ func (repo *addressData) InsertData(token int, data address.Core) (int, error) {
 
 	}
 
-	for _, valueID := range id {
-		txDel := repo.db.Where("id = ?", valueID.IdCart).Delete(&Cart{})
-		if txDel.Error != nil {
-			return -1, txDel.Error
-		}
-	}
-
 	for _, valueId := range id {
 		txUpdate := repo.db.Model(&Transaction{}).Where("id = ?", valueId).Update("order_status", "confirm")
 		if txUpdate.Error != nil {
 			return -1, txUpdate.Error
+		}
+	}
+
+	for _, valueID := range idCart {
+		txDel := repo.db.Where("id = ?", valueID).Delete(&Cart{})
+		if txDel.Error != nil {
+			return -1, txDel.Error
 		}
 	}
 
