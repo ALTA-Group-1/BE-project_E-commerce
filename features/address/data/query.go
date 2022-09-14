@@ -31,17 +31,12 @@ func (repo *addressData) InsertData(token int, data address.Core) (int, error) {
 		return -1, tx.Error
 	}
 
-	var idCart []int
 	for _, v := range id {
 		data.TransactionID = uint(v)
 		dataCreate := toDb(data)
 		txCreate := repo.db.Create(&dataCreate)
 		if txCreate.Error != nil {
 			return -1, txCreate.Error
-		}
-		txIdCart := repo.db.Model(&Transaction{}).Select("cart_id").Where("id = ? AND transactions.order_status = ?", v, str).Scan(&idCart)
-		if txIdCart.Error != nil {
-			return -1, txIdCart.Error
 		}
 	}
 
@@ -68,11 +63,9 @@ func (repo *addressData) InsertData(token int, data address.Core) (int, error) {
 		}
 	}
 
-	for _, valueID := range idCart {
-		txDel := repo.db.Where("id = ?", valueID).Delete(&Cart{})
-		if txDel.Error != nil {
-			return -1, txDel.Error
-		}
+	txDel := repo.db.Where("user_id = ?", token).Delete(&Cart{})
+	if txDel.Error != nil {
+		return -1, txDel.Error
 	}
 
 	return -1, nil
