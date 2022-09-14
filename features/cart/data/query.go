@@ -52,10 +52,10 @@ func (repo *cartData) UpdatePlusData(cartID int, increment string) (int, error) 
 
 	tx := repo.db.Raw("UPDATE carts SET quantity = (? + 1) WHERE carts_id = ? AND products_id = ?", dataModel.Quantity, cartID, dataModel.ProductID).Scan(&cartID)
 	if tx.Error != nil {
-		return 0, tx.Error
+		return -1, tx.Error
 	}
 	if tx.RowsAffected == 0 {
-		return 0, errors.New("failed to update data")
+		return -1, errors.New("failed to update quantity")
 	}
 
 	return 1, nil
@@ -67,10 +67,10 @@ func (repo *cartData) UpdateMinusData(cartID int, decrement string) (int, error)
 
 	tx := repo.db.Raw("UPDATE carts SET quantity = (? - 1) WHERE carts_id = ? AND products_id = ?", dataModel.Quantity, cartID, dataModel.ProductID).Scan(&cartID)
 	if tx.Error != nil {
-		return 0, tx.Error
+		return -1, tx.Error
 	}
 	if tx.RowsAffected == 0 {
-		return 0, errors.New("failed to update data")
+		return -1, errors.New("failed to update quantity")
 	}
 
 	return 1, nil
