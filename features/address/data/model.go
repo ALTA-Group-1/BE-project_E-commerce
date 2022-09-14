@@ -48,11 +48,6 @@ type DBTransaction struct {
 	ID       uint
 }
 
-type ID struct {
-	IdTransaction int
-	IdCart        int
-}
-
 func toDb(data address.Core) Address {
 	return Address{
 		TransactionID: data.TransactionID,
