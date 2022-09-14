@@ -28,7 +28,7 @@ func (repo *transactionData) InsertData(token int) (int, error) {
 
 	data := insert(inputTransaction)
 
-	for i := range data {
+	for i, _ := range data {
 		txCreate := repo.db.Create(&data[i])
 		if txCreate.Error != nil {
 			return -1, txCreate.Error
