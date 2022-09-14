@@ -14,6 +14,14 @@ type Address struct {
 	PostCode      uint
 }
 
+type Transaction struct {
+	gorm.Model
+	Quantity    int
+	TotalPrice  int
+	OrderStatus string
+	CartID      uint
+}
+
 type Cart struct {
 	gorm.Model
 	Quantity  int
@@ -38,6 +46,11 @@ type DBTransaction struct {
 	Quantity int
 	Stock    int
 	ID       uint
+}
+
+type ID struct {
+	IdTransaction int
+	IdCart        int
 }
 
 func toDb(data address.Core) Address {
