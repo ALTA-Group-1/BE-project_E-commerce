@@ -34,9 +34,9 @@ type Cart struct {
 }
 
 type result struct {
+	CartID     uint
 	Quantity   int
 	TotalPrice int
-	CartID     uint
 }
 
 func insert(res []result) []Transaction {
