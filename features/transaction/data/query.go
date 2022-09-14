@@ -1,7 +1,6 @@
 package data
 
 import (
-	"log"
 	"project/e-commerce/features/transaction"
 
 	"gorm.io/gorm"
@@ -20,9 +19,8 @@ func New(db *gorm.DB) transaction.DataInterface {
 func (repo *transactionData) InsertData(token int) (int, error) {
 
 	var inputTransaction []result
-	tx := repo.db.Model(&Product{}).Select("carts.id, carts.quantity, products.price").Joins("inner join carts on carts.product_id = products.id").Where("carts.user_id = ?", token).Scan(&inputTransaction)
+	tx := repo.db.Model(&Product{}).Select("carts.id, carts.quantity, products.price").Joins("left join carts on carts.product_id = products.id").Where("carts.user_id = ?", token).Scan(&inputTransaction)
 	if tx.Error != nil {
-		log.Fatal("error raw")
 		return -1, tx.Error
 	}
 
