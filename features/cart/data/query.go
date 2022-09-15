@@ -55,11 +55,11 @@ func (repo *cartData) SelectByToken(token int) ([]cart.Core, error) {
 	return toCoreList(dataCartCek), nil
 }
 
-func (repo *cartData) UpdatePlusData(cartID int, increment string) (int, error) {
+func (repo *cartData) UpdatePlusData(cartID int, update string) (int, error) {
 	var dataProduct cart.Core
 	dataModel := fromCore(dataProduct)
 
-	if cartID != 0 && increment == "increment" {
+	if cartID != 0 && update == "increment" {
 		tx := repo.db.Raw("UPDATE carts SET quantity = (? + 1) WHERE carts_id = ?", dataModel.Quantity, cartID).Scan(&dataModel)
 		if tx.Error != nil {
 			return -1, tx.Error

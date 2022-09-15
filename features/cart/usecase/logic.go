@@ -52,8 +52,8 @@ func (usecase *cartUsecase) UpdatePlus(cartID int, increment string) (int, error
 	return row, nil
 }
 
-func (usecase *cartUsecase) UpdateMinus(cartID int, decrement string) (int, error) {
-	row, err := usecase.cartData.UpdateMinusData(cartID, decrement)
+func (usecase *cartUsecase) UpdateMinus(cartID int, update string) (int, error) {
+	row, err := usecase.cartData.UpdateMinusData(cartID, update)
 	if err != nil {
 		return -1, err
 	}
