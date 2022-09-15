@@ -84,14 +84,22 @@ func (repo *productData) SelectAllProduct(page int, category string) ([]product.
 }
 
 func (repo *productData) SelectById(id int) (product.Core, error) {
-
-	var resData ResJoins
-	tx := repo.db.Model(&Categories{}).Select("products.id, products.name, products.images, products.price, products.desc, categories.name").Joins("inner join products on products.categories_id = categories.id").Where("products.id = ?", id).Scan(&resData)
+	var data Product
+	tx := repo.db.Model(&Product{}).Where("id = ? ", id).Scan(&data)
 	if tx.Error != nil {
 		return product.Core{}, tx.Error
 	}
 
-	return resData.toRes(), nil
+	var category Categories
+	txCate := repo.db.Model(&Categories{}).Where("id = ? ", data.CategoriesID).Scan(&category)
+	if txCate.Error != nil {
+		return product.Core{}, txCate.Error
+	}
+
+	resData := data.toCore()
+	resData.Category = category.Name
+
+	return resData, nil
 }
 
 func (repo *productData) UpdateData(token int, newData product.Core) (int, error) {
