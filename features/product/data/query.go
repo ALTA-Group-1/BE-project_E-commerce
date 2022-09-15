@@ -85,7 +85,7 @@ func (repo *productData) SelectAllProduct(page int, category string) ([]product.
 
 func (repo *productData) SelectById(id int) (product.Core, error) {
 	var data Product
-	tx := repo.db.First(&data, id)
+	tx := repo.db.Model(&Product{}).Where("id = ? ", id).Scan(&data)
 	if tx.Error != nil {
 		return product.Core{}, tx.Error
 	}
