@@ -1,4 +1,15 @@
 mode: set
+
+project/e-commerce/features/auth/usecase/logic.go:14.57,18.2 1 1
+project/e-commerce/features/auth/usecase/logic.go:20.76,22.35 1 1
+project/e-commerce/features/auth/usecase/logic.go:26.2,27.21 2 1
+project/e-commerce/features/auth/usecase/logic.go:31.2,32.18 2 1
+project/e-commerce/features/auth/usecase/logic.go:36.2,38.21 2 1
+project/e-commerce/features/auth/usecase/logic.go:42.2,42.14 1 1
+project/e-commerce/features/auth/usecase/logic.go:22.35,24.3 1 1
+project/e-commerce/features/auth/usecase/logic.go:27.21,29.3 1 1
+project/e-commerce/features/auth/usecase/logic.go:32.18,34.3 1 1
+project/e-commerce/features/auth/usecase/logic.go:38.21,40.3 1 0
 project/e-commerce/features/cart/usecase/logic.go:12.57,16.2 1 1
 project/e-commerce/features/cart/usecase/logic.go:18.67,19.25 1 1
 project/e-commerce/features/cart/usecase/logic.go:23.2,24.16 2 1
@@ -14,3 +25,4 @@ project/e-commerce/features/cart/usecase/logic.go:40.16,42.3 1 1
 project/e-commerce/features/cart/usecase/logic.go:47.84,49.16 2 1
 project/e-commerce/features/cart/usecase/logic.go:52.2,52.17 1 1
 project/e-commerce/features/cart/usecase/logic.go:49.16,51.3 1 1
+

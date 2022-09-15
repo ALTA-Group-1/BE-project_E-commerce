@@ -12,9 +12,21 @@ import (
 
 func TestLoginAuthorized(t *testing.T) {
 	repo := new(mocks.AuthData)
-	// dataInput := auth.Core{Email: "fakhry@mail.id", Password: "fakhry123"}
+	dataInput := auth.Core{ID: 1, Email: "fakhry@mail.id", Password: "$2a$10$3qSIi7BiTknraN3A9tRX/eoI4N9yuln/oWI8Ft9KcrZNF3ec6jIHK"}
 
-	t.Run("Empty password.", func(t *testing.T) {
+	t.Run("success password.", func(t *testing.T) {
+		repo.On("LoginUser", mock.Anything, mock.Anything).Return(dataInput, nil).Once()
+
+		usecase := New(repo)
+		result := usecase.LoginAuthorized("fakhry@mail.id", "12345")
+		assert.NotEqual(t, "please input email and password", result)
+		assert.NotEqual(t, "email not found", result)
+		assert.NotEqual(t, "wrong password", result)
+		assert.NotEqual(t, "error to created token", result)
+		repo.AssertExpectations(t)
+	})
+
+	t.Run("success login", func(t *testing.T) {
 		usecase := New(repo)
 		result := usecase.LoginAuthorized("fakhry@mail.id", "")
 		assert.Equal(t, "please input email and password", result)
