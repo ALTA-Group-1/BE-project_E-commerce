@@ -50,12 +50,10 @@ func (repo *cartData) DeleteData(userID, cartID int) (int, error) {
 func (repo *cartData) SelectByToken(token int) ([]cart.Core, error) {
 	var dataCartCek []Results
 	// tx := repo.db.Model(&Cart{}).Where("user_id = ?", token).Find(&dataCart)
-	tx := repo.db.Model(&Product{}).Select("carts.id, carts.quantity, products.name, products.images, products.price, carts.user_id, carts.product_id, carts.deleted_at").Joins("inner join carts on carts.product_id = products.id").Where("carts.user_id = ?", token).Scan(&dataCart)
+	tx := repo.db.Model(&Product{}).Select("carts.id, carts.quantity, products.name, products.images, products.price, carts.user_id, carts.product_id, carts.deleted_at").Joins("inner join carts on carts.product_id = products.id").Where("carts.user_id = ?", token).Scan(&dataCartCek)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-
-	dataCart
 
 	return toCoreList(dataCart), nil
 }
