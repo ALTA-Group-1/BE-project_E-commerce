@@ -57,6 +57,9 @@ func (repo *userData) DeleteByToken(token int) (int, error) {
 	if tx.Error != nil {
 		return -1, tx.Error
 	}
+
+	repo.db.Delete(&Product{}, "user_id = ?", token)
+
 	return int(tx.RowsAffected), nil
 
 }
