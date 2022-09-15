@@ -96,7 +96,7 @@ func (repo *transactionData) UpdateStatus(token int, status string) (int, error)
 func (repo *transactionData) CancelOrder(token int, status string) (int, error) {
 	var id []int
 	str := "waiting"
-	tx := repo.db.Model(&Cart{}).Select("transactions.id").Joins("inner join transactions on transactions.cart_id = carts.id").Where("carts.user_id = ? AND transactions.order_status = ?", token, str).Scan(&id)
+	tx := repo.db.Model(&Cart{}).Select("transactions.id").Joins("inner join transactions on transactions.cart_id = carts.id").Where("carts.user_id = ? AND transactions.order_status = ?", token, str).Order("transactions.updated_at Desc").Scan(&id)
 	if tx.Error != nil {
 		return -1, tx.Error
 	}
