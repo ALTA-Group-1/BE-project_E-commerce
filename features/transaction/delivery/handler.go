@@ -68,3 +68,15 @@ func (delivery *TransactionDelivery) PutDeleteOrder(c echo.Context) error {
 	return c.JSON(200, helper.SuccessResponseHelper("succes cancel products"))
 
 }
+
+func (delivery *TransactionDelivery) GetOrderHistory(c echo.Context) error {
+
+	idToken := middlewares.ExtractToken(c)
+
+	data, err := delivery.transactionUsecase.GetOrder(idToken)
+	if err != nil {
+		return c.JSON(400, helper.FailedResponseHelper("Failed get history order"))
+	}
+
+	return c.JSON(200, helper.SuccessDataResponseHelper("success get history order ", toRespon(data)))
+}
