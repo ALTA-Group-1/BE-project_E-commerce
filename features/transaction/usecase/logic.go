@@ -48,3 +48,13 @@ func (usecase *transactionUsecase) DeleteOrder(token int, status string) (int, e
 
 	return row, nil
 }
+
+func (usecase *transactionUsecase) GetOrder(token int) ([]transaction.HistoryOrder, error) {
+
+	data, err := usecase.transactionData.SelectOrder(token)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}

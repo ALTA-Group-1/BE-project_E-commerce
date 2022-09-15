@@ -84,7 +84,7 @@ func (repo *transactionData) UpdateStatus(token int, status string) (int, error)
 		}
 	}
 
-	txDel := repo.db.Unscoped().Where("user_id = ?", token).Delete(&Cart{})
+	txDel := repo.db.Where("user_id = ?", token).Delete(&Cart{})
 	if txDel.Error != nil {
 		return -1, txDel.Error
 	}
@@ -112,4 +112,15 @@ func (repo *transactionData) CancelOrder(token int, status string) (int, error) 
 	}
 
 	return 1, nil
+}
+
+func (repo *transactionData) SelectOrder(token int) ([]transaction.HistoryOrder, error) {
+
+	var data []transaction.HistoryOrder
+	tx := repo.db.Model(&Product{}).Select("products.images, products.name, carts.price, carts.quantity").Joins("inner join carts on carts.product_id = products.id").Joins("inner join transactions on trasactions.cart_id = carts.id").Where("transactions.status_order = confirm AND carts.user_id = ? AND deleted_at != NULL", token).Scan(&data)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	return data, nil
 }
