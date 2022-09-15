@@ -19,13 +19,10 @@ func New(db *gorm.DB) cart.DataInterface {
 
 func (repo *cartData) InsertData(data cart.Core) (int, error) {
 
-	var cek int
-	txUpd := repo.db.Model(&Cart{}).Select("carts.quantity").Where("product_id = ? AND user_id = ? AND deleted_at = NULL", data.ProductID, data.UserID).Scan(&cek)
-	if txUpd.Error != nil {
-		return -1, txUpd.Error
-	}
+	var dbCek Cart
+	repo.db.First(&dbCek, "product_id = ? AND user_id = ? ", data.ProductID, data.UserID)
 
-	if cek > 0 {
+	if dbCek.ID != 0 {
 		return 2, nil
 	}
 
