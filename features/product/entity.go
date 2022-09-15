@@ -14,6 +14,7 @@ type Core struct {
 	UpdatedAt    time.Time
 	UserID       int
 	CategoriesID int
+	Category     string
 }
 
 type User struct {
