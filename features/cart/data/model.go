@@ -14,13 +14,14 @@ type Cart struct {
 }
 
 type Results struct {
-	ID        uint
-	Quantity  int
-	Name      string
-	Images    string
-	Price     int
-	UserID    uint
-	ProductID uint
+	ID         uint
+	Quantity   int
+	Name       string
+	Images     string
+	Price      int
+	UserID     uint
+	ProductID  uint
+	deleted_at string
 }
 
 type Product struct {
