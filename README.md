@@ -17,5 +17,11 @@ A mini e-commerce with the following features:
 
 
 
+# Contributor
+- Amin
+- Dian
+- Jauhari
+
+
 
 
