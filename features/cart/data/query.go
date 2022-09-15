@@ -83,12 +83,14 @@ func (repo *cartData) UpdateMinusData(cartID int, decrement string) (int, error)
 	var dataProduct cart.Core
 	dataModel := fromCore(dataProduct)
 
-	tx := repo.db.Raw("UPDATE carts SET quantity = (? - 1) WHERE carts_id = ? AND products_id = ?", dataModel.Quantity, cartID, dataModel.ProductID).Scan(&cartID)
-	if tx.Error != nil {
-		return -1, tx.Error
-	}
-	if tx.RowsAffected == 0 {
-		return -1, errors.New("failed to update quantity")
+	if cartID != 0 && decrement == decrement {
+		tx := repo.db.Raw("UPDATE carts SET quantity = (? + 1) WHERE carts_id = ?", dataModel.Quantity, cartID).Scan(&dataModel)
+		if tx.Error != nil {
+			return -1, tx.Error
+		}
+		if tx.RowsAffected == 0 {
+			return -1, errors.New("failed to update quantity")
+		}
 	}
 
 	return 1, nil
