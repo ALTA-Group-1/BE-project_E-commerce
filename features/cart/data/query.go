@@ -18,20 +18,15 @@ func New(db *gorm.DB) cart.DataInterface {
 }
 
 func (repo *cartData) InsertData(data cart.Core) (int, error) {
+
 	var cek int
-	txCek := repo.db.Model(&Cart{}).Select("quantity").Where("product_id = ? AND user_id = ?", data.ProductID, data.UserID).Scan(&cek)
-	if txCek.Error != nil {
-		return -1, txCek.Error
+	txUpd := repo.db.Model(&Cart{}).Select("quantity").Where("product_id = ? AND user_id = ? AND deleted_at = NULL", data.ProductID, data.UserID).Scan(&cek)
+	if txUpd.Error != nil {
+		return -1, txUpd.Error
 	}
 
 	if cek > 0 {
-		cek += 1
-		txUpd := repo.db.Model(&Cart{}).Where("product_id = ? AND user_id = ? AND deleted_at = NULL", data.ProductID, data.UserID).Update("quantity", cek)
-		if txUpd.Error != nil {
-			return -1, txUpd.Error
-		}
-
-		return 1, nil
+		return 2, nil
 	}
 
 	dataModel := fromCore(data)
