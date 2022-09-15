@@ -87,8 +87,6 @@ func (delivery *ProductDelivery) GetProductById(c echo.Context) error {
 	data, errFind := delivery.productUsecase.GetById(id)
 	if errFind != nil {
 		return c.JSON(500, helper.FailedResponseHelper("error get by id"))
-	} else if data.Name == "" {
-		return c.JSON(400, helper.FailedResponseHelper("data not found"))
 	}
 
 	return c.JSON(200, helper.SuccessDataResponseHelper("succes get by id", fromCore(data)))
