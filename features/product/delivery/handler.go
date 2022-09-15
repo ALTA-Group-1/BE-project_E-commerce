@@ -93,7 +93,7 @@ func (delivery *ProductDelivery) GetProductById(c echo.Context) error {
 		return c.JSON(500, helper.FailedResponseHelper("error get by id"))
 	}
 
-	return c.JSON(200, helper.SuccessDataResponseHelper("succes get by id", fromCore(data)))
+	return c.JSON(200, helper.SuccessDataResponseHelper("succes get by id", data))
 }
 
 func (delivery *ProductDelivery) PutData(c echo.Context) error {
