@@ -68,7 +68,7 @@ func (repo *cartData) UpdateData(cartID, token int, update string) (int, error) 
 			return -1, txInc.Error
 		}
 
-		return -1, nil
+		return 1, nil
 
 	} else {
 		qty -= 1
@@ -76,7 +76,8 @@ func (repo *cartData) UpdateData(cartID, token int, update string) (int, error) 
 		if txDec.Error != nil {
 			return -1, txDec.Error
 		}
-
-		return -1, nil
+    
+    return 1, nil   
 	}
+  
 }
