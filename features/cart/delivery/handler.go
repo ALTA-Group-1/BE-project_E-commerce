@@ -55,17 +55,12 @@ func (delivery *CartDelivery) DeleteCart(c echo.Context) error {
 	idToken := middlewares.ExtractToken(c)
 
 	id := c.Param("id")
-	cartID, errId := strconv.Atoi(id)
+	idCnv, errId := strconv.Atoi(id)
 	if errId != nil {
 		return c.JSON(400, helper.FailedResponseHelper("param must be number"))
 	}
 
-	err := c.Bind(cartID)
-	if err != nil {
-		return c.JSON(400, helper.FailedResponseHelper("error bind data"))
-	}
-
-	row, err := delivery.cartUsecase.DeleteCart(idToken, cartID)
+	row, err := delivery.cartUsecase.DeleteCart(idToken, idCnv)
 	if err != nil || row != 1 {
 		return c.JSON(400, helper.FailedResponseHelper("failed delete cart"))
 	}
