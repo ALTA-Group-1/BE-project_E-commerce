@@ -26,9 +26,11 @@ type AddressCore struct {
 type UsecaseInterface interface {
 	PostData(token int, data AddressCore) (int, error)
 	PutStatus(token int, status string) (int, error)
+	// DeleteOrder()
 }
 
 type DataInterface interface {
 	InsertData(token int, data AddressCore) (int, error)
 	UpdateStatus(token int, status string) (int, error)
+	// DeleteData()
 }
