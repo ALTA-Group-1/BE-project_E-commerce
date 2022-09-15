@@ -30,4 +30,5 @@ type DataInterface interface {
 	SelectByToken(token int) ([]Core, error)
 	UpdateData(cartID, token int, update string) (int, error)
 	DeleteData(userID, cartID int) (int, error)
+
 }

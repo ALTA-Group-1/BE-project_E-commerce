@@ -27,8 +27,8 @@ func (usecase *cartUsecase) PostData(data cart.Core) (int, error) {
 	return row, nil
 }
 
-func (usecase *cartUsecase) DeleteCart(userID, cartID int) (int, error) {
-	row, err := usecase.cartData.DeleteData(userID, cartID)
+func (usecase *cartUsecase) DeleteCart(userID, productID int) (int, error) {
+	row, err := usecase.cartData.DeleteData(userID, productID)
 	if err != nil {
 		return -1, err
 	}
