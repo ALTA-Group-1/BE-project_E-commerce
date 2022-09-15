@@ -1,1 +1,1 @@
-# BE-project_E-commerce
+# E-COMMERCE PROJECT BY ALTTERA ACADEMY
