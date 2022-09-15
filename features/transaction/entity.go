@@ -36,11 +36,11 @@ type PaymentCore struct {
 type UsecaseInterface interface {
 	PostData(token int, data AddressCore, dataPay PaymentCore) (int, error)
 	PutStatus(token int, status string) (int, error)
-	// DeleteOrder()
+	DeleteOrder(token int, status string) (int, error)
 }
 
 type DataInterface interface {
 	InsertData(token int, data AddressCore, dataPay PaymentCore) (int, error)
 	UpdateStatus(token int, status string) (int, error)
-	// DeleteData()
+	CancelOrder(token int, status string) (int, error)
 }

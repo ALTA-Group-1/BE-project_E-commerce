@@ -19,8 +19,8 @@ func New(e *echo.Echo, usecase cart.UsecaseInterface) {
 	}
 	e.POST("/carts", handler.PostData, middlewares.JWTMiddleware())
 	e.GET("/carts", handler.GetAllCart, middlewares.JWTMiddleware())
-	e.PUT("/carts/:id", handler.UpdatePlus, middlewares.JWTMiddleware())
-	e.PUT("/carts/:id", handler.UpdateMinus, middlewares.JWTMiddleware())
+	e.PUT("/carts/:id/increment", handler.UpdatePlus, middlewares.JWTMiddleware())
+	e.PUT("/carts/:id/decrement", handler.UpdateMinus, middlewares.JWTMiddleware())
 	e.DELETE("/carts/:id", handler.DeleteCart, middlewares.JWTMiddleware())
 }
 
@@ -85,23 +85,25 @@ func (delivery *CartDelivery) GetAllCart(c echo.Context) error {
 
 func (delivery *CartDelivery) UpdatePlus(c echo.Context) error {
 	id := c.Param("id")
-	idCnv, err := strconv.Atoi(id)
+	idCart, err := strconv.Atoi(id)
 	if err != nil {
 		return c.JSON(400, helper.FailedResponseHelper("param must be a number"))
 	}
-	errBind := c.Bind(&idCnv)
+	errBind := c.Bind(&idCart)
 	if errBind != nil {
 		return c.JSON(400, helper.FailedResponseHelper("error bind data"))
 	}
 
-	cartID := idCnv
+	cartID := idCart
 
 	query := c.QueryParam("increment")
-	if query == "" {
-		query = "0"
+	error := c.Bind(&query)
+	if error != nil {
+		return c.JSON(400, helper.FailedResponseHelper("error bind data"))
 	}
+	increment := query
 
-	row, err := delivery.cartUsecase.UpdatePlus(cartID, query)
+	row, err := delivery.cartUsecase.UpdatePlus(cartID, increment)
 	if err != nil || row < 1 {
 		return c.JSON(400, helper.FailedResponseHelper("Bad Request"))
 	}

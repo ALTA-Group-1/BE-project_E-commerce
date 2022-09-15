@@ -26,8 +26,6 @@ tags:
     description: Authentication
   - name: User
     description: User data management
-  - name: Categories
-    description: Categories data management
   - name: Product
     description: Product data management
   - name: Cart
@@ -125,7 +123,7 @@ paths:
               userData1:
                 description: "Example data user"
                 value: {
-                  full name: "John",
+                  name: "John",
                   phone number: "0812345",
                   address: "Jl. Simatupang",
                   email: "john@gmail.com",
@@ -170,7 +168,7 @@ paths:
             schema:
               type: object
               properties:
-                full name:
+                name:
                   type: string
                   example: "John"
                 phone number:
@@ -202,27 +200,6 @@ paths:
           $ref: '#/components/responses/responseSuccess'
         '400':
           $ref: '#/components/responses/responseFailed'
-  
-  #######  CATEGORIES   #######
-  /categories/{id}:
-    get:
-      tags:
-        - Categories
-      summary: Get product by id categories
-      description: Get product by id categories
-      parameters:
-        - name: id
-          description: id_categories
-          in: path
-          schema:
-            type: integer
-            example: 1
-          required: true
-      responses:
-        '200':
-          $ref: '#/components/responses/getDetailProductSuccess'
-        '400':
-          $ref: '#/components/responses/getDetailProductFailed' 
 
   #######  PRODUCT   #######
   /products:
@@ -248,7 +225,6 @@ paths:
                   images: "images.jpg",
                   product name: "smartwatch",
                   price: 500000,
-                  stock: 100,
                   description: "Smartband ultra-thin design"
                 }
               productData2:
@@ -257,7 +233,6 @@ paths:
                   images: "images.jpg",
                   productname: "sneakers",
                   price: 500000,
-                  stock: 100,
                   description: "sneakers nike air white"
                 }
       responses:
@@ -275,19 +250,64 @@ paths:
         name: title
         schema:
           type: string
-          example: page 
+          example: page/category 
         required: false 
       - in: query
         name: page
         schema:
           type: number
           example: 1
+        required: false 
+      - in: query
+        name: category
+        schema:
+          type: string
+          example: books
         required: false
       responses:
         '200':
           $ref: '#/components/responses/getAllProductSuccess'
         '400':
           $ref: '#/components/responses/getAllProductFailed'
+  /products/{id}:  
+    delete:
+      tags:
+        - Product
+      summary: Delete product
+      description: Delete product
+      parameters:
+        - name: id
+          description: id_product
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/responseSuccess'
+        '400':
+          $ref: '#/components/responses/responseFailed'
+    get:
+      tags:
+        - Product
+      summary: Get product by id
+      description: Get detail product
+      parameters:
+        - name: id
+          description: id_product
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/getDetailProductSuccess'
+        '400':
+          $ref: '#/components/responses/getDetailProductFailed' 
     put:
       tags:
         - Product
@@ -295,6 +315,14 @@ paths:
       description: Edit product data
       security:
         - JWTAuth: []
+      parameters:
+        - name: id
+          description: id_product
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
       requestBody:
         content:
           multipart/form-data:
@@ -310,7 +338,6 @@ paths:
                   images: "images.jpg",
                   productname: "smartwatch",
                   price: 500000,
-                  stock: 100,
                   description: "Smartband ultra-thin design"
                 }
               productData2:
@@ -319,7 +346,6 @@ paths:
                   images: "images.jpg",
                   productname: "sneakers",
                   price: 500000,
-                  stock: 100,
                   description: "sneakers nike air white"
                 }
       responses:
@@ -327,45 +353,14 @@ paths:
           $ref: '#/components/responses/responseSuccess'
         '400':
           $ref: '#/components/responses/responseFailed'
-    delete:
-      tags:
-        - Product
-      summary: Delete product
-      description: Delete product
-      security:
-        - JWTAuth: []
-      responses:
-        '200':
-          $ref: '#/components/responses/responseSuccess'
-        '400':
-          $ref: '#/components/responses/responseFailed'
-  /products/{id}:
-    get:
-      tags:
-        - Product
-      summary: Get product by id
-      description: Get detail product
-      security:
-        - JWTAuth: []
-      parameters:
-        - name: id
-          description: id_product
-          in: path
-          schema:
-            type: integer
-            example: 1
-          required: true
-      responses:
-        '200':
-          $ref: '#/components/responses/getDetailProductSuccess'
-        '400':
-          $ref: '#/components/responses/getDetailProductFailed' 
   /myproducts:
     get:
       tags:
         - Product
       summary: Get my product
       description: Get my product
+      security:
+        - JWTAuth: []
       responses:
         '200':
           $ref: '#/components/responses/getMyProductSuccess'
@@ -383,9 +378,6 @@ paths:
         - JWTAuth: []
       requestBody:
         content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/requestCartData'
           application/json:
             schema:
               $ref: '#/components/schemas/requestCartData'
@@ -393,10 +385,7 @@ paths:
               productData1:
                 description: "Example cart data"
                 value: {
-                  images: "images.jpg",
-                  product name: "smartwatch",
-                  price: 500000,
-                  qty: 1
+                  product id: 2,
                 }
               productData2:
                 description: "Example data product"
@@ -423,6 +412,7 @@ paths:
           $ref: '#/components/responses/getCartSuccess'
         '400':
           $ref: '#/components/responses/getCartFailed'
+  /carts/{id}/increment:
     put:
       tags:
         - Cart
@@ -430,28 +420,47 @@ paths:
       description: change quantity product
       security:
         - JWTAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/requestChangeQty'
-            examples:
-              productData1:
-                description: "Example data product"
-                value: {
-                  qty: 3
-                }
-              productData2:
-                description: "Example data product"
-                value: {
-                  qty: 2
-                }
+      parameters:
+      - name: id
+        description: id_product
+        in: path
+        schema:
+            type: integer
+            example: 1
+        required: true 
+      # - in: query
+      #   name: update
+      #   schema:
+      #     type: string
+      #     example: increment
+      #   required: false
       responses:
         '200':
           $ref: '#/components/responses/responseSuccess'
         '400':
           $ref: '#/components/responses/responseFailed'
-  /carts/{id}:
+  /carts/{id}/decrement:  
+    put:
+      tags:
+        - Cart
+      summary: Change quantity product
+      description: change quantity product
+      security:
+        - JWTAuth: []
+      parameters:
+      - name: id
+        description: id_product
+        in: path
+        schema:
+            type: integer
+            example: 1
+        required: true 
+      responses:
+        '200':
+          $ref: '#/components/responses/responseSuccess'
+        '400':
+          $ref: '#/components/responses/responseFailed'
+  /carts/{id}:  
     delete:
       tags:
         - Cart
@@ -491,12 +500,30 @@ paths:
               productData1:
                 description: "Example data order"
                 value: {
-                  address: "jl. simatupang"
+                  street: "jl. kemerdekaan",
+                  city: "bandung",
+                  province: "jawa barat",
+                  postcode: 17665,
+                  visa: "mega bank",
+                  name on card: "dian",
+                  number card: 836502648396,
+                  noCvv2: 9303,
+                  month: 2,
+                  year: 2022
                 }
               productData2:
                 description: "Example data order"
                 value: {
-                  address: "jl. parayangan"
+                  street: "jl. kemerdekaan",
+                  city: "solo",
+                  province: "jawa tengah",
+                  postcode: 17665,
+                  visa: "mega bank",
+                  name on card: "amin",
+                  number card: 836502648396,
+                  noCvv2: 9303,
+                  month: 2,
+                  year: 2022
                 }
       responses:
         '200':
@@ -515,7 +542,8 @@ paths:
           $ref: '#/components/responses/getCartSuccess'
         '400':
           $ref: '#/components/responses/getCartFailed'
-    delete:
+  /orders/cancel:
+    put:
       tags:
         - Order
       summary: Cancel checkout 
@@ -527,7 +555,19 @@ paths:
           $ref: '#/components/responses/responseSuccess'
         '400':
           $ref: '#/components/responses/responseFailed'
-
+  /orders/confirm:    
+    put:
+      tags:
+        - Order
+      summary: Confirm checkout 
+      description: User confirm checkout item
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/responseSuccess'
+        '400':
+          $ref: '#/components/responses/responseFailed'
 
 #==================================#
 #    COMPONENT
@@ -588,9 +628,6 @@ components:
         "price":
           type: integer
           minLength: 1
-        "stock":
-          type: integer
-          minLength: 1
         "description":
           type: string
           minLength: 1
@@ -598,16 +635,7 @@ components:
     requestCartData:
       type: object
       properties:
-        "images":
-          type: string
-          minLength: 1
-        "product name":
-          type: string
-          minLength: 1
-        "price":
-          type: integer
-          minLength: 1
-        "qty":
+        "productId":
           type: integer
           minLength: 1
     
@@ -794,7 +822,7 @@ components:
               data:
                 type: object
                 properties:
-                  full name:
+                  name:
                     type: string
                     example: John
                   phone number:
@@ -914,6 +942,9 @@ components:
                   price:
                     type: integer
                     example: 500000
+                  category:
+                    type: string
+                    example: "style"
     getAllProductFailed:
       description: failed get all product
       content:

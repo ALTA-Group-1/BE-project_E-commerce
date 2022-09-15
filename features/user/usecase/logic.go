@@ -21,9 +21,12 @@ func (usecase *userUsecase) PostData(data user.Core) (int, error) {
 	if data.Name == "" || data.Email == "" || data.Password == "" || data.Phone == "" || data.Address == "" {
 		return -1, errors.New("data tidak boleh kosong")
 	}
-	hashPass, err := bcrypt.GenerateFromPassword([]byte(data.Password), bcrypt.DefaultCost)
-	if err != nil {
-		return -1, err
+
+	if data.Password != "" {
+		hashPass, err := bcrypt.GenerateFromPassword([]byte(data.Password), bcrypt.DefaultCost)
+		if err != nil {
+			return -1, err
+		}
 	}
 	data.Password = string(hashPass)
 	row, err := usecase.userData.InsertData(data)

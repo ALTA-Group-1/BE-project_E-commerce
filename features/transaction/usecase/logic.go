@@ -39,3 +39,12 @@ func (usecase *transactionUsecase) PutStatus(token int, status string) (int, err
 	return row, nil
 
 }
+
+func (usecase *transactionUsecase) DeleteOrder(token int, status string) (int, error) {
+	row, err := usecase.transactionData.CancelOrder(token, status)
+	if err != nil {
+		return -1, err
+	}
+
+	return row, nil
+}
