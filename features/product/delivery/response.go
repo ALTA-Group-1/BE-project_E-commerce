@@ -26,7 +26,6 @@ func fromCore(data product.Core) ProductResponse {
 		Name:   data.Name,
 		Images: data.Images,
 		Price:  data.Price,
-		Stock:  data.Stock,
 		Desc:   data.Desc,
 	}
 }

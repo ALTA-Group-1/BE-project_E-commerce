@@ -9,7 +9,6 @@ type Core struct {
 	Name         string
 	Images       string
 	Price        int
-	Stock        int
 	Desc         string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
