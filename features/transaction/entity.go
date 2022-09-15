@@ -17,8 +17,10 @@ type Core struct {
 
 type UsecaseInterface interface {
 	PostData(token int) (int, error)
+	// DeleteOrder()
 }
 
 type DataInterface interface {
 	InsertData(token int) (int, error)
+	// DeleteData()
 }
