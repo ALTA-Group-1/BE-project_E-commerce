@@ -11,7 +11,6 @@ type Product struct {
 	Name         string
 	Images       string
 	Price        int
-	Stock        int
 	Desc         string
 	UserID       uint
 	CategoriesID uint
@@ -46,7 +45,6 @@ func fromCore(dataCore product.Core) Product {
 		Name:         dataCore.Name,
 		Images:       dataCore.Images,
 		Price:        dataCore.Price,
-		Stock:        dataCore.Stock,
 		Desc:         dataCore.Desc,
 		UserID:       uint(dataCore.UserID),
 		CategoriesID: uint(dataCore.CategoriesID),
@@ -60,7 +58,6 @@ func (data *Product) toCore() product.Core {
 		Name:         data.Name,
 		Images:       data.Images,
 		Price:        data.Price,
-		Stock:        data.Stock,
 		Desc:         data.Desc,
 		UserID:       int(data.UserID),
 		CategoriesID: int(data.CategoriesID),

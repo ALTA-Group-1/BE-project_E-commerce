@@ -113,9 +113,6 @@ func (delivery *ProductDelivery) PutData(c echo.Context) error {
 	if dataUpdate.Name != "" {
 		add.Name = dataUpdate.Name
 	}
-	if dataUpdate.Stock != 0 {
-		add.Stock = dataUpdate.Stock
-	}
 	if dataUpdate.Price != 0 {
 		add.Price = dataUpdate.Price
 	}
