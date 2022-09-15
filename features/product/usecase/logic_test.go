@@ -55,7 +55,7 @@ func TestGetAllProduct(t *testing.T) {
 		usecase := New(repo)
 		result, err := usecase.GetAllProduct(1)
 		assert.Error(t, err)
-		assert.NotEqual(t, 1, result)
+		assert.Equal(t, nil, result)
 		repo.AssertExpectations(t)
 	})
 }
@@ -107,7 +107,7 @@ func TestPutData(t *testing.T) {
 
 		result, err := usecase.PutData(1, newData)
 		assert.Error(t, err)
-		assert.NotEqual(t, 1, result)
+		assert.Equal(t, -1, result)
 		repo.AssertExpectations(t)
 	})
 }
@@ -133,7 +133,7 @@ func TestDeleteData(t *testing.T) {
 
 		result, err := usecase.DeleteData(1, 1)
 		assert.Error(t, err)
-		assert.NotEqual(t, 1, result)
+		assert.Equal(t, -1, result)
 		repo.AssertExpectations(t)
 	})
 }
@@ -158,7 +158,7 @@ func TestGetMyProduct(t *testing.T) {
 		usecase := New(repo)
 		result, err := usecase.GetAllProduct(1)
 		assert.Error(t, err)
-		assert.NotEqual(t, 1, result)
+		assert.Equal(t, nil, result)
 		repo.AssertExpectations(t)
 	})
 }
