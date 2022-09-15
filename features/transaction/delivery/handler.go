@@ -18,7 +18,7 @@ func New(e *echo.Echo, usecase transaction.UsecaseInterface) {
 	}
 
 	e.POST("/orders", handler.PostDataOrders, middlewares.JWTMiddleware())
-	e.PUT("/orders/confirm", handler.PostDataOrders, middlewares.JWTMiddleware())
+	e.PUT("/orders/confirm", handler.PutStatusConfirm, middlewares.JWTMiddleware())
 
 }
 
