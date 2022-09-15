@@ -40,6 +40,15 @@ type User struct {
 	Product  []Product
 }
 
+type ResJoins struct {
+	ID       uint
+	Name     string
+	Images   string
+	Price    int
+	Desc     string
+	Category string
+}
+
 func fromCore(dataCore product.Core) Product {
 	productModel := Product{
 		Name:         dataCore.Name,
@@ -50,6 +59,17 @@ func fromCore(dataCore product.Core) Product {
 		CategoriesID: uint(dataCore.CategoriesID),
 	}
 	return productModel
+}
+
+func (res *ResJoins) toRes() product.Core {
+	return product.Core{
+		ID:       res.ID,
+		Name:     res.Name,
+		Images:   res.Images,
+		Price:    res.Price,
+		Desc:     res.Desc,
+		Category: res.Category,
+	}
 }
 
 func (data *Product) toCore() product.Core {

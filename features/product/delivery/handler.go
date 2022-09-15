@@ -60,6 +60,10 @@ func (delivery *ProductDelivery) GetAllPagination(c echo.Context) error {
 	if query == "" && query2 == "" {
 		query = "0"
 		query2 = "0"
+	} else if query == "" {
+		query = "0"
+	} else if query2 == "" {
+		query2 = "0"
 	}
 	page, err := strconv.Atoi(query)
 	if err != nil {
