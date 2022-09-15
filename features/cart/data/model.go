@@ -76,7 +76,7 @@ func (res *Results) toCore() cart.Core {
 func toCoreList(dataCart []Results) []cart.Core {
 	var dataCore []cart.Core
 	for key := range dataCart {
-		if Results.Deleted_at == "" {
+		if dataCart[key].Deleted_at == "" {
 			dataCore = append(dataCore, dataCart[key].toCore())
 		}
 	}

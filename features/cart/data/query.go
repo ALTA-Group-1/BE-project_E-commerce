@@ -55,7 +55,7 @@ func (repo *cartData) SelectByToken(token int) ([]cart.Core, error) {
 		return nil, tx.Error
 	}
 
-	return toCoreList(dataCart), nil
+	return toCoreList(dataCartCek), nil
 }
 
 func (repo *cartData) UpdatePlusData(cartID int, increment string) (int, error) {
