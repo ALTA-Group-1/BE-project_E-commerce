@@ -20,6 +20,7 @@ func New(e *echo.Echo, usecase transaction.UsecaseInterface) {
 	e.POST("/orders", handler.PostDataOrders, middlewares.JWTMiddleware())
 	e.PUT("/orders/confirm", handler.PutStatusConfirm, middlewares.JWTMiddleware())
 	e.PUT("/orders/cancel", handler.PutDeleteOrder, middlewares.JWTMiddleware())
+	e.GET("/orders", handler.GetOrderHistory, middlewares.JWTMiddleware())
 
 }
 
