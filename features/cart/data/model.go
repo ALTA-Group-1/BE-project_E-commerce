@@ -14,13 +14,14 @@ type Cart struct {
 }
 
 type Results struct {
-	ID        uint
-	Quantity  int
-	Name      string
-	Images    string
-	Price     int
-	UserID    uint
-	ProductID uint
+	ID         uint
+	Quantity   int
+	Name       string
+	Images     string
+	Price      int
+	UserID     uint
+	ProductID  uint
+	Deleted_at string
 }
 
 type Product struct {
@@ -75,7 +76,9 @@ func (res *Results) toCore() cart.Core {
 func toCoreList(dataCart []Results) []cart.Core {
 	var dataCore []cart.Core
 	for key := range dataCart {
-		dataCore = append(dataCore, dataCart[key].toCore())
+		if dataCart[key].Deleted_at == "" {
+			dataCore = append(dataCore, dataCart[key].toCore())
+		}
 	}
 
 	return dataCore

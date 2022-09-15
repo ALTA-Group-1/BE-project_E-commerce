@@ -55,13 +55,13 @@ func (_m *ProductData) InsertData(data product.Core) (int, error) {
 	return r0, r1
 }
 
-// SelectAllProduct provides a mock function with given fields: page
-func (_m *ProductData) SelectAllProduct(page int) ([]product.Core, error) {
-	ret := _m.Called(page)
+// SelectAllProduct provides a mock function with given fields: page, category
+func (_m *ProductData) SelectAllProduct(page int, category string) ([]product.Core, error) {
+	ret := _m.Called(page, category)
 
 	var r0 []product.Core
-	if rf, ok := ret.Get(0).(func(int) []product.Core); ok {
-		r0 = rf(page)
+	if rf, ok := ret.Get(0).(func(int, string) []product.Core); ok {
+		r0 = rf(page, category)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]product.Core)
@@ -69,8 +69,8 @@ func (_m *ProductData) SelectAllProduct(page int) ([]product.Core, error) {
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(int) error); ok {
-		r1 = rf(page)
+	if rf, ok := ret.Get(1).(func(int, string) error); ok {
+		r1 = rf(page, category)
 	} else {
 		r1 = ret.Error(1)
 	}

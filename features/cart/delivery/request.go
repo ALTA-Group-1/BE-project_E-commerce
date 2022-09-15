@@ -5,7 +5,7 @@ import (
 )
 
 type CartRequest struct {
-	Quantity  int `json:"quantity" form:"quantity"`
+	Quantity  int
 	ProductID int `json:"productID" form:"productID"`
 	UserID    int
 }

@@ -9,12 +9,12 @@ type Core struct {
 	Name         string
 	Images       string
 	Price        int
-	Stock        int
 	Desc         string
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 	UserID       int
 	CategoriesID int
+	Category     string
 }
 
 type User struct {
@@ -29,7 +29,7 @@ type CategoriesCore struct {
 
 type UsecaseInterface interface {
 	PostData(data Core) (row int, err error)
-	GetAllProduct(page int) ([]Core, error)
+	GetAllProduct(page int, category string) ([]Core, error)
 	GetMyProduct(token int) ([]Core, error)
 	GetById(param int) (Core, error)
 	PutData(token int, newData Core) (row int, err error)
@@ -38,7 +38,7 @@ type UsecaseInterface interface {
 
 type DataInterface interface {
 	InsertData(data Core) (row int, err error)
-	SelectAllProduct(page int) ([]Core, error)
+	SelectAllProduct(page int, category string) ([]Core, error)
 	SelectMyProduct(token int) ([]Core, error)
 	SelectById(param int) (Core, error)
 	UpdateData(token int, newData Core) (row int, err error)

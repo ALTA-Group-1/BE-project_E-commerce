@@ -26,18 +26,49 @@ func (repo *productData) InsertData(data product.Core) (int, error) {
 	return int(tx.RowsAffected), nil
 }
 
-func (repo *productData) SelectAllProduct(page int) ([]product.Core, error) {
+func (repo *productData) SelectAllProduct(page int, category string) ([]product.Core, error) {
 
 	var dataProduct []Product
-	if page != 0 {
-		perPage := 8
-		offset := ((page - 1) * perPage)
+	perPage := 8
+	offset := ((page - 1) * perPage)
+
+	if page != 0 && category != "0" {
+
+		var dataCate Categories
+		txCate := repo.db.Where("name = ?", category).Find(&dataCate)
+		if txCate.Error != nil {
+			return nil, txCate.Error
+		}
 
 		queryBuider := repo.db.Limit(perPage).Offset(offset)
 
-		txData := queryBuider.First(&dataProduct)
+		txData := queryBuider.Where("categories_id = ?", dataCate.ID).Find(&dataProduct)
 		if txData.Error != nil {
 			return nil, txData.Error
+		}
+		return toCoreList(dataProduct), nil
+
+	} else if page != 0 {
+
+		queryBuider := repo.db.Limit(perPage).Offset(offset)
+
+		txDataPage := queryBuider.First(&dataProduct)
+		if txDataPage.Error != nil {
+			return nil, txDataPage.Error
+		}
+		return toCoreList(dataProduct), nil
+
+	} else if page == 0 && category != "0" {
+
+		var dataCate Categories
+		txCate := repo.db.Where("name = ?", category).Find(&dataCate)
+		if txCate.Error != nil {
+			return nil, txCate.Error
+		}
+
+		txDataAllCate := repo.db.Where("categories_id = ?", dataCate.ID).Find(&dataProduct)
+		if txDataAllCate.Error != nil {
+			return nil, txDataAllCate.Error
 		}
 		return toCoreList(dataProduct), nil
 
@@ -54,11 +85,21 @@ func (repo *productData) SelectAllProduct(page int) ([]product.Core, error) {
 
 func (repo *productData) SelectById(id int) (product.Core, error) {
 	var data Product
-	tx := repo.db.First(&data, id)
+	tx := repo.db.Model(&Product{}).Where("id = ? ", id).Scan(&data)
 	if tx.Error != nil {
 		return product.Core{}, tx.Error
 	}
-	return data.toCore(), nil
+
+	var category Categories
+	txCate := repo.db.Model(&Categories{}).Where("id = ? ", data.CategoriesID).Scan(&category)
+	if txCate.Error != nil {
+		return product.Core{}, txCate.Error
+	}
+
+	resData := data.toCore()
+	resData.Category = category.Name
+
+	return resData, nil
 }
 
 func (repo *productData) UpdateData(token int, newData product.Core) (int, error) {

@@ -56,15 +56,21 @@ func (delivery *ProductDelivery) PostData(c echo.Context) error {
 func (delivery *ProductDelivery) GetAllPagination(c echo.Context) error {
 
 	query := c.QueryParam("page")
-	if query == "" {
+	query2 := c.QueryParam("category")
+	if query == "" && query2 == "" {
 		query = "0"
+		query2 = "0"
+	} else if query == "" {
+		query = "0"
+	} else if query2 == "" {
+		query2 = "0"
 	}
 	page, err := strconv.Atoi(query)
 	if err != nil {
 		return c.JSON(400, helper.FailedResponseHelper("query param must be number"))
 	}
 
-	data, errGet := delivery.productUsecase.GetAllProduct(page)
+	data, errGet := delivery.productUsecase.GetAllProduct(page, query2)
 	if errGet != nil {
 		return c.JSON(400, helper.FailedResponseHelper("error get all data"))
 	} else if len(data) == 0 {
@@ -85,11 +91,9 @@ func (delivery *ProductDelivery) GetProductById(c echo.Context) error {
 	data, errFind := delivery.productUsecase.GetById(id)
 	if errFind != nil {
 		return c.JSON(500, helper.FailedResponseHelper("error get by id"))
-	} else if data.Name == "" {
-		return c.JSON(400, helper.FailedResponseHelper("data not found"))
 	}
 
-	return c.JSON(200, helper.SuccessDataResponseHelper("succes get by id", fromCore(data)))
+	return c.JSON(200, helper.SuccessDataResponseHelper("succes get by id", data))
 }
 
 func (delivery *ProductDelivery) PutData(c echo.Context) error {
@@ -110,9 +114,6 @@ func (delivery *ProductDelivery) PutData(c echo.Context) error {
 	}
 	if dataUpdate.Name != "" {
 		add.Name = dataUpdate.Name
-	}
-	if dataUpdate.Stock != 0 {
-		add.Stock = dataUpdate.Stock
 	}
 	if dataUpdate.Price != 0 {
 		add.Price = dataUpdate.Price

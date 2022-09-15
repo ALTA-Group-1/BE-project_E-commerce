@@ -12,7 +12,7 @@ import (
 
 func TestPostData(t *testing.T) {
 	repo := new(mocks.ProductData)
-	dataInput := product.Core{Name: "Converse Allstar", Images: "https://cf.shopee.co.id/file/6614946421f206cff75a2f79310a2e35", Price: 1000000, Stock: 10, Desc: "Size L, Original verified, Made in US", CategoriesID: 3}
+	dataInput := product.Core{Name: "Converse Allstar", Images: "https://cf.shopee.co.id/file/6614946421f206cff75a2f79310a2e35", Price: 1000000, Desc: "Size L, Original verified, Made in US", CategoriesID: 3}
 
 	t.Run("Success Insert data.", func(t *testing.T) {
 		repo.On("InsertData", mock.Anything).Return(1, nil).Once()
@@ -25,7 +25,7 @@ func TestPostData(t *testing.T) {
 	})
 
 	t.Run("Empty data.", func(t *testing.T) {
-		dataInput := product.Core{Name: "", Images: "", Price: 0, Stock: 0, Desc: "", CategoriesID: 0}
+		dataInput := product.Core{Name: "", Images: "", Price: 0, Desc: "", CategoriesID: 0}
 
 		usecase := New(repo)
 		result, err := usecase.PostData(dataInput)
@@ -37,13 +37,13 @@ func TestPostData(t *testing.T) {
 
 func TestGetAllProduct(t *testing.T) {
 	repo := new(mocks.ProductData)
-	dataProduct := []product.Core{{Name: "Converse Allstar", Images: "https://cf.shopee.co.id/file/6614946421f206cff75a2f79310a2e35", Price: 1000000, Stock: 10, Desc: "Size L, Original verified, Made in US", CategoriesID: 3}}
+	dataProduct := []product.Core{{Name: "Converse Allstar", Images: "https://cf.shopee.co.id/file/6614946421f206cff75a2f79310a2e35", Price: 1000000, Desc: "Size L, Original verified, Made in US", CategoriesID: 3}}
 
 	t.Run("Success Get all data.", func(t *testing.T) {
 		repo.On("SelecAllProduct", mock.Anything).Return(dataProduct, nil).Once()
 
 		usecase := New(repo)
-		result, err := usecase.GetAllProduct(1)
+		result, err := usecase.GetAllProduct(1, "0")
 		assert.NoError(t, err)
 		assert.Equal(t, result[0].ID, dataProduct[0].ID)
 		repo.AssertExpectations(t)
@@ -53,7 +53,7 @@ func TestGetAllProduct(t *testing.T) {
 		repo.On("SelectAllProduct", mock.Anything).Return([]product.Core{}, errors.New("Error")).Once()
 
 		usecase := New(repo)
-		result, err := usecase.GetAllProduct(1)
+		result, err := usecase.GetAllProduct(1, "0")
 		assert.Error(t, err)
 		assert.Equal(t, nil, result)
 		repo.AssertExpectations(t)
@@ -62,7 +62,7 @@ func TestGetAllProduct(t *testing.T) {
 
 func TestGetById(t *testing.T) {
 	repo := new(mocks.ProductData)
-	dataProduct := product.Core{ID: 1, Name: "Converse Allstar", Images: "https://cf.shopee.co.id/file/6614946421f206cff75a2f79310a2e35", Price: 1000000, Stock: 10, Desc: "Size L, Original verified, Made in US", CategoriesID: 3}
+	dataProduct := product.Core{ID: 1, Name: "Converse Allstar", Images: "https://cf.shopee.co.id/file/6614946421f206cff75a2f79310a2e35", Price: 1000000, Desc: "Size L, Original verified, Made in US", CategoriesID: 3}
 
 	t.Run("Success Get data by Id.", func(t *testing.T) {
 		repo.On("SelectById", mock.Anything).Return(dataProduct, nil).Once()
@@ -87,7 +87,7 @@ func TestGetById(t *testing.T) {
 
 func TestPutData(t *testing.T) {
 	repo := new(mocks.ProductData)
-	newData := product.Core{Name: "Converse Allstar", Images: "https://cf.shopee.co.id/file/6614946421f206cff75a2f79310a2e35", Price: 1000000, Stock: 10, Desc: "Size L, Original verified, Made in US", CategoriesID: 3}
+	newData := product.Core{Name: "Converse Allstar", Images: "https://cf.shopee.co.id/file/6614946421f206cff75a2f79310a2e35", Price: 1000000, Desc: "Size L, Original verified, Made in US", CategoriesID: 3}
 
 	t.Run("Success Update data", func(t *testing.T) {
 		repo.On("UpdateData", mock.Anything).Return(1, nil).Once()
@@ -140,13 +140,13 @@ func TestDeleteData(t *testing.T) {
 
 func TestGetMyProduct(t *testing.T) {
 	repo := new(mocks.ProductData)
-	dataProduct := []product.Core{{Name: "Converse Allstar", Images: "https://cf.shopee.co.id/file/6614946421f206cff75a2f79310a2e35", Price: 1000000, Stock: 10, Desc: "Size L, Original verified, Made in US", UserID: 1, CategoriesID: 3}}
+	dataProduct := []product.Core{{Name: "Converse Allstar", Images: "https://cf.shopee.co.id/file/6614946421f206cff75a2f79310a2e35", Price: 1000000, Desc: "Size L, Original verified, Made in US", UserID: 1, CategoriesID: 3}}
 
 	t.Run("Success Get my product.", func(t *testing.T) {
 		repo.On("SelectMyProduct", mock.Anything).Return(dataProduct, nil).Once()
 
 		usecase := New(repo)
-		result, err := usecase.GetAllProduct(1)
+		result, err := usecase.GetAllProduct(1, "0")
 		assert.NoError(t, err)
 		assert.Equal(t, result[0].UserID, dataProduct[0].UserID)
 		repo.AssertExpectations(t)
@@ -156,7 +156,7 @@ func TestGetMyProduct(t *testing.T) {
 		repo.On("SelectMyProduct", mock.Anything).Return([]product.Core{}, errors.New("Error")).Once()
 
 		usecase := New(repo)
-		result, err := usecase.GetAllProduct(1)
+		result, err := usecase.GetAllProduct(1, "0")
 		assert.Error(t, err)
 		assert.Equal(t, nil, result)
 		repo.AssertExpectations(t)

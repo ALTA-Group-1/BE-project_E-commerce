@@ -16,7 +16,7 @@ func New(data product.DataInterface) product.UsecaseInterface {
 }
 
 func (usecase *productUsecase) PostData(data product.Core) (int, error) {
-	if data.Name == "" || data.Images == "" || data.Price == 0 || data.Stock == 0 || data.Desc == "" || data.CategoriesID == 0 {
+	if data.Name == "" || data.Images == "" || data.Price == 0 || data.Desc == "" || data.CategoriesID == 0 {
 		return -1, errors.New("data tidak boleh kosong")
 	}
 
@@ -27,8 +27,8 @@ func (usecase *productUsecase) PostData(data product.Core) (int, error) {
 	return row, nil
 }
 
-func (usecase *productUsecase) GetAllProduct(page int) ([]product.Core, error) {
-	data, err := usecase.productData.SelectAllProduct(page)
+func (usecase *productUsecase) GetAllProduct(page int, category string) ([]product.Core, error) {
+	data, err := usecase.productData.SelectAllProduct(page, category)
 	if err != nil {
 		return nil, err
 	}
