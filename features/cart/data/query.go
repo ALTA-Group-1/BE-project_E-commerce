@@ -24,11 +24,15 @@ func (repo *cartData) InsertData(data cart.Core) (int, error) {
 		return -1, txCek.Error
 	}
 
+	cek.quantity += 1
+
 	if cek.id > 0 {
-		txUpd := repo.db.Model(&Cart{}).Where("id = ?", cek.id).Update("quantity", cek.quantity+1)
+		txUpd := repo.db.Model(&Cart{}).Where("id = ?", cek.id).Update("quantity", cek.quantity)
 		if txUpd.Error != nil {
-			return -1, txCek.Error
+			return -1, txUpd.Error
 		}
+
+		return 1, nil
 	}
 
 	dataModel := fromCore(data)
