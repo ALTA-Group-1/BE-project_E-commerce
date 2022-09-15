@@ -98,7 +98,7 @@ func (delivery *CartDelivery) UpdatePlus(c echo.Context) error {
 		return c.JSON(400, helper.FailedResponseHelper("error bind data"))
 	}
 
-	query := c.QueryParam("increment")
+	query := c.QueryParam("update")
 
 	row, err := delivery.cartUsecase.UpdatePlus(idCart, query)
 	if err != nil || row < 1 {
