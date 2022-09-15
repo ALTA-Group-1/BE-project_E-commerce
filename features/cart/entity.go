@@ -21,7 +21,7 @@ type Product struct {
 type UsecaseInterface interface {
 	PostData(data Core) (int, error)
 	GetByToken(token int) ([]Core, error)
-	UpdatePlus(cartID int, update string) (int, error)
+	UpdatePlus(cartID int, increment string) (int, error)
 	UpdateMinus(cartID int, decrement string) (int, error)
 	DeleteCart(userID, cartID int) (int, error)
 }
