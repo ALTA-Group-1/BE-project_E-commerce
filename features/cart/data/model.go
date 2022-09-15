@@ -21,7 +21,7 @@ type Results struct {
 	Price      int
 	UserID     uint
 	ProductID  uint
-	deleted_at string
+	Deleted_at string
 }
 
 type Product struct {
@@ -76,7 +76,9 @@ func (res *Results) toCore() cart.Core {
 func toCoreList(dataCart []Results) []cart.Core {
 	var dataCore []cart.Core
 	for key := range dataCart {
-		dataCore = append(dataCore, dataCart[key].toCore())
+		if Results.Deleted_at == "" {
+			dataCore = append(dataCore, dataCart[key].toCore())
+		}
 	}
 
 	return dataCore
