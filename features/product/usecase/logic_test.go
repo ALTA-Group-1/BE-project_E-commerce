@@ -24,12 +24,22 @@ func TestPostData(t *testing.T) {
 		repo.AssertExpectations(t)
 	})
 
+	t.Run("Failed Insert data.", func(t *testing.T) {
+		repo.On("InsertData", mock.Anything).Return(1, errors.New("error")).Once()
+
+		usecase := New(repo)
+		result, err := usecase.PostData(dataInput)
+		assert.Error(t, err)
+		assert.Equal(t, -1, result)
+		repo.AssertExpectations(t)
+	})
+
 	t.Run("Empty data.", func(t *testing.T) {
 		dataInput := product.Core{Name: "", Images: "", Price: 0, Desc: "", CategoriesID: 0}
 
 		usecase := New(repo)
 		result, err := usecase.PostData(dataInput)
-		assert.EqualError(t, err, "Cant input empty data.")
+		assert.EqualError(t, err, "data tidak boleh kosong")
 		assert.Equal(t, -1, result)
 		repo.AssertExpectations(t)
 	})
@@ -40,22 +50,22 @@ func TestGetAllProduct(t *testing.T) {
 	dataProduct := []product.Core{{Name: "Converse Allstar", Images: "https://cf.shopee.co.id/file/6614946421f206cff75a2f79310a2e35", Price: 1000000, Desc: "Size L, Original verified, Made in US", CategoriesID: 3}}
 
 	t.Run("Success Get all data.", func(t *testing.T) {
-		repo.On("SelecAllProduct", mock.Anything).Return(dataProduct, nil).Once()
+		repo.On("SelectAllProduct", mock.Anything, mock.Anything).Return(dataProduct, nil).Once()
 
 		usecase := New(repo)
-		result, err := usecase.GetAllProduct(1, "0")
+		result, err := usecase.GetAllProduct(1, "Style")
 		assert.NoError(t, err)
-		assert.Equal(t, result[0].ID, dataProduct[0].ID)
+		assert.Equal(t, dataProduct, result)
 		repo.AssertExpectations(t)
 	})
 
 	t.Run("Failed Get all data.", func(t *testing.T) {
-		repo.On("SelectAllProduct", mock.Anything).Return([]product.Core{}, errors.New("Error")).Once()
+		repo.On("SelectAllProduct", mock.Anything, mock.Anything).Return([]product.Core{}, errors.New("error")).Once()
 
 		usecase := New(repo)
-		result, err := usecase.GetAllProduct(1, "0")
+		result, err := usecase.GetAllProduct(1, "Style")
 		assert.Error(t, err)
-		assert.Equal(t, nil, result)
+		assert.Equal(t, []product.Core([]product.Core(nil)), result)
 		repo.AssertExpectations(t)
 	})
 }
@@ -90,7 +100,7 @@ func TestPutData(t *testing.T) {
 	newData := product.Core{Name: "Converse Allstar", Images: "https://cf.shopee.co.id/file/6614946421f206cff75a2f79310a2e35", Price: 1000000, Desc: "Size L, Original verified, Made in US", CategoriesID: 3}
 
 	t.Run("Success Update data", func(t *testing.T) {
-		repo.On("UpdateData", mock.Anything).Return(1, nil).Once()
+		repo.On("UpdateData", mock.Anything, mock.Anything).Return(1, nil).Once()
 
 		usecase := New(repo)
 
@@ -101,7 +111,7 @@ func TestPutData(t *testing.T) {
 	})
 
 	t.Run("Failed Update data", func(t *testing.T) {
-		repo.On("UpdateData", mock.Anything).Return(-1, errors.New("Error")).Once()
+		repo.On("UpdateData", mock.Anything, mock.Anything).Return(-1, errors.New("Error")).Once()
 
 		usecase := New(repo)
 
@@ -116,7 +126,7 @@ func TestDeleteData(t *testing.T) {
 	repo := new(mocks.ProductData)
 
 	t.Run("Success Delete data.", func(t *testing.T) {
-		repo.On("DeleteByToken", mock.Anything).Return(1, nil).Once()
+		repo.On("DeleteByToken", mock.Anything, mock.Anything).Return(1, nil).Once()
 
 		usecase := New(repo)
 
@@ -127,7 +137,7 @@ func TestDeleteData(t *testing.T) {
 	})
 
 	t.Run("Failed Delete data", func(t *testing.T) {
-		repo.On("DeleteByToken", mock.Anything).Return(-1, errors.New("Error")).Once()
+		repo.On("DeleteByToken", mock.Anything, mock.Anything).Return(-1, errors.New("Error")).Once()
 
 		usecase := New(repo)
 
@@ -146,7 +156,7 @@ func TestGetMyProduct(t *testing.T) {
 		repo.On("SelectMyProduct", mock.Anything).Return(dataProduct, nil).Once()
 
 		usecase := New(repo)
-		result, err := usecase.GetAllProduct(1, "0")
+		result, err := usecase.GetMyProduct(1)
 		assert.NoError(t, err)
 		assert.Equal(t, result[0].UserID, dataProduct[0].UserID)
 		repo.AssertExpectations(t)
@@ -156,9 +166,9 @@ func TestGetMyProduct(t *testing.T) {
 		repo.On("SelectMyProduct", mock.Anything).Return([]product.Core{}, errors.New("Error")).Once()
 
 		usecase := New(repo)
-		result, err := usecase.GetAllProduct(1, "0")
+		result, err := usecase.GetMyProduct(1)
 		assert.Error(t, err)
-		assert.Equal(t, nil, result)
+		assert.NotEqual(t, 1, result)
 		repo.AssertExpectations(t)
 	})
 }
