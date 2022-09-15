@@ -19,7 +19,7 @@ func New(db *gorm.DB) cart.DataInterface {
 
 func (repo *cartData) InsertData(data cart.Core) (int, error) {
 	var cek int
-	txCek := repo.db.Model(&Cart{}).Select("quantity").Where("product_id = ? AND user_id = ? ", data.ProductID, data.UserID).Scan(&cek)
+	txCek := repo.db.Model(&Cart{}).Select("quantity").Where("product_id = ? AND user_id = ? AND deleted_at = NULL", data.ProductID, data.UserID).Scan(&cek)
 	if txCek.Error != nil {
 		return -1, txCek.Error
 	}
@@ -55,7 +55,7 @@ func (repo *cartData) DeleteData(userID, cartID int) (int, error) {
 func (repo *cartData) SelectByToken(token int) ([]cart.Core, error) {
 	var dataCart []Results
 	// tx := repo.db.Model(&Cart{}).Where("user_id = ?", token).Find(&dataCart)
-	tx := repo.db.Model(&Product{}).Select("carts.id, carts.quantity, products.name, products.images, products.price, carts.user_id, carts.product_id").Joins("inner join carts on carts.product_id = products.id").Where("carts.user_id = ?", token).Scan(&dataCart)
+	tx := repo.db.Model(&Product{}).Select("carts.id, carts.quantity, products.name, products.images, products.price, carts.user_id, carts.product_id").Joins("inner join carts on carts.product_id = products.id").Where("carts.user_id = ? AND carts.deleted_at = NULL", token).Scan(&dataCart)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
