@@ -117,7 +117,7 @@ func (repo *transactionData) CancelOrder(token int, status string) (int, error) 
 func (repo *transactionData) SelectOrder(token int) ([]transaction.HistoryOrder, error) {
 
 	var data []transaction.HistoryOrder
-	tx := repo.db.Model(&Product{}).Select("products.images, products.name, products.price, carts.quantity").Joins("inner join carts on carts.product_id = products.id").Joins("inner join transactions on trasactions.cart_id = carts.id").Where("transactions.status_order = confirm AND carts.user_id = ? AND deleted_at != NULL", token).Scan(&data)
+	tx := repo.db.Unscoped().Model(&Product{}).Select("products.images, products.name, products.price, carts.quantity").Joins("inner join carts on carts.product_id = products.id").Joins("inner join transactions on trasactions.cart_id = carts.id").Where("transactions.order_status = confirm AND carts.user_id = ? AND deleted_at IS NOT NULL", token).Scan(&data)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
