@@ -17,19 +17,40 @@ func New(e *echo.Echo, usecase transaction.UsecaseInterface) {
 		transactionUsecase: usecase,
 	}
 
-	e.POST("/transactions", handler.PostData, middlewares.JWTMiddleware())
+	e.POST("/orders", handler.PostDataOrders, middlewares.JWTMiddleware())
+	e.PUT("/orders/confirm", handler.PostDataOrders, middlewares.JWTMiddleware())
 
 }
 
-func (deliver *TransactionDelivery) PostData(c echo.Context) error {
+func (delivery *TransactionDelivery) PostDataOrders(c echo.Context) error {
 
 	idtoken := middlewares.ExtractToken(c)
+	var data Request
+	errBind := c.Bind(&data)
+	if errBind != nil {
+		return c.JSON(400, helper.FailedResponseHelper("error request"))
+	}
 
-	row, err := deliver.transactionUsecase.PostData(idtoken)
+	request := data.fromCore()
+
+	row, err := delivery.transactionUsecase.PostData(idtoken, request)
 	if err != nil || row == 0 {
 		return c.JSON(500, helper.FailedResponseHelper("failed post order"))
 	}
 
 	return c.JSON(200, helper.SuccessResponseHelper("succes post data status waiting"))
+
+}
+
+func (delivery *TransactionDelivery) PutStatusConfirm(c echo.Context) error {
+
+	idtoken := middlewares.ExtractToken(c)
+
+	row, err := delivery.transactionUsecase.PutStatus(idtoken, "confirm")
+	if err != nil || row == 0 {
+		return c.JSON(400, helper.FailedResponseHelper("low stock product"))
+	}
+
+	return c.JSON(200, helper.SuccessResponseHelper("succes orders products"))
 
 }

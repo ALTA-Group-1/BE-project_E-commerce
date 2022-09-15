@@ -56,15 +56,17 @@ func (delivery *ProductDelivery) PostData(c echo.Context) error {
 func (delivery *ProductDelivery) GetAllPagination(c echo.Context) error {
 
 	query := c.QueryParam("page")
-	if query == "" {
+	query2 := c.QueryParam("category")
+	if query == "" && query2 == "" {
 		query = "0"
+		query2 = "0"
 	}
 	page, err := strconv.Atoi(query)
 	if err != nil {
 		return c.JSON(400, helper.FailedResponseHelper("query param must be number"))
 	}
 
-	data, errGet := delivery.productUsecase.GetAllProduct(page)
+	data, errGet := delivery.productUsecase.GetAllProduct(page, query2)
 	if errGet != nil {
 		return c.JSON(400, helper.FailedResponseHelper("error get all data"))
 	} else if len(data) == 0 {

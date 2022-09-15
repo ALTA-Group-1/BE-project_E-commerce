@@ -15,12 +15,22 @@ type Core struct {
 	DeletedAt   time.Time
 }
 
+type AddressCore struct {
+	TransactionID uint
+	Street        string
+	City          string
+	Province      string
+	PostCode      uint
+}
+
 type UsecaseInterface interface {
-	PostData(token int) (int, error)
-	// DeleteOrder()
+	PostData(token int, data AddressCore) (int, error)
+	PutStatus(token int, status string) (int, error)
+  // DeleteOrder()
 }
 
 type DataInterface interface {
-	InsertData(token int) (int, error)
+	InsertData(token int, data AddressCore) (int, error)
+	UpdateStatus(token int, status string) (int, error)
 	// DeleteData()
 }

@@ -27,10 +27,6 @@ import (
 	transactionData "project/e-commerce/features/transaction/data"
 	transactionDelivery "project/e-commerce/features/transaction/delivery"
 	transactionUsecase "project/e-commerce/features/transaction/usecase"
-
-	addressData "project/e-commerce/features/address/data"
-	addressDelivery "project/e-commerce/features/address/delivery"
-	addressUsecase "project/e-commerce/features/address/usecase"
 )
 
 func InitFactory(e *echo.Echo, db *gorm.DB) {
@@ -58,7 +54,4 @@ func InitFactory(e *echo.Echo, db *gorm.DB) {
 	transactionUsecaseFactory := transactionUsecase.New(transactionDataFactory)
 	transactionDelivery.New(e, transactionUsecaseFactory)
 
-	addressDataFactory := addressData.New(db)
-	addressUsecaseFactory := addressUsecase.New(addressDataFactory)
-	addressDelivery.New(e, addressUsecaseFactory)
 }
