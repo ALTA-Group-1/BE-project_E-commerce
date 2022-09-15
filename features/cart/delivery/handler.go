@@ -90,10 +90,6 @@ func (delivery *CartDelivery) UpdateCart(c echo.Context) error {
 	if err != nil {
 		return c.JSON(400, helper.FailedResponseHelper("param must be a number"))
 	}
-	errBind := c.Bind(&idCart)
-	if errBind != nil {
-		return c.JSON(400, helper.FailedResponseHelper("error bind data"))
-	}
 
 	update := c.QueryParam("update")
 	if update == "increment" || update == "decrement" {
