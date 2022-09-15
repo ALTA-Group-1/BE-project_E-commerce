@@ -10,7 +10,7 @@ type ProductResponse struct {
 	Images   string `json:"images,omitempty"`
 	Price    int    `json:"price,omitempty"`
 	Desc     string `json:"desc,omitempty"`
-	Category string `json:"category"`
+	Category string `json:"category,omitempty"`
 }
 
 type ProductResponseList struct {
