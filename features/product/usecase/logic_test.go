@@ -43,7 +43,7 @@ func TestGetAllProduct(t *testing.T) {
 		repo.On("SelecAllProduct", mock.Anything).Return(dataProduct, nil).Once()
 
 		usecase := New(repo)
-		result, err := usecase.GetAllProduct(1)
+		result, err := usecase.GetAllProduct(1, "0")
 		assert.NoError(t, err)
 		assert.Equal(t, result[0].ID, dataProduct[0].ID)
 		repo.AssertExpectations(t)
@@ -53,7 +53,7 @@ func TestGetAllProduct(t *testing.T) {
 		repo.On("SelectAllProduct", mock.Anything).Return([]product.Core{}, errors.New("Error")).Once()
 
 		usecase := New(repo)
-		result, err := usecase.GetAllProduct(1)
+		result, err := usecase.GetAllProduct(1, "0")
 		assert.Error(t, err)
 		assert.NotEqual(t, 1, result)
 		repo.AssertExpectations(t)
@@ -146,7 +146,7 @@ func TestGetMyProduct(t *testing.T) {
 		repo.On("SelectMyProduct", mock.Anything).Return(dataProduct, nil).Once()
 
 		usecase := New(repo)
-		result, err := usecase.GetAllProduct(1)
+		result, err := usecase.GetAllProduct(1, "0")
 		assert.NoError(t, err)
 		assert.Equal(t, result[0].UserID, dataProduct[0].UserID)
 		repo.AssertExpectations(t)
@@ -156,7 +156,7 @@ func TestGetMyProduct(t *testing.T) {
 		repo.On("SelectMyProduct", mock.Anything).Return([]product.Core{}, errors.New("Error")).Once()
 
 		usecase := New(repo)
-		result, err := usecase.GetAllProduct(1)
+		result, err := usecase.GetAllProduct(1, "0")
 		assert.Error(t, err)
 		assert.NotEqual(t, 1, result)
 		repo.AssertExpectations(t)

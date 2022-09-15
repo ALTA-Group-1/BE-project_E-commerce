@@ -58,6 +58,11 @@ func fromCore(dataCore cart.Core) Cart {
 
 }
 
+type update struct {
+	id       int
+	quantity int
+}
+
 func (res *Results) toCore() cart.Core {
 
 	return cart.Core{
