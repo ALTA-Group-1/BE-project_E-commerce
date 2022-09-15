@@ -14,9 +14,9 @@ func New(data transaction.DataInterface) transaction.UsecaseInterface {
 	}
 }
 
-func (usecase *transactionUsecase) PostData(token int, data transaction.AddressCore) (int, error) {
+func (usecase *transactionUsecase) PostData(token int, data transaction.AddressCore, dataPay transaction.PaymentCore) (int, error) {
 
-	row, err := usecase.transactionData.InsertData(token, data)
+	row, err := usecase.transactionData.InsertData(token, data, dataPay)
 	if err != nil {
 		return -1, err
 	}

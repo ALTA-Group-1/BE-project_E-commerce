@@ -18,6 +18,22 @@ func New(db *gorm.DB) cart.DataInterface {
 }
 
 func (repo *cartData) InsertData(data cart.Core) (int, error) {
+	var cek int
+	txCek := repo.db.Model(&Cart{}).Select("quantity").Where("product_id = ? AND user_id = ? ", data.ProductID, data.UserID).Scan(&cek)
+	if txCek.Error != nil {
+		return -1, txCek.Error
+	}
+
+	if cek > 0 {
+		cek += 1
+		txUpd := repo.db.Model(&Cart{}).Where("product_id = ? AND user_id = ? ", data.ProductID, data.UserID).Update("quantity", cek)
+		if txUpd.Error != nil {
+			return -1, txUpd.Error
+		}
+
+		return 1, nil
+	}
+
 	dataModel := fromCore(data)
 
 	tx := repo.db.Create(&dataModel)
@@ -50,12 +66,14 @@ func (repo *cartData) UpdatePlusData(cartID int, increment string) (int, error) 
 	var dataProduct cart.Core
 	dataModel := fromCore(dataProduct)
 
-	tx := repo.db.Raw("UPDATE carts SET quantity = (? + 1) WHERE carts_id = ? AND products_id = ?", dataModel.Quantity, cartID, dataModel.ProductID).Scan(&cartID)
-	if tx.Error != nil {
-		return -1, tx.Error
-	}
-	if tx.RowsAffected == 0 {
-		return -1, errors.New("failed to update quantity")
+	if cartID != 0 && increment == increment {
+		tx := repo.db.Raw("UPDATE carts SET quantity = (? + 1) WHERE carts_id = ?", dataModel.Quantity, cartID).Scan(&dataModel)
+		if tx.Error != nil {
+			return -1, tx.Error
+		}
+		if tx.RowsAffected == 0 {
+			return -1, errors.New("failed to update quantity")
+		}
 	}
 
 	return 1, nil

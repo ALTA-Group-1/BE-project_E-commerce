@@ -23,14 +23,24 @@ type AddressCore struct {
 	PostCode      uint
 }
 
+type PaymentCore struct {
+	TransactionID uint
+	Visa          string
+	Name          string
+	Number        uint
+	Cvv2          uint
+	Month         uint
+	Year          uint
+}
+
 type UsecaseInterface interface {
-	PostData(token int, data AddressCore) (int, error)
+	PostData(token int, data AddressCore, dataPay PaymentCore) (int, error)
 	PutStatus(token int, status string) (int, error)
 	DeleteOrder(token int, status string) (int, error)
 }
 
 type DataInterface interface {
-	InsertData(token int, data AddressCore) (int, error)
+	InsertData(token int, data AddressCore, dataPay PaymentCore) (int, error)
 	UpdateStatus(token int, status string) (int, error)
 	CancelOrder(token int, status string) (int, error)
 }

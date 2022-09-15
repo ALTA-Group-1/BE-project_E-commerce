@@ -12,7 +12,9 @@ import (
 func InitMigrate(db *gorm.DB) {
 	db.AutoMigrate(&userModel.User{})
 	db.AutoMigrate(&productModel.Product{})
+	db.AutoMigrate(&productModel.Categories{})
 	db.AutoMigrate(&cartModel.Cart{})
 	db.AutoMigrate(&transactionModel.Transaction{})
 	db.AutoMigrate(&transactionModel.Address{})
+	db.AutoMigrate(&transactionModel.Payment{})
 }
