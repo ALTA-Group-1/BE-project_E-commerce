@@ -14,6 +14,16 @@ type Transaction struct {
 	CartID      uint
 }
 
+type Payment struct {
+	TransactionID uint `gorm:"primary_key;ForeignKey:TransactionID"`
+	Visa          string
+	Name          string
+	Number        uint
+	Cvv2          uint
+	Month         uint
+	Year          uint
+}
+
 type Address struct {
 	TransactionID uint `gorm:"primary_key;ForeignKey:TransactionID"`
 	Street        string
@@ -111,6 +121,18 @@ func toDb(data transaction.AddressCore) Address {
 		City:          data.City,
 		Province:      data.Province,
 		PostCode:      data.PostCode,
+	}
+
+}
+
+func toDbPay(data transaction.PaymentCore) Payment {
+	return Payment{
+		Visa:   data.Visa,
+		Name:   data.Name,
+		Number: data.Number,
+		Cvv2:   data.Cvv2,
+		Month:  data.Month,
+		Year:   data.Year,
 	}
 
 }

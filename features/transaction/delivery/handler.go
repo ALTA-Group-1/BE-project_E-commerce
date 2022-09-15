@@ -31,9 +31,9 @@ func (delivery *TransactionDelivery) PostDataOrders(c echo.Context) error {
 		return c.JSON(400, helper.FailedResponseHelper("error request"))
 	}
 
-	request := data.fromCore()
+	requestAddress, requestPayment := data.fromCore()
 
-	row, err := delivery.transactionUsecase.PostData(idtoken, request)
+	row, err := delivery.transactionUsecase.PostData(idtoken, requestAddress, requestPayment)
 	if err != nil || row == 0 {
 		return c.JSON(500, helper.FailedResponseHelper("failed post order"))
 	}
