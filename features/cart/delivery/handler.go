@@ -19,7 +19,7 @@ func New(e *echo.Echo, usecase cart.UsecaseInterface) {
 	}
 	e.POST("/carts", handler.PostData, middlewares.JWTMiddleware())
 	e.GET("/carts", handler.GetAllCart, middlewares.JWTMiddleware())
-	e.PUT("/carts/:id", handler.UpdatePlus, middlewares.JWTMiddleware())
+	e.PUT("/carts/:id/increment", handler.UpdatePlus, middlewares.JWTMiddleware())
 	e.PUT("/carts/:id/decrement", handler.UpdateMinus, middlewares.JWTMiddleware())
 	e.DELETE("/carts/:id", handler.DeleteCart, middlewares.JWTMiddleware())
 }
@@ -98,9 +98,7 @@ func (delivery *CartDelivery) UpdatePlus(c echo.Context) error {
 		return c.JSON(400, helper.FailedResponseHelper("error bind data"))
 	}
 
-	query := c.QueryParam("update")
-
-	row, err := delivery.cartUsecase.UpdatePlus(idCart, query)
+	row, err := delivery.cartUsecase.UpdatePlus(idCart, "increment")
 	if err != nil || row < 1 {
 		return c.JSON(400, helper.FailedResponseHelper("Bad Request"))
 	}
