@@ -90,10 +90,10 @@ func (repo *productData) SelectById(id int) (product.Core, error) {
 		return product.Core{}, tx.Error
 	}
 
-	idCate := data.CategoriesID
+	idCate := int(data.CategoriesID)
 
 	var category Categories
-	txCate := repo.db.Model(&Categories{}).Where("id = ? ", idCate).Scan(&category)
+	txCate := repo.db.Find(&category, "id = ? ", idCate)
 	if txCate.Error != nil {
 		return product.Core{}, txCate.Error
 	}
