@@ -19,6 +19,7 @@ func New(e *echo.Echo, usecase transaction.UsecaseInterface) {
 
 	e.POST("/orders", handler.PostDataOrders, middlewares.JWTMiddleware())
 	e.PUT("/orders/confirm", handler.PostDataOrders, middlewares.JWTMiddleware())
+	e.PUT("/orders/cancel", handler.PutDeleteOrder, middlewares.JWTMiddleware())
 
 }
 
@@ -52,5 +53,18 @@ func (delivery *TransactionDelivery) PutStatusConfirm(c echo.Context) error {
 	}
 
 	return c.JSON(200, helper.SuccessResponseHelper("succes orders products"))
+
+}
+
+func (delivery *TransactionDelivery) PutDeleteOrder(c echo.Context) error {
+
+	idtoken := middlewares.ExtractToken(c)
+
+	row, err := delivery.transactionUsecase.DeleteOrder(idtoken, "cancel")
+	if err != nil || row == 0 {
+		return c.JSON(400, helper.FailedResponseHelper("failed cancel product"))
+	}
+
+	return c.JSON(200, helper.SuccessResponseHelper("succes cancel products"))
 
 }

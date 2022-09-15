@@ -95,3 +95,24 @@ func (repo *transactionData) UpdateStatus(token int, status string) (int, error)
 	return 1, nil
 
 }
+
+func (repo *transactionData) CancelOrder(token int, status string) (int, error) {
+	var id []int
+	str := "waiting"
+	tx := repo.db.Model(&Cart{}).Select("transactions.id").Joins("inner join transactions on transactions.cart_id = carts.id").Where("carts.user_id = ? AND transactions.order_status = ?", token, str).Scan(&id)
+	if tx.Error != nil {
+		return -1, tx.Error
+	}
+
+	for _, valueId := range id {
+		if valueId == 0 {
+			return -1, errors.New("no data")
+		}
+		txUpdate := repo.db.Model(&Transaction{}).Where("id = ?", valueId).Update("order_status", status)
+		if txUpdate.Error != nil {
+			return -1, txUpdate.Error
+		}
+	}
+
+	return 1, nil
+}
