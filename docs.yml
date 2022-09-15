@@ -97,14 +97,14 @@ paths:
                   value: {
                     code: 400,
                     status: "failed",
-                    message: "Login Failed. Email and Password incorrect."
+                    message: "failed to created token"
                   }
                 responseData2:
                   description: response failed 2
                   value: {
                     code: 400,
                     status: "failed",
-                    message: "Login Failed. Your email doesn't match any entry"
+                    message: "failed to created token"
                   }
   #######  USER   #######
   /users:
@@ -124,7 +124,7 @@ paths:
                 description: "Example data user"
                 value: {
                   name: "John",
-                  phone number: "0812345",
+                  phone: "0812345",
                   address: "Jl. Simatupang",
                   email: "john@gmail.com",
                   password: "john123"
@@ -171,7 +171,7 @@ paths:
                 name:
                   type: string
                   example: "John"
-                phone number:
+                phone:
                   type: string
                   example: '0812345'
                 address:
@@ -246,12 +246,6 @@ paths:
       summary: Get all product
       description: Get all product
       parameters:
-      - in: query
-        name: title
-        schema:
-          type: string
-          example: page/category 
-        required: false 
       - in: query
         name: page
         schema:
@@ -412,7 +406,7 @@ paths:
           $ref: '#/components/responses/getCartSuccess'
         '400':
           $ref: '#/components/responses/getCartFailed'
-  /carts/{id}/increment:
+  /carts/{id}:
     put:
       tags:
         - Cart
@@ -422,45 +416,23 @@ paths:
         - JWTAuth: []
       parameters:
       - name: id
-        description: id_product
+        description: id_cart
         in: path
         schema:
             type: integer
             example: 1
-        required: true 
-      # - in: query
-      #   name: update
-      #   schema:
-      #     type: string
-      #     example: increment
-      #   required: false
-      responses:
-        '200':
-          $ref: '#/components/responses/responseSuccess'
-        '400':
-          $ref: '#/components/responses/responseFailed'
-  /carts/{id}/decrement:  
-    put:
-      tags:
-        - Cart
-      summary: Change quantity product
-      description: change quantity product
-      security:
-        - JWTAuth: []
-      parameters:
-      - name: id
-        description: id_product
-        in: path
+        required: true
+      - in: query
+        name: update
         schema:
-            type: integer
-            example: 1
+          type: string
+          example: increment/decrement 
         required: true 
       responses:
         '200':
           $ref: '#/components/responses/responseSuccess'
         '400':
           $ref: '#/components/responses/responseFailed'
-  /carts/{id}:  
     delete:
       tags:
         - Cart
@@ -470,7 +442,7 @@ paths:
         - JWTAuth: []
       parameters:
         - name: id
-          description: id_product
+          description: id_cart
           in: path
           schema:
             type: integer
@@ -533,8 +505,8 @@ paths:
     get:
       tags:
         - Order
-      summary: Get item product to be checkout
-      description: Get item product to be checkout
+      summary: Get history order
+      description: Get history order
       security:
         - JWTAuth: []
       responses:
@@ -600,10 +572,10 @@ components:
     requestUserData:
       type: object
       properties:
-        "full name":
+        "name":
           type: string
           minLength: 1
-        "phone number":
+        "phone":
           type: string
           minLength: 1
         "address":
@@ -699,7 +671,7 @@ components:
     #    RESPONSE FOR GENERAL REQUEST
     #==================================#
     responseSuccess:
-      description: Successful Operation
+      description: success
       content:
         application/json:
           schema:
@@ -713,9 +685,9 @@ components:
                 example: success
               message:
                 type: string
-                example: Successful Operation
+                example: success
     responseFailed:
-      description: register failed
+      description: failed
       content:
         application/json:
           schema:
@@ -729,7 +701,7 @@ components:
                 example: failed
               message:
                 type: string
-                example: Bad Request
+                example: failed
     #==================================#
     #    RESPONSE REGISTER USER
     #==================================#
@@ -804,7 +776,7 @@ components:
     #    RESPONSE GET USER
     #==================================#
     getUserProfileSuccess:
-      description: success get user profile
+      description: succes get data by id
       content:
         application/json:
           schema:
@@ -818,14 +790,14 @@ components:
                 example: success
               message:
                 type: string
-                example: Success Get User Profile
+                example: succes get data by id
               data:
                 type: object
                 properties:
                   name:
                     type: string
                     example: John
-                  phone number:
+                  phone:
                     type: string
                     example: '0812345'
                   address:
@@ -835,7 +807,7 @@ components:
                     type: string
                     example: john@gmail.com
     getUserProfileFailed:
-      description: fail to get user profile
+      description: error token
       content:
         application/json:
           schema:
@@ -849,7 +821,7 @@ components:
                 example: failed
               message:
                 type: string
-                example: Fail to Get User Profile
+                example: error token
     #==================================#
     #    RESPONSE UPDATE USER
     #==================================#
@@ -885,7 +857,7 @@ components:
     #    RESPONSE CREATE PRODUCT
     #==================================#
     createProductSuccess:
-      description: success create book
+      description: success insert data
       content:
         application/json:
           schema:
@@ -896,9 +868,9 @@ components:
                 example: success
               message:
                 type: string
-                example: Success create product
+                example: success insert data
     createProductFailed:
-      description: fail to create book
+      description: error insert data
       content:
         application/json:
           schema:
@@ -909,13 +881,13 @@ components:
                 example: fail
               message:
                 type: string
-                example: Fail create product
+                example: error insert data
 
     #==================================#
     #    RESPONSE GET ALL PRODUCT
     #==================================#
     getAllProductSuccess:
-      description: success get all product
+      description: success get all data
       content:
         multipart/form-data:
           schema:
@@ -929,7 +901,7 @@ components:
                 example: success
               message:
                 type: string
-                example: Success get all product
+                example: success get all data
               data:
                 type: object
                 properties:
@@ -946,7 +918,7 @@ components:
                     type: string
                     example: "style"
     getAllProductFailed:
-      description: failed get all product
+      description: error get all data
       content:
         application/json:
           schema:
@@ -954,16 +926,16 @@ components:
             properties:
               status:
                 type: string
-                example: fail
+                example: failed
               message:
                 type: string
-                example: Failed get all product
+                example: error get all data
 
     #==================================#
     #    RESPONSE GET MY PRODUCT
     #==================================#
     getMyProductSuccess:
-      description: success get my product
+      description: success get your product
       content:
         multipart/form-data:
           schema:
@@ -977,7 +949,7 @@ components:
                 example: success
               message:
                 type: string
-                example: Success get my product
+                example: success get your product
               data:
                 type: object
                 properties:
@@ -997,7 +969,7 @@ components:
                     type: string
                     example: original black
     getMyProductFailed:
-      description: failed get my product
+      description: error get your product
       content:
         application/json:
           schema:
@@ -1008,14 +980,13 @@ components:
                 example: fail
               message:
                 type: string
-                example: Failed get all product
-
+                example: error get your product
 
     #==================================#
     #    RESPONSE GET DETAIL PRODUCT
     #==================================#
     getDetailProductSuccess:
-      description: success get detail product
+      description: succes get by id
       content:
         multipart/form-data:
           schema:
@@ -1029,7 +1000,7 @@ components:
                 example: success
               message:
                 type: string
-                example: Success get detail product
+                example: succes get by id
               data:
                 type: object
                 properties:
@@ -1049,7 +1020,7 @@ components:
                     type: string
                     example: "sneakers nike"
     getDetailProductFailed:
-      description: failed get detail product
+      description: error get by id
       content:
         application/json:
           schema:
@@ -1060,13 +1031,13 @@ components:
                 example: fail
               message:
                 type: string
-                example: Failed get detail product
+                example: error get by id
 
     #==================================#
     #    RESPONSE CREATE CART
     #==================================#
     createCartSuccess:
-      description: success puts product into cart
+      description: success insert data
       content:
         application/json:
           schema:
@@ -1077,9 +1048,9 @@ components:
                 example: success
               message:
                 type: string
-                example: Success puts product into cart
+                example: success insert data
     createCartFailed:
-      description: fail puts product into cart
+      description: error insert data
       content:
         application/json:
           schema:
@@ -1090,14 +1061,14 @@ components:
                 example: fail
               message:
                 type: string
-                example: Fail puts product into cart
+                example: error insert data
    
 
     #==================================#
     #    RESPONSE POST ORDER
     #==================================#
     checkoutSuccess:
-      description: success checkout item
+      description: succes post data status waiting
       content:
         application/json:
           schema:
@@ -1108,9 +1079,9 @@ components:
                 example: success
               message:
                 type: string
-                example: Success checkout item
+                example: succes post data status waiting
     checkoutFailed:
-      description: failed checkout item
+      description: failed post order
       content:
         application/json:
           schema:
@@ -1121,13 +1092,13 @@ components:
                 example: fail
               message:
                 type: string
-                example: Failed checkout item
+                example: failed post order
 
     #==================================#
     #    RESPONSE GET CART
     #==================================#
     getCartSuccess:
-      description: success get product at cart
+      description: success
       content:
         multipart/form-data:
           schema:
@@ -1141,7 +1112,7 @@ components:
                 example: success
               message:
                 type: string
-                example: Success get detail product
+                example: success
               data: 
                 type: object
                 properties:
@@ -1153,18 +1124,15 @@ components:
                     example: "sneakers"
                   price:
                     type: integer
-                    example: 500000
-                  qty:
-                    type: integer
-                    example: 1
-                  Total items:
+                    example: 100000
+                  quantity:
                     type: integer
                     example: 2
                   Total price:
                     type: integer
-                    example: 800000
+                    example: 200000
     getCartFailed:
-      description: failed get product at cart
+      description: error
       content:
         application/json:
           schema:
@@ -1175,7 +1143,7 @@ components:
                 example: fail
               message:
                 type: string
-                example: Failed get product at cart
+                example: error
 
     #==================================#
     #    DEFAULT RESPONSE
