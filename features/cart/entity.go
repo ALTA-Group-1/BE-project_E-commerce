@@ -23,7 +23,7 @@ type UsecaseInterface interface {
 	GetByToken(token int) ([]Core, error)
 	UpdatePlus(cartID int, increment string) (int, error)
 	UpdateMinus(cartID int, decrement string) (int, error)
-	DeleteCart(userID, cartID int) (int, error)
+	DeleteCart(userID, productID int) (int, error)
 }
 
 type DataInterface interface {
@@ -31,5 +31,5 @@ type DataInterface interface {
 	SelectByToken(token int) ([]Core, error)
 	UpdatePlusData(cartID int, increment string) (int, error)
 	UpdateMinusData(cartID int, decrement string) (int, error)
-	DeleteData(userID, cartID int) (int, error)
+	DeleteData(userID, productID int) (int, error)
 }

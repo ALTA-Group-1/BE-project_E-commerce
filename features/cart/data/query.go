@@ -35,9 +35,10 @@ func (repo *cartData) InsertData(data cart.Core) (int, error) {
 	return int(tx.RowsAffected), nil
 }
 
-func (repo *cartData) DeleteData(userID, cartID int) (int, error) {
-	var deleteData Cart
-	tx := repo.db.Where("user_id = ? AND id = ?", userID, cartID).Delete(&deleteData)
+func (repo *cartData) DeleteData(userID, productID int) (int, error) {
+	// var deleteData []Cart
+
+	tx := repo.db.Where("user_id = ? AND id = ?", userID, productID).Delete(&Cart{})
 	if tx.Error != nil {
 		return -1, tx.Error
 	}
