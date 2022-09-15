@@ -27,8 +27,8 @@ func (usecase *productUsecase) PostData(data product.Core) (int, error) {
 	return row, nil
 }
 
-func (usecase *productUsecase) GetAllProduct(page int) ([]product.Core, error) {
-	data, err := usecase.productData.SelectAllProduct(page)
+func (usecase *productUsecase) GetAllProduct(page int, category string) ([]product.Core, error) {
+	data, err := usecase.productData.SelectAllProduct(page, category)
 	if err != nil {
 		return nil, err
 	}

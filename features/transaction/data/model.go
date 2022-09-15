@@ -14,6 +14,14 @@ type Transaction struct {
 	CartID      uint
 }
 
+type Address struct {
+	TransactionID uint `gorm:"primary_key;ForeignKey:TransactionID"`
+	Street        string
+	City          string
+	Province      string
+	PostCode      uint
+}
+
 type Product struct {
 	gorm.Model
 	Name         string
@@ -47,6 +55,13 @@ type result struct {
 	CartID     uint
 	Quantity   int
 	TotalPrice int
+}
+
+type DBTransaction struct {
+	Cart_id  uint
+	Quantity int
+	Stock    int
+	ID       uint
 }
 
 func insertJoin(data []Results) []result {
@@ -87,4 +102,15 @@ func (tx *Transaction) toCore() transaction.Core {
 		Updated:     tx.UpdatedAt,
 		DeletedAt:   tx.DeletedAt.Time,
 	}
+}
+
+func toDb(data transaction.AddressCore) Address {
+	return Address{
+		TransactionID: data.TransactionID,
+		Street:        data.Street,
+		City:          data.City,
+		Province:      data.Province,
+		PostCode:      data.PostCode,
+	}
+
 }

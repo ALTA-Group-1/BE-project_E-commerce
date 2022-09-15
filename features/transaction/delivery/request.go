@@ -1,6 +1,6 @@
 package delivery
 
-import "project/e-commerce/features/address"
+import "project/e-commerce/features/transaction"
 
 type Request struct {
 	Street   string `json:"street" form:"street"`
@@ -9,8 +9,8 @@ type Request struct {
 	PostCode uint   `json:"postcode" form:"postcode"`
 }
 
-func (data *Request) fromCore() address.Core {
-	return address.Core{
+func (data *Request) fromCore() transaction.AddressCore {
+	return transaction.AddressCore{
 		Street:   data.Street,
 		City:     data.City,
 		Province: data.Province,

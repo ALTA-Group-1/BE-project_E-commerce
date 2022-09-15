@@ -14,12 +14,23 @@ func New(data transaction.DataInterface) transaction.UsecaseInterface {
 	}
 }
 
-func (usecase *transactionUsecase) PostData(token int) (int, error) {
+func (usecase *transactionUsecase) PostData(token int, data transaction.AddressCore) (int, error) {
 
-	row, err := usecase.transactionData.InsertData(token)
+	row, err := usecase.transactionData.InsertData(token, data)
 	if err != nil {
 		return -1, err
 	}
 
 	return row, nil
+}
+
+func (usecase *transactionUsecase) PutStatus(token int, status string) (int, error) {
+
+	row, err := usecase.transactionData.UpdateStatus(token, status)
+	if err != nil {
+		return -1, err
+	}
+
+	return row, nil
+
 }
