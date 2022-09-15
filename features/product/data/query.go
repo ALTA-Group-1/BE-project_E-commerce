@@ -98,10 +98,6 @@ func (repo *productData) SelectById(id int) (product.Core, error) {
 		return product.Core{}, txCate.Error
 	}
 
-	if category.Name == "" {
-		return product.Core{}, errors.New("errors")
-	}
-
 	resData := data.toCore()
 	resData.Category = category.Name
 
