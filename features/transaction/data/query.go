@@ -84,9 +84,9 @@ func (repo *transactionData) UpdateStatus(token int, status string) (int, error)
 		}
 	}
 
-	txStock := repo.db.Where("user_id = ?", token).Delete(&Cart{})
-	if txStock.Error != nil {
-		return -1, txStock.Error
+	txDel := repo.db.Unscoped().Where("user_id = ?", token).Delete(&Cart{})
+	if txDel.Error != nil {
+		return -1, txDel.Error
 	}
 
 	return 1, nil

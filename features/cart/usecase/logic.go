@@ -44,16 +44,8 @@ func (usecase *cartUsecase) GetByToken(token int) ([]cart.Core, error) {
 	return res, nil
 }
 
-func (usecase *cartUsecase) UpdatePlus(cartID int, increment string) (int, error) {
-	row, err := usecase.cartData.UpdatePlusData(cartID, increment)
-	if err != nil {
-		return -1, err
-	}
-	return row, nil
-}
-
-func (usecase *cartUsecase) UpdateMinus(cartID int, decrement string) (int, error) {
-	row, err := usecase.cartData.UpdateMinusData(cartID, decrement)
+func (usecase *cartUsecase) PutData(cartID, token int, update string) (int, error) {
+	row, err := usecase.cartData.UpdateData(cartID, token, update)
 	if err != nil {
 		return -1, err
 	}

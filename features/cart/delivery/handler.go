@@ -19,8 +19,7 @@ func New(e *echo.Echo, usecase cart.UsecaseInterface) {
 	}
 	e.POST("/carts", handler.PostData, middlewares.JWTMiddleware())
 	e.GET("/carts", handler.GetAllCart, middlewares.JWTMiddleware())
-	e.PUT("/carts/:id/increment", handler.UpdatePlus, middlewares.JWTMiddleware())
-	e.PUT("/carts/:id/decrement", handler.UpdateMinus, middlewares.JWTMiddleware())
+	e.PUT("/carts/:id", handler.UpdateCart, middlewares.JWTMiddleware())
 	e.DELETE("/carts/:id", handler.DeleteCart, middlewares.JWTMiddleware())
 }
 
@@ -43,10 +42,10 @@ func (delivery *CartDelivery) PostData(c echo.Context) error {
 	if err != nil {
 		return c.JSON(400, helper.FailedResponseHelper("error insert data"))
 	}
-	if row != 1 {
-		return c.JSON(400, helper.FailedResponseHelper("error insert data"))
-	} else if row == 2 {
+	if row == 2 {
 		return c.JSON(200, helper.SuccessResponseHelper("product sudah ada di carts"))
+	} else if row != 1 {
+		return c.JSON(400, helper.FailedResponseHelper("error insert data"))
 	}
 	return c.JSON(201, helper.SuccessResponseHelper("success insert data"))
 }
@@ -85,7 +84,7 @@ func (delivery *CartDelivery) GetAllCart(c echo.Context) error {
 
 }
 
-func (delivery *CartDelivery) UpdatePlus(c echo.Context) error {
+func (delivery *CartDelivery) UpdateCart(c echo.Context) error {
 	id := c.Param("id")
 	idCart, err := strconv.Atoi(id)
 	if err != nil {
@@ -96,45 +95,19 @@ func (delivery *CartDelivery) UpdatePlus(c echo.Context) error {
 		return c.JSON(400, helper.FailedResponseHelper("error bind data"))
 	}
 
-	cartID := idCart
+	update := c.QueryParam("update")
+	if update == "increment" || update == "decrement" {
+		cartID := idCart
+		idToken := middlewares.ExtractToken(c)
 
-	query := c.QueryParam("increment")
-	error := c.Bind(&query)
-	if error != nil {
-		return c.JSON(400, helper.FailedResponseHelper("error bind data"))
-	}
-	increment := query
+		row, err := delivery.cartUsecase.PutData(cartID, idToken, update)
+		if err != nil || row < 1 {
+			return c.JSON(400, helper.FailedResponseHelper("Bad Request"))
+		}
 
-	row, err := delivery.cartUsecase.UpdatePlus(cartID, increment)
-	if err != nil || row < 1 {
-		return c.JSON(400, helper.FailedResponseHelper("Bad Request"))
-	}
-
-	return c.JSON(200, helper.SuccessResponseHelper("Successful Operation"))
-}
-
-func (delivery *CartDelivery) UpdateMinus(c echo.Context) error {
-	id := c.Param("id")
-	idCnv, err := strconv.Atoi(id)
-	if err != nil {
-		return c.JSON(400, helper.FailedResponseHelper("param must be a number"))
-	}
-	errBind := c.Bind(&idCnv)
-	if errBind != nil {
-		return c.JSON(400, helper.FailedResponseHelper("error bind data"))
+		return c.JSON(200, helper.SuccessResponseHelper("Successful Operation"))
+	} else {
+		return c.JSON(400, helper.FailedResponseHelper("query param must be increment or decrement"))
 	}
 
-	cartID := idCnv
-
-	query := c.QueryParam("decrement")
-	if query == "" {
-		query = "0"
-	}
-
-	row, err := delivery.cartUsecase.UpdateMinus(cartID, query)
-	if err != nil || row < 1 {
-		return c.JSON(400, helper.FailedResponseHelper("Bad Request"))
-	}
-
-	return c.JSON(200, helper.SuccessResponseHelper("Successful Operation"))
 }
