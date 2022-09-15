@@ -5,12 +5,12 @@ import (
 )
 
 type ProductResponse struct {
-	ID     uint   `json:"id"`
-	Name   string `json:"name"`
-	Images string `json:"images,omitempty"`
-	Price  int    `json:"price,omitempty"`
-	Stock  int    `json:"stock,omitempty"`
-	Desc   string `json:"desc,omitempty"`
+	ID       uint   `json:"id"`
+	Name     string `json:"name"`
+	Images   string `json:"images,omitempty"`
+	Price    int    `json:"price,omitempty"`
+	Desc     string `json:"desc,omitempty"`
+	Category string `json:"category"`
 }
 
 type ProductResponseList struct {
@@ -22,11 +22,12 @@ type ProductResponseList struct {
 
 func fromCore(data product.Core) ProductResponse {
 	return ProductResponse{
-		ID:     data.ID,
-		Name:   data.Name,
-		Images: data.Images,
-		Price:  data.Price,
-		Desc:   data.Desc,
+		ID:       data.ID,
+		Name:     data.Name,
+		Images:   data.Images,
+		Price:    data.Price,
+		Desc:     data.Desc,
+		Category: data.Category,
 	}
 }
 

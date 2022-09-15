@@ -89,7 +89,17 @@ func (repo *productData) SelectById(id int) (product.Core, error) {
 	if tx.Error != nil {
 		return product.Core{}, tx.Error
 	}
-	return data.toCore(), nil
+
+	var category Categories
+	txCategory := repo.db.First(&category, data.CategoriesID)
+	if txCategory != nil {
+		return product.Core{}, tx.Error
+	}
+
+	resData := data.toCore()
+	resData.Category = category.Name
+
+	return resData, nil
 }
 
 func (repo *productData) UpdateData(token int, newData product.Core) (int, error) {
