@@ -37,7 +37,7 @@ func fromCoreList(data []cart.Core) ([]CartResponse, TotalRes) {
 		dataRes = append(dataRes, fromCore(v))
 		totalRes.TotalQuantity += v.Quantity
 		totalRes.Shipping = "Free"
-		totalRes.TotalPrice = data[i].Quantity * data[i].ProductPrice
+		totalRes.TotalPrice += data[i].Quantity * data[i].ProductPrice
 
 	}
 
