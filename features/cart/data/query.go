@@ -25,6 +25,13 @@ func (repo *cartData) InsertData(data cart.Core) (int, error) {
 		return 2, nil
 	}
 
+	var dbCekProduct Product
+	repo.db.First(&dbCekProduct, "id = ? AND user_id = ? ", data.ProductID, data.UserID)
+
+	if dbCekProduct.ID > 0 {
+		return 3, nil
+	}
+
 	dataModel := fromCore(data)
 
 	tx := repo.db.Create(&dataModel)
@@ -76,8 +83,8 @@ func (repo *cartData) UpdateData(cartID, token int, update string) (int, error) 
 		if txDec.Error != nil {
 			return -1, txDec.Error
 		}
-    
-    return 1, nil   
+
+		return 1, nil
 	}
-  
+
 }
