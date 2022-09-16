@@ -14,6 +14,7 @@ func fromCore(data user.Core) UserResponse {
 	return UserResponse{
 		ID:      data.ID,
 		Name:    data.Name,
+		Phone:   data.Email,
 		Email:   data.Email,
 		Address: data.Address,
 	}
