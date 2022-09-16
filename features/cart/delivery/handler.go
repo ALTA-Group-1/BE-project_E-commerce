@@ -44,8 +44,8 @@ func (delivery *CartDelivery) PostData(c echo.Context) error {
 	}
 	if row == 2 {
 		return c.JSON(200, helper.SuccessResponseHelper("product sudah ada di carts"))
-	} else if row != 1 {
-		return c.JSON(400, helper.FailedResponseHelper("error insert data"))
+	} else if row == 3 {
+		return c.JSON(400, helper.FailedResponseHelper("failed insert your product to cart"))
 	}
 	return c.JSON(201, helper.SuccessResponseHelper("success insert data"))
 }
