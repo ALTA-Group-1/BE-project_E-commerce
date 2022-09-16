@@ -29,5 +29,3 @@ Read the API documentation here [Api Endpoint Documentation](https://app.swagger
 # 🙏🏻 Special thanks to:
 - [Fakhry IF](https://github.com/iffakhry) (Mentor BE11)
 
-
-![image](https://user-images.githubusercontent.com/31031665/190546475-341afe8b-9b2f-4677-81a4-c253d6c8faa8.jpg)
