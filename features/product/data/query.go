@@ -52,7 +52,7 @@ func (repo *productData) SelectAllProduct(page int, category string) ([]product.
 
 		queryBuider := repo.db.Limit(perPage).Offset(offset)
 
-		txDataPage := queryBuider.First(&dataProduct)
+		txDataPage := queryBuider.Find(&dataProduct)
 		if txDataPage.Error != nil {
 			return nil, txDataPage.Error
 		}
