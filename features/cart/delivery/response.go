@@ -32,12 +32,12 @@ func fromCoreList(data []cart.Core) ([]CartResponse, TotalRes) {
 
 	var dataRes []CartResponse
 	var totalRes TotalRes
-	for _, v := range data {
+	for i, v := range data {
 
 		dataRes = append(dataRes, fromCore(v))
 		totalRes.TotalQuantity += v.Quantity
 		totalRes.Shipping = "Free"
-		totalRes.TotalPrice = v.ProductPrice * totalRes.TotalQuantity
+		totalRes.TotalPrice = data[i].Quantity * data[i].ProductPrice
 
 	}
 
