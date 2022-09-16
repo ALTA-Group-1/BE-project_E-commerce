@@ -11,7 +11,7 @@ A mini e-commerce with the following features:
 
  # 🔐 Database Schema:
 
-![image](https://user-images.githubusercontent.com/105625847/190423684-8076ceb7-dde3-4926-9af8-7e0a12f4db74.png)
+![image](https://user-images.githubusercontent.com/31031665/190546475-341afe8b-9b2f-4677-81a4-c253d6c8faa8.jpg)
 
 # 📊 Unit Testing:
 
@@ -30,3 +30,4 @@ Read the API documentation here [Api Endpoint Documentation](https://app.swagger
 - [Fakhry IF](https://github.com/iffakhry) (Mentor BE11)
 
 
+![image](https://user-images.githubusercontent.com/31031665/190546475-341afe8b-9b2f-4677-81a4-c253d6c8faa8.jpg)
