@@ -17,12 +17,16 @@ A mini e-commerce with the following features:
 
 ![image](https://user-images.githubusercontent.com/31031665/190514814-af6a0928-ba55-4e5c-925d-d7d2fe96e5e8.png)
 
+# 🔥 OpenApi Endpoints:
+
+Read the API documentation here [Api Endpoint Documentation](https://app.swaggerhub.com/apis-docs/DianNurdiana-alt/E-Commerce/1.0.0#/) (Swagger)
+
 # 👑 Contributor:
 - [Amin](https://github.com/Aminrais-dev) (Author #1)
 - [Dian](https://github.com/DianNurdiana-alt) (Author #2)
 - [Jauhari](https://github.com/muhdjau) (Author #3)
 
 # 🙏🏻 Special thanks to:
-- [FakhryIF](https://github.com/iffakhry) (Mentor BE11)
+- [Fakhry IF](https://github.com/iffakhry) (Mentor BE11)
 
 
